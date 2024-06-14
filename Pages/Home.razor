@@ -1,2 +1,46 @@
 ﻿@page "/"
+@using Notes.Data
+@inject Data.NoteService NoteService
+
 <PageTitle>Notes</PageTitle>
+
+
+<input @bind="novaNotaTitulo" placeholder="Título da nota..." />
+<input @bind="novaNotaConteudo" placeholder="Conteúdo da nota..." />
+<button @onclick="AdicionarNota">Adicionar Nota</button>
+
+<ul>
+    @foreach (var note in notas)
+    {
+        <li>
+            <strong>@note.Title:</strong> @note.Content
+            <button @onclick="() => ExcluirNota(note.Id)">Excluir</button>
+        </li>
+    }
+</ul>
+
+@code {
+    private string novaNotaTitulo;
+    private string novaNotaConteudo;
+    private List<Note> notas = new List<Note>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        notas = await NoteService.GetAllNotesAsync();
+    }
+
+    private async Task AdicionarNota()
+    {
+        var note = new Note { Title = novaNotaTitulo, Content = novaNotaConteudo };
+        await NoteService.AddNoteAsync(note);
+        notas = await NoteService.GetAllNotesAsync();
+        novaNotaTitulo = string.Empty;
+        novaNotaConteudo = string.Empty;
+    }
+
+    private async Task ExcluirNota(int id)
+    {
+        await NoteService.DeleteNoteAsync(id);
+        notas = await NoteService.GetAllNotesAsync();
+    }
+}

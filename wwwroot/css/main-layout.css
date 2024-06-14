@@ -1,0 +1,110 @@
+﻿body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    background-color: #222222;
+    color: white;
+    height: 100vh;
+}
+
+header {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    background-color: #222222;
+    height: 30px;
+    box-shadow: 0px 5px 15px black;
+}
+    .header-box {
+        display: flex;
+        flex-wrap: wrap;
+        align-content: center;
+        justify-content: center;
+        text-align: center;
+        background-color: rgb(0, 0, 0, 0.4);
+        padding: 19px;
+        border-radius: 15px;
+    }
+        .header-box h1 {
+            margin: 0;
+            font-size: 18px;
+            color: rgb(140, 140, 140);
+        }
+
+    .header-box.extra-options {
+        display: flex;
+        justify-content: space-between;
+        width: 10%;
+    }
+
+#searchBar-box {
+    display: flex;
+    align-items: center;
+    margin-left: 30px
+}
+    .icon.search-icon {
+        background-color: white;
+        display: flex;
+        padding: 2px;
+        border-radius: 5px 0px 0px 5px;
+    }
+        .icon.search-icon svg {
+            color: black;
+            height: 20px;
+            width: 20px;
+        }
+
+input#searchBar {
+    border: none;
+    height: 22px;
+    outline: none;
+    border-radius: 0px 5px 5px 0px;
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+    .icon svg {
+        height: 25px;
+        width: 25px;
+    }
+        
+
+.visual-mode {
+    display: flex;
+}
+
+#create-select-buttons {
+    position: fixed;
+    display: flex;
+    bottom: 64px;
+    right: 30px;
+}
+    .icon.add-icon{
+        margin: 20px;
+    }
+
+    .icon.add-icon:hover {
+        color: #652CB3;
+    }
+
+    .icon.select-icon:hover {
+        color: #652CB3;
+    }
+
+        .icon.add-icon svg {
+            width: 45px;
+            height: 45px;
+        }
+
+    .icon.select-icon svg {
+        width: 35px;
+        height: 35px;
+    }
+
+
+
+/*#searchBar-box {
+    display: flex;
+}*/
