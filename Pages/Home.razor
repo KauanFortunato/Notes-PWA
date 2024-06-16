@@ -7,14 +7,14 @@
 
 <input @bind="novaNotaTitulo" placeholder="Título da nota..." />
 <input @bind="novaNotaConteudo" placeholder="Conteúdo da nota..." />
-<button @onclick="AdicionarNota">Adicionar Nota</button>
+<button @onclick="AdicionarNota" type="button" class="btn btn-primary">Adicionar Nota</button>
 
 <ul>
     @foreach (var note in notas)
     {
         <li>
             <strong>@note.Title:</strong> @note.Content
-            <button @onclick="() => ExcluirNota(note.Id)">Excluir</button>
+            <button @onclick="() => ExcluirNota(note.Id)" type="button" class="btn btn-outline-danger">Excluir</button>
         </li>
     }
 </ul>
