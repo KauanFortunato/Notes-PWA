@@ -1,5 +1,5 @@
 ﻿:root {
-    --color-background: #222222;
+    --color-background: #222;
     --color-contrast: #652CB3;
 }
 
@@ -88,7 +88,7 @@ body {
     color: white;
     display: flex;
     position: fixed;
-    right: 50   px;
+    right: 50px;
     bottom: 56px;
 }
     #create-select-buttons .select-icon {

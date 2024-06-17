@@ -1,4 +1,8 @@
-﻿.loading-progress {
+﻿body{
+    color: white;
+}
+
+.loading-progress {
     position: relative;
     display: block;
     width: 8rem;

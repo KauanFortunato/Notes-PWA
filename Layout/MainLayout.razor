@@ -1,11 +1,13 @@
 ﻿@inherits LayoutComponentBase
+@using Notes.Data
+@inject Data.NoteService NoteService
 
 <header>
     <div class="top-bar-box">
         <section class="top-bar-section">
             <nav class="toolbar-items">
-                <div class="toolbar-item-left">
-                    <button class="navbar-toggler" type="button">
+                <div class="toolbar-item-left">                    
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                         <span class="bi bi-list icon-bootstrap"></span>
                     </button>
 
@@ -29,11 +31,46 @@
             </nav>
         </section>
     </div>
+
+    <nav class="navbar">
+        <div class="container-fluid">
+            <div class="offcanvas offcanvas-start side-bar-bootstrap" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Workspaces</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                        <li class="nav-item">
+                            @foreach (var workspace in workspaces)
+                            {
+                                <a class="nav-link active" aria-current="page" href="/@workspace.Id">@workspace.Name</a>
+                                <button @onclick="() => EditarInterfaceMostrar(workspace)" type="button" class="btn btn-outline-warning button-edit">Editar</button>
+                            }
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
 </header>
 
-<div class="container">
-    @Body
-</div>
+@if (mostrarEditInterface)
+{
+    <div class="edit-interface overlay">
+        <div class="edit-interface-content">
+            <h3>Editar Nota</h3>
+            <div>
+                <label for="title">Nome:</label>
+                <input id="title" @bind="workspaceSelecionado.Name" />
+            </div>
+            <button @onclick="SalvarEdicao" type="button" class="btn btn-primary">Salvar</button>
+            <button @onclick="EditarInterfaceEsconder" type="button" class="btn btn-secondary">Cancelar</button>
+        </div>
+    </div>
+}
+
+@Body
     
 <div id="create-select-buttons"> 
     <button class="navbar-toggler" type="button">
@@ -44,3 +81,44 @@
         <span class="bi bi-plus-square icon-bootstrap-add"></span>
     </button>
 </div>
+
+@code
+{
+    private string novoWorkspaceTitulo;
+    private List<Workspaces> workspaces = new List<Workspaces>();
+    private Workspaces workspaceSelecionado = null;
+    private bool mostrarEditInterface = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        workspaces = await NoteService.GetAllWorkspaces();
+    }
+
+    private async Task AdicionarWorkspace()
+    {
+        // var workspace = new Workspaces { Name = novoWorkspaceTitulo };
+        // await NoteService.AddWorkspace(workspace);
+        workspaces = await NoteService.GetAllWorkspaces();
+        novoWorkspaceTitulo = string.Empty;
+    }
+
+    private async Task SalvarEdicao()
+    {
+        await NoteService.UpdateWorkspace(workspaceSelecionado);
+        workspaces = await NoteService.GetAllWorkspaces();
+        EditarInterfaceEsconder();
+    }
+
+    private void EditarInterfaceMostrar(Workspaces workspace)
+    {
+        workspaceSelecionado = workspace;
+        mostrarEditInterface = true;
+    }
+
+    private async Task EditarInterfaceEsconder()
+    {
+        mostrarEditInterface = false;
+        workspaceSelecionado = null;
+        workspaces = await NoteService.GetAllWorkspaces();
+    }
+}

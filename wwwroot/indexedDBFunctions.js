@@ -11,7 +11,10 @@
                     db.createObjectStore('notes', { keyPath: 'id' });
                 }
                 if (!db.objectStoreNames.contains('data')) {
-                    db.createObjectStore('data', { keypath: 'key' });
+                    db.createObjectStore('data', { keyPath: 'key' });
+                }
+                if (!db.objectStoreNames.contains('workspaces')) {
+                    db.createObjectStore('workspaces', { keyPath: 'id', autoIncrement: true });
                 }
             };
 
@@ -26,19 +29,17 @@
         })
     },
 
-    getLastId: function () {
+    getLastId: function (key) {
         return new Promise((resolve, reject) => {
             const transaction = indexedDBFunctions.db.transaction(['data'], 'readonly');
             const store = transaction.objectStore('data');
-            const request = store.get('lastId');
+            const request = store.get(key);
 
             request.onsuccess = function (event) {
                 const result = event.target.result;
                 if (result) {
-                    //console.log('Último ID: ' + result);
-                    resolve(result);
+                    resolve(result.id);
                 } else {
-                    //console.log('Nenhum último ID encontrado, retornando 0');
                     resolve(0);
                 }
             };
@@ -49,15 +50,14 @@
         });
     },
 
-    saveLastId: function (lastId) {
+    saveLastId: function (lastId, key) {
         return new Promise((resolve, reject) => {
             const transaction = indexedDBFunctions.db.transaction(['data'], 'readwrite');
             const store = transaction.objectStore('data');
 
-            const request = store.put(lastId, 'lastId'); 
+            const request = store.put({ key: key, id: lastId });
 
             request.onsuccess = function () {
-                //console.log('Ultimo id salvo: ' + lastId);
                 resolve();
             }
 
@@ -69,22 +69,38 @@
 
     addNote: function (note) {
         return new Promise(async (resolve, reject) => {
-            let lastId = await indexedDBFunctions.getLastId();
+            let lastId = await indexedDBFunctions.getLastId('lastId');
             note.id = ++lastId;
-            console.log("Id da nota: " + note.id);
 
             const transaction = indexedDBFunctions.db.transaction(['notes'], 'readwrite');
             const store = transaction.objectStore('notes');
             const request = store.add(note);
 
             request.onsuccess = async function () {
-                await indexedDBFunctions.saveLastId(lastId);
+                await indexedDBFunctions.saveLastId(lastId, 'lastId');
                 resolve();
             };
 
             request.onerror = function () {
                 reject('Erro ao adicionar nota');
             };
+        });
+    },
+
+    updateNote: function (note) {
+        return new Promise(async (resolve, reject) => {
+            const transaction = indexedDBFunctions.db.transaction(['notes'], 'readwrite');
+            const store = transaction.objectStore('notes');
+            const request = store.put(note);
+
+            request.onsuccess = async function () {
+                resolve();
+            };
+
+            request.onerror = function () {
+                reject('Erro ao editar nota');
+            };
+
         });
     },
 
@@ -116,6 +132,75 @@
 
             request.onerror = function () {
                 reject('Erro ao ler notas');
+            };
+        });
+    },
+
+    addWorkspace: function (workspace) {
+        return new Promise(async (resolve, reject) => {
+            let lastId = await indexedDBFunctions.getLastId('lastIdWks');
+            workspace.id = ++lastId;
+
+            const transaction = indexedDBFunctions.db.transaction(['workspaces'], 'readwrite');
+            const store = transaction.objectStore('workspaces');
+            const request = store.add(workspace);
+
+            request.onsuccess = async function () {
+                await indexedDBFunctions.saveLastId(lastId, 'lastIdWks');
+                resolve();
+            };
+
+            request.onerror = function () {
+                reject('Erro ao adicionar workspace');
+            };
+        });
+    },
+
+    updateWorkspace: function (workspace) {
+        return new Promise(async (resolve, reject) => {
+            const transaction = indexedDBFunctions.db.transaction(['workspaces'], 'readwrite');
+            const store = transaction.objectStore('workspaces');
+            const request = store.put(workspace);
+
+            request.onsuccess = async function () {
+                resolve();
+            };
+
+            request.onerror = function () {
+                reject('Erro ao editar nota');
+            };
+
+        });
+    },
+
+    deleteWorkspace: function (id) {
+        return new Promise((resolve, reject) => {
+            const transaction = indexedDBFunctions.db.transaction(['workspaces'], 'readwrite');
+            const store = transaction.objectStore('workspaces');
+            const request = store.delete(id);
+
+            request.onsuccess = function () {
+                resolve();
+            };
+
+            request.onerror = function () {
+                reject('Erro ao deletar workspace');
+            };
+        });
+    },
+
+    getAllWorkspaces: function () {
+        return new Promise((resolve, reject) => {
+            const transaction = indexedDBFunctions.db.transaction(['workspaces'], 'readonly');
+            const store = transaction.objectStore('workspaces');
+            const request = store.getAll();
+
+            request.onsuccess = function (event) {
+                resolve(event.target.result);
+            };
+
+            request.onerror = function () {
+                reject('Erro ao ler workspaces');
             };
         });
     }
