@@ -59,7 +59,7 @@ body {
     padding: 0;
     border: 0;
     outline: 0;
-    position: static;
+    position: relative;
     align-items: center;
 }
     .toolbar-items .toolbar-item-left {
@@ -102,4 +102,101 @@ body {
         #create-select-buttons .icon-bootstrap-select {
             font-size: 2.2rem;
         }
-        
+
+#more-button,
+#ordenar-collapse {
+    display: none;
+}
+
+.more-menu label {
+    width: 100%;
+}
+
+.more-menu-box {
+    position: fixed;
+    background-color: var(--color-background);
+    box-shadow: 0px 0px 5px black;
+    right: 50px;
+    top: 50px;
+    border-radius: 15px;
+    justify-content: left;
+    z-index: 1000;
+}
+    .more-menu-box .more-menu {
+        user-select: none;
+    }
+        .more-menu-box .more-menu .menu-collapse-container {
+            
+        }
+            .more-menu-box .more-menu .more-menu-item {
+                display: flex;
+                justify-content: left;
+                align-items: center;
+                /*margin: 10px 0px;*/
+                padding: 10px;
+                transition: 0.3s;
+                cursor: pointer;
+                border-radius: 0 0 15px 15px;
+            }
+
+            .more-menu-box .more-menu .more-menu-item:first-of-type {
+                border-radius: 15px 15px 0px 0px;
+            }
+
+            .more-menu-box .more-menu .more-menu-item:hover {
+                background-color: black;
+            }
+                .more-menu-box .more-menu .more-menu-item .item-span {
+                    /*margin: 0px 15px;*/
+                }
+
+        .more-menu-box .more-menu .icon-more-menu {
+            padding: 0;
+            margin: 0px 15px;
+        }
+
+.item-span.order {
+    margin-right: 0px;
+}
+
+.menu-collapse-box {
+    padding: 0 10px;
+    height: 0px;
+    width: 100%;
+    transition: .1s;
+    font-size: 0px;
+    transform-style: revert-layer;
+    border-bottom: 0px solid black;
+}
+    .menu-collapse-box .menu-collapse {
+        padding: 5px;
+        text-align: left;
+        user-select: none;
+        cursor: pointer;
+        border-radius: 15px;
+    }
+        .menu-collapse-box .menu-collapse:hover {
+            background-color: black;
+        }
+
+#ordenar-collapse:checked ~ .menu-collapse-box {
+    height: 68px;
+    font-size: initial;
+    /*margin: 5px 0;*/
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+
+.item-span.order .icon-more-menu::before {
+    transition: .5s;
+}
+
+#ordenar-collapse:checked ~ .more-menu-item .item-span.order .icon-more-menu::before {
+    transform: rotateX(180deg) rotateY(180deg);
+}
+
+.more-menu-box .more-menu .more-menu-item.collapse {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}

@@ -37,12 +37,12 @@ namespace Notes.Data
 
         // CRUD Workspaces
 
-        public async Task AddWorkspace(Workspaces workspace)
+        public async Task AddWorkspace(Workspace workspace)
         {
             await _jsRuntime.InvokeVoidAsync("indexedDBFunctions.addWorkspace", workspace);
         }
 
-        public async Task UpdateWorkspace(Workspaces workspace)
+        public async Task UpdateWorkspace(Workspace workspace)
         {
             await _jsRuntime.InvokeVoidAsync("indexedDBFunctions.updateWorkspace", workspace);
         }
@@ -52,9 +52,9 @@ namespace Notes.Data
             await _jsRuntime.InvokeVoidAsync("indexedDBFunctions.deleteWorkspace", id);
         }
 
-        public async Task<List<Workspaces>> GetAllWorkspaces()
+        public async Task<List<Workspace>> GetAllWorkspaces()
         {
-            return await _jsRuntime.InvokeAsync<List<Workspaces>>("indexedDBFunctions.getAllWorkspaces");
+            return await _jsRuntime.InvokeAsync<List<Workspace>>("indexedDBFunctions.getAllWorkspaces");
         }
 
     }

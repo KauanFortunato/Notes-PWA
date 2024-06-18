@@ -31,42 +31,58 @@
     overflow: auto;
     margin-bottom: 40px;
 }
-    .all-notes-section .all-notes {
-        display: grid;
-        gap: 40px;
-        grid-template-columns: 35% 35%;
-        align-items: start;
+    .all-notes-box {
         margin-left: 45px;
-        max-width: 1474.2px;
     }
-        .all-notes-section .all-notes .note-card {
-            background-color: white;
-            padding: 20px;
-            color: black;
-            border-radius: 30px;
-            position: relative;
+    .all-notes-box .date-create {
+        margin-top: 15px;
+        margin-bottom: 10px;
+        font-size: 26px;
+    }
+        .all-notes-section .all-notes {
+            display: grid;
+            gap: 40px;
+            grid-template-columns: 35% 35%;
+            align-items: start;
+            max-width: 1474.2px;
         }
-            .all-notes-section .all-notes .note-card .card-title {
-                font-size: 21px;
-                font-weight: 600;
+            .all-notes-section .all-notes .note-card {
+                background-color: white;
+                padding: 20px;
+                color: black;
+                border-radius: 30px;
+                position: relative;
             }
-
-            .all-notes-section .all-notes .note-card .card-content {
-                
-                
-            }
-                .all-notes-section .all-notes .note-card .card-content p {
-                    margin: 0;
-                    font-size: 16px;
+                .all-notes-section .all-notes .note-card .card-title {
+                    font-size: 21px;
+                    font-weight: 600;
                 }
+
+                .all-notes-section .all-notes .note-card .card-content {
+                
+                
+                }
+                    .all-notes-section .all-notes .note-card .card-content p {
+                        margin: 0;
+                        font-size: 16px;
+                    }
+        .all-notes-section .all-notes .note-card .note-tools-box .note-tools {
+            padding: 5px;
+        }
+        .all-notes-section .all-notes .note-card .note-tools-box .note-tools .navbar-toggler {
+            margin: 0;
+        }
+        
 .icon-bootstrap.small {
-    font-size: 0.9rem;
+    font-size: 1rem;
     padding: 8px;
     border-radius: 50%;
 }
 
 .note-tools-box {
     opacity: 0;
+    transform-origin: right;
+    transform: scale(0.1);
     position: absolute;
     top: 0.4px;
     right: 13px;
@@ -78,4 +94,6 @@
 
 .all-notes-section .all-notes .note-card:hover .note-tools-box {
     opacity: 1;
+    transform: scale(1);
 }
+

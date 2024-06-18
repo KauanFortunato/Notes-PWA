@@ -24,9 +24,43 @@
                     <button class="navbar-toggler" type="button">
                         <span class="bi bi-grid-fill icon-bootstrap"></span>
                     </button>
+
                     <button class="navbar-toggler" type="button">
-                        <span class="bi bi-three-dots-vertical icon-bootstrap"></span>
+                        <label for="more-button">
+                            <span class="bi bi-three-dots-vertical icon-bootstrap"></span>
+                        </label>
                     </button>
+                    <input id="more-button" name="more-button" type="checkbox" />
+                </div>
+                
+                <div class="more-menu-box">
+                    <div class="more-menu">
+                        <div class="menu-collapse-container">
+
+                            <input id="ordenar-collapse" name="ordenar-collapse" type="checkbox" />
+                            <label for="ordenar-collapse" class="more-menu-item">
+                                <span class="bi bi-arrow-down-up icon-more-menu"></span>
+                                <span class="item-span order">Ordenar<span class="bi bi-caret-down-fill icon-more-menu"></span></span>
+                            </label>
+
+                            <div class="menu-collapse-box">
+                                <div class="menu-collapse"> @*Colocar para filtrar da forma correta*@
+                                    <span class="bi bi-calendar-event icon-more-menu"></span>
+                                    <span>Por data</span>
+                                </div>
+                                <div class="menu-collapse">
+                                    <span class="bi bi-fonts icon-more-menu"></span>
+                                    <span>Por titulo</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <span class="separation"></span>
+                        <div class="more-menu-item">
+                            <span class="bi bi-gear icon-more-menu"></span>
+                            <span class="item-span">Configuração</span>
+                        </div>
+                    </div>
                 </div>
             </nav>
         </section>
@@ -39,6 +73,7 @@
                     <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Workspaces</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
+
                 <div class="offcanvas-body">
                     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                         <li class="nav-item">
@@ -85,8 +120,8 @@
 @code
 {
     private string novoWorkspaceTitulo;
-    private List<Workspaces> workspaces = new List<Workspaces>();
-    private Workspaces workspaceSelecionado = null;
+    private List<Workspace> workspaces = new List<Workspace>();
+    private Workspace workspaceSelecionado = null;
     private bool mostrarEditInterface = false;
 
     protected override async Task OnInitializedAsync()
@@ -109,7 +144,7 @@
         EditarInterfaceEsconder();
     }
 
-    private void EditarInterfaceMostrar(Workspaces workspace)
+    private void EditarInterfaceMostrar(Workspace workspace)
     {
         workspaceSelecionado = workspace;
         mostrarEditInterface = true;
