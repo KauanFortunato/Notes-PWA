@@ -6,7 +6,7 @@
         private string createDate;
         public Note()
         {
-            today = DateTime.Today.AddMonths(-1);
+            today = DateTime.Today;
             createDate = today.ToString("dd-MM-yyyy");
         }
         public int Id { get; set; }

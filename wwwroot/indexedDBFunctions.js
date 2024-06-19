@@ -69,6 +69,7 @@
 
     addNote: function (note) {
         return new Promise(async (resolve, reject) => {
+            console.log(note.createDate);
             let lastId = await indexedDBFunctions.getLastId('lastId');
             note.id = ++lastId;
 

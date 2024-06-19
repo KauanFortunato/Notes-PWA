@@ -57,5 +57,28 @@ namespace Notes.Data
             return await _jsRuntime.InvokeAsync<List<Workspace>>("indexedDBFunctions.getAllWorkspaces");
         }
 
+        // Local Storage
+
+        public async Task SetLocalStorageItem(string key, string value)
+        {
+            await _jsRuntime.InvokeVoidAsync("localStorageFunctions.setItem", key, value);
+            
+        }
+
+        public async Task<string> GetLocalStorageItem(string key)
+        {
+            Console.WriteLine("Local Storage:" + key);
+            return await _jsRuntime.InvokeAsync<string>("localStorageFunctions.getItem", key);
+        }
+
+        public async Task RemoveLocalStorageItem(string key)
+        {
+            await _jsRuntime.InvokeVoidAsync("localStorageFunctions.removeItem", key);
+        }
+
+        public async Task ClearLocalStorage()
+        {
+            await _jsRuntime.InvokeVoidAsync("localStorageFunctions.clearStorage");
+        }
     }
 }

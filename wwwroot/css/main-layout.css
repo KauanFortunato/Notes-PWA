@@ -121,6 +121,11 @@ body {
     border-radius: 15px;
     justify-content: left;
     z-index: 1000;
+
+    transition: .1s;
+    transform: scale(0);
+    transform-origin: top right;
+    visibility: hidden;
 }
     .more-menu-box .more-menu {
         user-select: none;
@@ -159,6 +164,12 @@ body {
     margin-right: 0px;
 }
 
+#more-button:checked ~ .more-menu-box {
+    visibility: visible;
+    display: block;
+    transform: scale(1.2);
+}
+
 .menu-collapse-box {
     padding: 0 10px;
     height: 0px;
@@ -167,24 +178,31 @@ body {
     font-size: 0px;
     transform-style: revert-layer;
     border-bottom: 0px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
     .menu-collapse-box .menu-collapse {
-        padding: 5px;
         text-align: left;
         user-select: none;
         cursor: pointer;
         border-radius: 15px;
+
     }
         .menu-collapse-box .menu-collapse:hover {
             background-color: black;
         }
 
 #ordenar-collapse:checked ~ .menu-collapse-box {
-    height: 68px;
+    height: 75px;
     font-size: initial;
     /*margin: 5px 0;*/
     border-top: 2px solid black;
     border-bottom: 2px solid black;
+}
+
+#ordenar-collapse:checked ~ .menu-collapse-box .menu-collapse{
+    padding: 5px;
 }
 
 .item-span.order .icon-more-menu::before {

@@ -1,0 +1,241 @@
+﻿@page "/"
+@using Notes.Data
+@using System.Linq
+@inject Data.NoteService NoteService
+@inject Pages.Services.AppData AppData
+
+<PageTitle>Notes</PageTitle>
+
+@if (mostrarEditInterface)
+{
+    <div class="edit-interface overlay">
+        <div class="edit-interface-content">
+            <h3>Editar Nota</h3>
+            <div>
+                <label for="title">Titulo:</label>
+                <input id="title" @bind="notaSelecionada.Title" />
+            </div>
+            <div>
+                <label for="content">Conteudo:</label>
+                <textarea id="content" @bind="notaSelecionada.Content"></textarea>
+            </div>
+            <button @onclick="SalvarEdicao" type="button" class="btn btn-primary">Salvar</button>
+            <button @onclick="EsconderInterfaceDeEdicao" type="button" class="btn btn-secondary">Cancelar</button>
+        </div>
+    </div>
+}
+
+<section class="all-notes-section">
+    <div class="all-notes-box">
+        @if (tipoDeAgrupamento == "data")
+        {
+            @foreach (var grupo in notasAgrupadasData)
+            {
+                <h1 class="date-create">
+                    <span>
+                        @if (grupo.Key.Date == DateTime.Today)
+                        {
+                            @("Hoje")
+                        }
+                        else if (grupo.Key.Date == DateTime.Today.AddDays(-1))
+                        {
+                            @("Ontem")
+                        }
+                        else if (grupo.Key.Year != DateTime.Today.Year)
+                        {
+                            @grupo.Key.ToString("yyyy")
+                        }
+                        else
+                        {
+                            @($"{grupo.Key:dd} de {grupo.Key:MMMM}")
+                        }
+                    </span>
+                </h1>
+
+                <div class="all-notes">
+                    @foreach (var note in grupo)
+                    {
+                        <div class="note-card">
+                            <div class="note-tools-box">
+                                <div class="note-tools">
+                                    <button @onclick="() => MostrarInterfaceDeEdicao(note)" class="navbar-toggler" type="button">
+                                        <span class="bi bi-pencil icon-bootstrap small"></span>
+                                    </button>
+                                    <button @onclick="() => ExcluirNota(note.Id)" class="navbar-toggler" type="button">
+                                        <span class="bi bi-trash3 icon-bootstrap small"></span>
+                                    </button>
+                                    <button class="navbar-toggler" type="button">
+                                        <span class="bi bi-three-dots-vertical icon-bootstrap small"></span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <h2 class="card-title">
+                                <span>@note.Title</span>
+                            </h2>
+                            <div class="card-content">
+                                <p>
+                                    @note.Content
+                                </p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        }
+        else
+        {
+            <div class="all-notes">
+                @foreach (var note in notasAgrupadasTitulo)
+                {
+                    <div class="note-card">
+                        <div class="note-tools-box">
+                            <div class="note-tools">
+                                <button @onclick="() => MostrarInterfaceDeEdicao(note)" class="navbar-toggler" type="button">
+                                    <span class="bi bi-pencil icon-bootstrap small"></span>
+                                </button>
+                                <button @onclick="() => ExcluirNota(note.Id)" class="navbar-toggler" type="button">
+                                    <span class="bi bi-trash3 icon-bootstrap small"></span>
+                                </button>
+                                <button class="navbar-toggler" type="button">
+                                    <span class="bi bi-three-dots-vertical icon-bootstrap small"></span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <h2 class="card-title">
+                            <span>@note.Title</span>
+                        </h2>
+                        <div class="card-content">
+                            <p>
+                                @note.Content
+                            </p>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</section>
+
+
+<input @bind="novaNotaTitulo" placeholder="Título da nota..." />
+<input @bind="novaNotaConteudo" placeholder="Conteúdo da nota..." />
+<button @onclick="AdicionarNota" type="button" class="btn btn-primary">Adicionar Nota</button>
+
+<input @bind="novoWorkspaceTitulo" placeholder="Título da nota..." />
+<button @onclick="AdicionarWorkspace" type="button" class="btn btn-primary">Adicionar Workspace</button>
+
+@code {
+    private string novaNotaTitulo;
+    private string novaNotaConteudo;
+    private string novoWorkspaceTitulo;
+
+    private string tipoDeAgrupamento;
+
+    private bool mostrarEditInterface = false;
+    private Note notaSelecionada = null;
+
+    private List<IGrouping<DateTime, Note>> notasAgrupadasData = new();
+    private List<Note> notasAgrupadasTitulo = new();
+
+    private List<Note> notas = new List<Note>();
+    private List<Workspace> workspaces = new List<Workspace>(); 
+
+    protected override async Task OnInitializedAsync()
+    {
+        await AtualizarNotasAsync();
+        await AtualizarWorkspacesAsync();
+        AppData.OnChange += AppDataAlterado; 
+    }
+
+    private async Task Test()
+    {
+        AppData.TipoDeAgrupamento = "teste";
+    }
+
+    private async void AppDataAlterado()
+    {
+        await AtualizarNotasAsync();
+        StateHasChanged();
+    }
+
+    private async Task AdicionarNota()
+    {
+        var note = new Note { Title = novaNotaTitulo, Content = novaNotaConteudo, WorkspaceId = 0 }; // Mudar workspaceId
+        await NoteService.AddNoteAsync(note);
+        await AtualizarNotasAsync();
+        novaNotaTitulo = string.Empty;
+        novaNotaConteudo = string.Empty;
+    }
+
+    private async Task ExcluirNota(int id)
+    {
+        await NoteService.DeleteNoteAsync(id);
+        await AtualizarNotasAsync();
+    }
+
+    private async Task SalvarEdicao()
+    {
+        await NoteService.UpdateNoteAsync(notaSelecionada);
+        await AtualizarNotasAsync();
+        await EsconderInterfaceDeEdicao();
+
+    }
+
+    private void MostrarInterfaceDeEdicao(Note note)
+    {
+        notaSelecionada = note;
+        mostrarEditInterface = true;
+    }
+
+    private async Task EsconderInterfaceDeEdicao()
+    {
+        mostrarEditInterface = false;
+        notaSelecionada = null;
+
+        await AtualizarNotasAsync();
+    }
+
+    private async Task AtualizarNotasAsync()
+    {
+        notas = await NoteService.GetAllNotesAsync();
+        await AgruparNotas();
+    }
+
+    private async Task AtualizarWorkspacesAsync()
+    {
+        workspaces = await NoteService.GetAllWorkspaces();
+    }
+
+    private async Task AdicionarWorkspace()
+    {
+        var workspace = new Workspace { Name = novoWorkspaceTitulo};
+        await NoteService.AddWorkspace(workspace);
+        workspaces = await NoteService.GetAllWorkspaces();
+        novoWorkspaceTitulo = string.Empty;
+    }
+
+    private async Task AgruparNotas()
+    {
+        tipoDeAgrupamento = await NoteService.GetLocalStorageItem("orderType");
+        Console.WriteLine("Tipo de agrupamento local:" + tipoDeAgrupamento);
+
+        if (tipoDeAgrupamento == "data")
+        {
+            notasAgrupadasData = notas.OrderByDescending(note => note.CreateDateDateTime())
+                                      .GroupBy(note => note.CreateDateDateTime().Date)
+                                      .ToList();
+        }
+        else
+        {
+            notasAgrupadasTitulo = notas.OrderBy(note => note.Title).ToList();
+        }
+        
+    }
+
+    public void Dispose()
+    {
+        AppData.OnChange -= AppDataAlterado;
+    }
+}

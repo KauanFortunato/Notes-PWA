@@ -1,6 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @using Notes.Data
 @inject Data.NoteService NoteService
+@inject Pages.Services.AppData AppData
 
 <header>
     <div class="top-bar-box">
@@ -20,23 +21,20 @@
                     <span class="tool-bar-tile-text">Workspace</span>
                 </h1>
 
+                <input id="more-button" name="more-button" type="checkbox" />
                 <div class="toolbar-item-right">
                     <button class="navbar-toggler" type="button">
                         <span class="bi bi-grid-fill icon-bootstrap"></span>
                     </button>
 
-                    <button class="navbar-toggler" type="button">
-                        <label for="more-button">
-                            <span class="bi bi-three-dots-vertical icon-bootstrap"></span>
-                        </label>
-                    </button>
-                    <input id="more-button" name="more-button" type="checkbox" />
+                    <label for="more-button">
+                        <span class="bi bi-three-dots-vertical icon-bootstrap"></span>
+                    </label>
                 </div>
                 
                 <div class="more-menu-box">
                     <div class="more-menu">
                         <div class="menu-collapse-container">
-
                             <input id="ordenar-collapse" name="ordenar-collapse" type="checkbox" />
                             <label for="ordenar-collapse" class="more-menu-item">
                                 <span class="bi bi-arrow-down-up icon-more-menu"></span>
@@ -44,11 +42,11 @@
                             </label>
 
                             <div class="menu-collapse-box">
-                                <div class="menu-collapse"> @*Colocar para filtrar da forma correta*@
+                                <div class="menu-collapse" @onclick='() => AppData.MudarTipoDeAgrupamento("data")'>
                                     <span class="bi bi-calendar-event icon-more-menu"></span>
                                     <span>Por data</span>
                                 </div>
-                                <div class="menu-collapse">
+                                <div class="menu-collapse" @onclick='() => AppData.MudarTipoDeAgrupamento("titulo")'>
                                     <span class="bi bi-fonts icon-more-menu"></span>
                                     <span>Por titulo</span>
                                 </div>
@@ -79,8 +77,8 @@
                         <li class="nav-item">
                             @foreach (var workspace in workspaces)
                             {
-                                <a class="nav-link active" aria-current="page" href="/@workspace.Id">@workspace.Name</a>
-                                <button @onclick="() => EditarInterfaceMostrar(workspace)" type="button" class="btn btn-outline-warning button-edit">Editar</button>
+                                <a class="nav-link active" aria-current="page" href="/workspace/@workspace.Id">@workspace.Name</a>
+                                <button @onclick="() => MostrarInterfaceDeEdicao(workspace)" type="button" class="btn btn-outline-warning button-edit">Editar</button>
                             }
                         </li>
                     </ul>
@@ -89,21 +87,6 @@
         </div>
     </nav>
 </header>
-
-@if (mostrarEditInterface)
-{
-    <div class="edit-interface overlay">
-        <div class="edit-interface-content">
-            <h3>Editar Nota</h3>
-            <div>
-                <label for="title">Nome:</label>
-                <input id="title" @bind="workspaceSelecionado.Name" />
-            </div>
-            <button @onclick="SalvarEdicao" type="button" class="btn btn-primary">Salvar</button>
-            <button @onclick="EditarInterfaceEsconder" type="button" class="btn btn-secondary">Cancelar</button>
-        </div>
-    </div>
-}
 
 @Body
     
@@ -119,41 +102,37 @@
 
 @code
 {
-    private string novoWorkspaceTitulo;
     private List<Workspace> workspaces = new List<Workspace>();
     private Workspace workspaceSelecionado = null;
     private bool mostrarEditInterface = false;
 
     protected override async Task OnInitializedAsync()
     {
-        workspaces = await NoteService.GetAllWorkspaces();
-    }
-
-    private async Task AdicionarWorkspace()
-    {
-        // var workspace = new Workspaces { Name = novoWorkspaceTitulo };
-        // await NoteService.AddWorkspace(workspace);
-        workspaces = await NoteService.GetAllWorkspaces();
-        novoWorkspaceTitulo = string.Empty;
+        await AtualizarWorkspacesAsync();
     }
 
     private async Task SalvarEdicao()
     {
         await NoteService.UpdateWorkspace(workspaceSelecionado);
         workspaces = await NoteService.GetAllWorkspaces();
-        EditarInterfaceEsconder();
+        EsconderInterfaceDeEdicao();
     }
 
-    private void EditarInterfaceMostrar(Workspace workspace)
+    private void MostrarInterfaceDeEdicao(Workspace workspace)
     {
         workspaceSelecionado = workspace;
         mostrarEditInterface = true;
     }
 
-    private async Task EditarInterfaceEsconder()
+    private async Task EsconderInterfaceDeEdicao()
     {
         mostrarEditInterface = false;
         workspaceSelecionado = null;
+        workspaces = await NoteService.GetAllWorkspaces();
+    }
+
+    private async Task AtualizarWorkspacesAsync()
+    {
         workspaces = await NoteService.GetAllWorkspaces();
     }
 }
