@@ -1,0 +1,118 @@
+﻿.note-on-edit {
+    z-index: 1010;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(0, 0, 0, 0.3);
+    top: 0;
+    left: 0;
+}
+
+ /*Interface de Edição*/
+
+.on-edit {
+    outline: none;
+}
+
+.all-notes-section .all-notes .note-card.on-edit {
+    padding-bottom: 10px;
+    z-index: 1040;
+}
+
+.note-card.on-edit .text-edit-options {
+    display: flex;
+    border-top: 4px solid #bebebe;
+    border-bottom: 4px solid #bebebe;
+    margin-inline: -20px;
+    padding-inline: 10px;
+    margin-top: 20px;
+}
+    .note-card.on-edit .text-edit-options button {
+        margin: 0;
+    }
+        .note-card.on-edit .text-edit-options .icon-bootstrap.small {
+            color: black;
+            padding: -5px;
+            font-size: 1.2rem;
+        }
+            .note-card.on-edit .text-edit-options .icon-bootstrap.small:hover {
+                background-color: rgb(0, 0, 0, 0.06);
+            }
+
+.edit-note-options {
+    margin-top: 4px;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+    .edit-note-options p {
+        margin: 0;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 6px;
+    }
+        .edit-note-options .cancel-edit {
+            margin-right: 10px;
+        }
+
+        .edit-note-options .confirm-edit button {
+            color: var(--color-contrast);
+            border-radius: 50%;
+            padding: 5px;
+            background-color: transparent;
+            border: none;
+            font-weight: 600;
+        }
+
+        .edit-note-options .confirm-edit button:hover{
+            background-color: rgb(0, 0, 0, 0.06);
+        }
+
+        .edit-note-options .confirm-edit button:disabled {
+            color: #bebebe;
+        }
+
+        .edit-note-options .cancel-edit p {
+            border-radius: 15px;
+        }
+
+        .edit-note-options p:hover {
+            background-color: rgb(0, 0, 0, 0.06);
+        }
+
+/* Interface de Adicionar */
+
+.add-note-container {
+    z-index: 1040;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 515.96px;
+}
+    .add-note-container .add-note-card {
+        padding: 30px;
+        background-color: white;
+        border-radius: 35px;
+        color: black;
+    }
+        .add-note-container .add-note-card .text-edit-options {
+            margin-inline: -30px;
+            padding-inline: 12px;
+            display: flex;
+            border-top: 4px solid #bebebe;
+            border-bottom: 4px solid #bebebe;
+        }
+            .add-note-container .add-note-card .text-edit-options button{
+                margin: 0;
+                margin-inline: 10px;
+            }
+
+            .add-note-container .add-note-card .text-edit-options .icon-bootstrap.small {
+                color: black;
+                font-size: 1.3rem;
+            }
+                .add-note-container .add-note-card .text-edit-options .icon-bootstrap.small:hover {
+                    background-color: rgb(0, 0, 0, 0.06);
+                }

@@ -1,5 +1,4 @@
-﻿using Notes.Data;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 
 namespace Notes.Pages.Services

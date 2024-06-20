@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @using Notes.Data
-@inject Data.NoteService NoteService
+@inject NoteService NoteService
 @inject Pages.Services.AppData AppData
 
 <header>
@@ -89,16 +89,6 @@
 </header>
 
 @Body
-    
-<div id="create-select-buttons"> 
-    <button class="navbar-toggler" type="button">
-        <span class="bi bi-check-square icon-bootstrap-select"></span>
-    </button>
-
-    <button class="navbar-toggler" type="button">
-        <span class="bi bi-plus-square icon-bootstrap-add"></span>
-    </button>
-</div>
 
 @code
 {

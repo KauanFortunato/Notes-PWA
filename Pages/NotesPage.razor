@@ -1,7 +1,7 @@
 ﻿@page "/"
 @using Notes.Data
 @using System.Linq
-@inject Data.NoteService NoteService
+@inject NoteService NoteService
 @inject Pages.Services.AppData AppData
 
 <PageTitle>Notes</PageTitle>
@@ -219,7 +219,6 @@
     private async Task AgruparNotas()
     {
         tipoDeAgrupamento = await NoteService.GetLocalStorageItem("orderType");
-        Console.WriteLine("Tipo de agrupamento local:" + tipoDeAgrupamento);
 
         if (tipoDeAgrupamento == "data")
         {

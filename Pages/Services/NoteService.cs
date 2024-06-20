@@ -1,8 +1,9 @@
 ﻿using Microsoft.JSInterop; // Permite chamadas de funções JavaScript a partir do código C#, e JavaScript para C#
+using Notes.Data;
 using System.Collections.Generic; // Manipulação e coleção de dados (listas, dicionários, conjuntos, etc.)
 using System.Threading.Tasks; // Tarefas Assíncronas
 
-namespace Notes.Data
+namespace Notes.Pages.Services
 {
     public class NoteService
     {
@@ -62,12 +63,11 @@ namespace Notes.Data
         public async Task SetLocalStorageItem(string key, string value)
         {
             await _jsRuntime.InvokeVoidAsync("localStorageFunctions.setItem", key, value);
-            
+
         }
 
         public async Task<string> GetLocalStorageItem(string key)
         {
-            Console.WriteLine("Local Storage:" + key);
             return await _jsRuntime.InvokeAsync<string>("localStorageFunctions.getItem", key);
         }
 
@@ -79,6 +79,13 @@ namespace Notes.Data
         public async Task ClearLocalStorage()
         {
             await _jsRuntime.InvokeVoidAsync("localStorageFunctions.clearStorage");
+        }
+
+        public async Task<string> GetElement(string element)
+        {
+            string script = $"document.querySelector('{element}').innerText";
+
+            return await _jsRuntime.InvokeAsync<string>("eval", script);
         }
     }
 }

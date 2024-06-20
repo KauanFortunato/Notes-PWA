@@ -3,29 +3,10 @@
 @using System.Linq
 @inject NavigationManager NavigationManager
 @inject HttpClient HttClient
-@inject Data.NoteService NoteService
+@inject NoteService NoteService
 @inject Pages.Services.AppData AppData
 
 <PageTitle>Notes</PageTitle>
-
-@if (mostrarEditInterface)
-{
-    <div class="edit-interface overlay">
-        <div class="edit-interface-content">
-            <h3>Editar Nota</h3>
-            <div>
-                <label for="title">Titulo:</label>
-                <input id="title" @bind="notaSelecionada.Title" />
-            </div>
-            <div>
-                <label for="content">Conteudo:</label>
-                <textarea id="content" @bind="notaSelecionada.Content"></textarea>
-            </div>
-            <button @onclick="SalvarEdicao" type="button" class="btn btn-primary">Salvar</button>
-            <button @onclick="EsconderInterfaceDeEdicao" type="button" class="btn btn-secondary">Cancelar</button>
-        </div>
-    </div>
-}
 
 <section class="all-notes-section">
     <div class="all-notes-box">
@@ -57,11 +38,156 @@
                 <div class="all-notes">
                     @foreach (var note in grupo)
                     {
+                        @if (mostrarEditInterface && note.Id == notaSelecionada.Id)
+                        {
+                            <div class="note-on-edit" @onclick="SalvarEdicao"></div>
+                            <div class="note-card on-edit">
+                                <h2 class="card-title on-edit" contenteditable="true" @onblur="() => AtualizarTitulo()">
+                                    @notaSelecionada.Title
+                                </h2>
+                                <div class="card-content">
+                                    <p class="on-edit" contenteditable="true" @onblur="() => AtualizarConteudo()">
+                                        @notaSelecionada.Content
+                                    </p>
+                                </div>
+
+                                <div class="text-edit-options">
+                                    <button class="navbar-toggler" type="button">
+                                        <span class="bi bi-type-bold icon-bootstrap small"></span>
+                                    </button>
+                                    <button class="navbar-toggler" type="button">
+                                        <span class="bi bi-type-italic icon-bootstrap small"></span>
+                                    </button>
+                                    <button class="navbar-toggler" type="button">
+                                        <span class="bi bi-type-strikethrough icon-bootstrap small"></span>
+                                    </button>
+                                    <button class="navbar-toggler" type="button">
+                                        <span class="bi bi-list-ul icon-bootstrap small"></span>
+                                    </button>
+                                    <button class="navbar-toggler" type="button">
+                                        <span class="bi bi-list-ol icon-bootstrap small"></span>
+                                    </button>
+                                    <button class="navbar-toggler" type="button">
+                                        <span class="bi bi-check-square icon-bootstrap small"></span>
+                                    </button>
+                                </div>
+
+                                <div class="edit-note-options">
+                                    <div class="cancel-edit">
+                                        <p @onclick="EsconderInterfaceDeEdicao">Cancelar</p>
+                                    </div>
+
+                                    <div class="confirm-edit">
+                                        <button disabled="@(string.IsNullOrEmpty(notaSelecionada.Content))" @onclick="SalvarEdicao">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="note-card">
+                                <div class="note-tools-box">
+                                    <div class="note-tools">
+                                        <button @onclick="() => MostrarInterfaceDeEdicao(note)" class="navbar-toggler" type="button">
+                                            <span class="bi bi-pencil icon-bootstrap small"></span>
+                                        </button>
+
+                                        <button @onclick="() => MostrarInterfaceTask(note)" class="navbar-toggler" type="button">
+                                            <span class="bi bi-check2-circle icon-bootstrap small"></span>
+                                        </button>
+
+                                        <button @onclick="() => ExcluirNota(note.Id)" class="navbar-toggler" type="button">
+                                            <span class="bi bi-trash3 icon-bootstrap small"></span>
+                                        </button>
+                                        <button class="navbar-toggler" type="button">
+                                            <span class="bi bi-three-dots-vertical icon-bootstrap small"></span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="card-note-content" @onclick="() => MostrarInterfaceDeEdicao(note)">
+                                    <h2 class="card-title">
+                                        <span>@note.Title</span>
+                                    </h2>
+                                    <div class="card-content">
+                                        <p>
+                                            @note.Content
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @if (mostrarTaskInterface && note.Id == notaSelecionada.Id)
+                            {
+                                <label for="dueDate">Due Date:</label>
+                                <InputDate id="dueDate" @bind-Value="notaSelecionada.Task.DeadLine" class="form-control" />  @*Salvar o ultimo id das tasks no IndexedDB, formatar data e hora antes de salvar*@
+                                <button @onclick="SalvarEdicao">OK</button>
+                            }
+                        }
+                    }
+                </div>
+            }
+        }
+        else
+        {
+            <div class="all-notes">
+                @foreach (var note in notasAgrupadasTitulo)
+                {
+                    @if (mostrarEditInterface && note.Id == notaSelecionada.Id)
+                    {
+                        <div class="note-on-edit" @onclick="SalvarEdicao"></div>
+                        <div class="note-card on-edit">
+                            <h2 class="card-title on-edit" contenteditable="true" @onblur="() => AtualizarTitulo()">
+                                @notaSelecionada.Title
+                            </h2>
+                            <div class="card-content">
+                                <p class="on-edit" contenteditable="true" @onblur="() => AtualizarConteudo()">
+                                    @notaSelecionada.Content
+                                </p>
+                            </div>
+                            
+                            <div class="text-edit-options">
+                                <button class="navbar-toggler" type="button">
+                                    <span class="bi bi-type-bold icon-bootstrap small"></span>
+                                </button>
+                                <button class="navbar-toggler" type="button">
+                                    <span class="bi bi-type-italic icon-bootstrap small"></span>
+                                </button>
+                                <button class="navbar-toggler" type="button">
+                                    <span class="bi bi-type-strikethrough icon-bootstrap small"></span>
+                                </button>
+                                <button class="navbar-toggler" type="button">
+                                    <span class="bi bi-list-ul icon-bootstrap small"></span>
+                                </button>
+                                <button class="navbar-toggler" type="button">
+                                    <span class="bi bi-list-ol icon-bootstrap small"></span>
+                                </button>
+                                <button class="navbar-toggler" type="button">
+                                    <span class="bi bi-check-square icon-bootstrap small"></span>
+                                </button>
+                            </div>
+
+                            <div class="edit-note-options">
+                                <div class="cancel-edit">
+                                    <p @onclick="EsconderInterfaceDeEdicao">Cancelar</p>
+                                </div>
+
+                                <div class="confirm-edit">
+                                    <button disabled="@(string.IsNullOrEmpty(notaSelecionada.Content))"  @onclick="SalvarEdicao">OK</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
                         <div class="note-card">
                             <div class="note-tools-box">
                                 <div class="note-tools">
                                     <button @onclick="() => MostrarInterfaceDeEdicao(note)" class="navbar-toggler" type="button">
                                         <span class="bi bi-pencil icon-bootstrap small"></span>
+                                    </button>
+                                    <button class="navbar-toggler" type="button">
+                                        <span class="bi bi-check2-circle icon-bootstrap small"></span>
                                     </button>
                                     <button @onclick="() => ExcluirNota(note.Id)" class="navbar-toggler" type="button">
                                         <span class="bi bi-trash3 icon-bootstrap small"></span>
@@ -72,61 +198,93 @@
                                 </div>
                             </div>
 
-                            <h2 class="card-title">
-                                <span>@note.Title</span>
-                            </h2>
-                            <div class="card-content">
-                                <p>
-                                    @note.Content
-                                </p>
+                            <div class="card-note-content" @onclick="() => MostrarInterfaceDeEdicao(note)">
+                                <h2 class="card-title">
+                                    <span>@note.Title</span>
+                                </h2>
+                                <div class="card-content">
+                                    <p>
+                                        @note.Content
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     }
-                </div>
-            }
-        }
-        else
-        {
-            <div class="all-notes">
-                @foreach (var note in notasAgrupadasTitulo)
-                {
-                    <div class="note-card">
-                        <div class="note-tools-box">
-                            <div class="note-tools">
-                                <button @onclick="() => MostrarInterfaceDeEdicao(note)" class="navbar-toggler" type="button">
-                                    <span class="bi bi-pencil icon-bootstrap small"></span>
-                                </button>
-                                <button @onclick="() => ExcluirNota(note.Id)" class="navbar-toggler" type="button">
-                                    <span class="bi bi-trash3 icon-bootstrap small"></span>
-                                </button>
-                                <button class="navbar-toggler" type="button">
-                                    <span class="bi bi-three-dots-vertical icon-bootstrap small"></span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <h2 class="card-title">
-                            <span>@note.Title</span>
-                        </h2>
-                        <div class="card-content">
-                            <p>
-                                @note.Content
-                            </p>
-                        </div>
-                    </div>
                 }
             </div>
         }
     </div>
 </section>
 
-<input @bind="novaNotaTitulo" placeholder="Título da nota..." />
-<input @bind="novaNotaConteudo" placeholder="Conteúdo da nota..." />
-<button @onclick="AdicionarNota" type="button" class="btn btn-primary">Adicionar Nota</button>
+@if (mostrarAddInterface)
+{
+    <div class="note-on-edit"></div>
 
-<input @bind="novoWorkspaceTitulo" placeholder="Título da nota..." />
+    <div class="add-note-container">
+        <div class="add-note-card">
+            <h2 class="note-title" contenteditable="true" @onblur="() => AtualizarTituloNovaNota()">
+            </h2>
+
+            <div class="note-content">
+                <p class="note-content content" contenteditable="true" @onblur="() => AtualizarConteudoNovaNota()">
+                    
+                </p>
+            </div>
+
+            <div class="text-edit-options">
+                <button class="navbar-toggler" type="button">
+                    <span class="bi bi-type-bold icon-bootstrap small"></span>
+                </button>
+                <button class="navbar-toggler" type="button">
+                    <span class="bi bi-type-italic icon-bootstrap small"></span>
+                </button>
+                <button class="navbar-toggler" type="button">
+                    <span class="bi bi-type-strikethrough icon-bootstrap small"></span>
+                </button>
+                <button class="navbar-toggler" type="button">
+                    <span class="bi bi-list-ul icon-bootstrap small"></span>
+                </button>
+                <button class="navbar-toggler" type="button">
+                    <span class="bi bi-list-ol icon-bootstrap small"></span>
+                </button>
+                <button class="navbar-toggler" type="button">
+                    <span class="bi bi-check-square icon-bootstrap small"></span>
+                </button>
+            </div>
+
+            <div class=""> @* Adicionar funcionalidade de Task *@
+                <span class="bi bi-check2-circle"></span>
+                <label>Adicionar Task</label>
+            </div>
+
+            <div class="edit-note-options">
+                <div class="cancel-edit" @onclick="EsconderInterfaceAdicionar">
+                    <p>Cancelar</p>
+                </div>
+
+                <div class="confirm-edit">
+                    <button disabled="@(string.IsNullOrEmpty(novaNotaConteudo))" @onclick="AdicionarNota">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div id="create-select-buttons">
+    <button class="navbar-toggler" type="button">
+        <span class="bi bi-check-square icon-bootstrap-select"></span>
+    </button>
+
+    <button class="navbar-toggler" type="button" @onclick="MostrarInterfaceAdicionar">
+        <span class="bi bi-plus-square icon-bootstrap-add"></span>
+    </button>
+</div>
+
+
+
+@* <input @bind="novoWorkspaceTitulo" placeholder="Título da nota..." />
 <button @onclick="AdicionarWorkspace" type="button" class="btn btn-primary">Adicionar Workspace</button>
-
+ *@
 
 @code {
     [Parameter]
@@ -139,6 +297,9 @@
     private string tipoDeAgrupamento;
 
     private bool mostrarEditInterface = false;
+    private bool mostrarTaskInterface = false;
+    private bool mostrarAddInterface = false;
+
     private Note notaSelecionada = null;
 
     private List<IGrouping<DateTime, Note>> notasAgrupadasData = new();
@@ -160,11 +321,7 @@
         await AtualizarWorkspacesAsync();
     }
 
-    private async Task Test()
-    {
-        AppData.TipoDeAgrupamento = "teste";
-    }
-
+    #region Notas CRUD
     private async void AppDataAlterado()
     {
         await AtualizarNotasAsync();
@@ -173,7 +330,18 @@
 
     private async Task AdicionarNota()
     {
-        var note = new Note { Title = novaNotaTitulo, Content = novaNotaConteudo, WorkspaceId = WorkpaceIdPage }; // Mudar workspaceId
+        await EsconderInterfaceAdicionar();
+
+        var note = new Note { 
+            Title = novaNotaTitulo, 
+            Content = novaNotaConteudo, 
+            WorkspaceId = WorkpaceIdPage,
+
+           @*Task = new TaskNote {
+                DeadLine = deadLineTask             Quando for adicionar as notas lembrar de colocar a data
+            }*@
+        };
+
         await NoteService.AddNoteAsync(note);
         await AtualizarNotasAsync();
         novaNotaTitulo = string.Empty;
@@ -186,12 +354,62 @@
         await AtualizarNotasAsync();
     }
 
+    private async Task AtualizarNotasAsync()
+    {
+        notas = await NoteService.GetAllNotesAsync();
+        await AgruparNotas();
+    }
+
+    private async Task AgruparNotas()
+    {
+        tipoDeAgrupamento = await NoteService.GetLocalStorageItem("orderType");
+        Console.WriteLine("Tipo de agrupamento local:" + tipoDeAgrupamento);
+
+        if (tipoDeAgrupamento == "data")
+        {
+            notasAgrupadasData = notas.Where(note => note.WorkspaceId == WorkpaceIdPage)
+                                      .OrderByDescending(note => note.CreateDateDateTime())
+                                      .GroupBy(note => note.CreateDateDateTime().Date)
+                                      .ToList();
+        }
+        else
+        {
+            notasAgrupadasTitulo = notas.Where(note => note.WorkspaceId == WorkpaceIdPage)
+                                        .OrderBy(note => note.Title).ToList();
+        }
+
+    }
+
+    private async Task MostrarInterfaceAdicionar()
+    {
+        mostrarAddInterface = true;
+    }
+
+    private async Task EsconderInterfaceAdicionar()
+    {
+        mostrarAddInterface = false;
+    }
+
+    private async Task AtualizarTituloNovaNota()
+    {
+        var element = await NoteService.GetElement(".note-title");
+        novaNotaTitulo = element;
+    }
+
+    private async Task AtualizarConteudoNovaNota()
+    {
+        var element = await NoteService.GetElement(".note-content.content");
+        novaNotaConteudo = element;
+    }
+    #endregion
+
+    #region Edição
     private async Task SalvarEdicao()
     {
         await NoteService.UpdateNoteAsync(notaSelecionada);
+        
         await AtualizarNotasAsync();
         await EsconderInterfaceDeEdicao();
-
     }
 
     private void MostrarInterfaceDeEdicao(Note note)
@@ -208,12 +426,34 @@
         await AtualizarNotasAsync();
     }
 
-    private async Task AtualizarNotasAsync()
+    private void MostrarInterfaceTask(Note note)
     {
-        notas = await NoteService.GetAllNotesAsync();
-        await AgruparNotas();
+        notaSelecionada = note;
+        mostrarTaskInterface = true;
     }
 
+    private async Task EsconderInterfaceTask()
+    {
+        mostrarTaskInterface = false;
+        notaSelecionada = null;
+
+        await AtualizarNotasAsync();
+    }
+
+    private async Task AtualizarTitulo()
+    {
+        var element = await NoteService.GetElement(".card-title.on-edit");
+        notaSelecionada.Title = element;
+    }
+
+    private async Task AtualizarConteudo()
+    {
+        var element = await NoteService.GetElement(".card-content .on-edit");
+        notaSelecionada.Content = element;
+    }
+    #endregion
+
+    #region Workspace
     private async Task AtualizarWorkspacesAsync()
     {
         workspaces = await NoteService.GetAllWorkspaces();
@@ -226,25 +466,7 @@
         workspaces = await NoteService.GetAllWorkspaces();
         novoWorkspaceTitulo = string.Empty;
     }
-
-    private async Task AgruparNotas()
-    {
-        tipoDeAgrupamento = await NoteService.GetLocalStorageItem("orderType");
-        Console.WriteLine("Tipo de agrupamento local:" + tipoDeAgrupamento);
-
-        if (tipoDeAgrupamento == "data")
-        {
-            notasAgrupadasData = notasAgrupadasData = notas.Where(note => note.WorkspaceId == WorkpaceIdPage)
-                                      .OrderByDescending(note => note.CreateDateDateTime())
-                                      .GroupBy(note => note.CreateDateDateTime().Date)
-                                      .ToList();
-        }
-        else
-        {
-            notasAgrupadasTitulo = notas.OrderBy(note => note.Title).ToList();
-        }
-
-    }
+    #endregion
 
     public void Dispose()
     {
