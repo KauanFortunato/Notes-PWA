@@ -3,12 +3,119 @@
     position: fixed;
     width: 100vw;
     height: 100vh;
-    background-color: rgb(0, 0, 0, 0.3);
+    background-color: rgb(0, 0, 0, 0.5);
     top: 0;
     left: 0;
 }
 
- /*Interface de Edição*/
+/* Checkbox */
+
+.checkbox-wrapper-15 .cbx {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+}
+
+    .checkbox-wrapper-15 .cbx span {
+        display: inline-block;
+        vertical-align: middle;
+        transform: translate3d(0, 0, 0);
+    }
+
+        .checkbox-wrapper-15 .cbx span:first-child {
+            position: relative;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            transform: scale(1);
+            vertical-align: middle;
+            border: 1px solid #B9B8C3;
+            transition: all 0.2s ease;
+        }
+
+            .checkbox-wrapper-15 .cbx span:first-child svg {
+                position: absolute;
+                z-index: 1;
+                top: 8px;
+                left: 6px;
+                fill: none;
+                stroke: white;
+                stroke-width: 2;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                stroke-dasharray: 16px;
+                stroke-dashoffset: 16px;
+                transition: all 0.3s ease;
+                transition-delay: 0.1s;
+                transform: translate3d(0, 0, 0);
+            }
+
+            .checkbox-wrapper-15 .cbx span:first-child:before {
+                content: "";
+                width: 100%;
+                height: 100%;
+                background: #506EEC;
+                display: block;
+                transform: scale(0);
+                opacity: 1;
+                border-radius: 50%;
+                transition-delay: 0.2s;
+            }
+
+        .checkbox-wrapper-15 .cbx span:last-child {
+            margin-left: 8px;
+        }
+
+            .checkbox-wrapper-15 .cbx span:last-child:after {
+                content: "";
+                position: absolute;
+                top: 12px;
+                left: 0;
+                height: 1px;
+                width: 100%;
+                background: #B9B8C3;
+                transform-origin: 0 0;
+                transform: scaleX(0);
+            }
+
+    .checkbox-wrapper-15 .cbx:hover span:first-child {
+        border-color: #3c53c7;
+    }
+
+.checkbox-wrapper-15 .inp-cbx:checked + .cbx span:first-child {
+    border-color: #3c53c7;
+    background: #3c53c7;
+    animation: check-15 0.6s ease;
+}
+
+    .checkbox-wrapper-15 .inp-cbx:checked + .cbx span:first-child svg {
+        stroke-dashoffset: 0;
+    }
+
+    .checkbox-wrapper-15 .inp-cbx:checked + .cbx span:first-child:before {
+        transform: scale(2.2);
+        opacity: 0;
+        transition: all 0.6s ease;
+    }
+
+.checkbox-wrapper-15 .inp-cbx:checked + .cbx span:last-child {
+    color: #B9B8C3;
+    transition: all 0.3s ease;
+}
+
+    .checkbox-wrapper-15 .inp-cbx:checked + .cbx span:last-child:after {
+        transform: scaleX(1);
+        transition: all 0.3s ease;
+    }
+
+@keyframes check-15 {
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+/*Interface de Edição*/
 
 .on-edit {
     outline: none;
@@ -115,4 +222,127 @@
             }
                 .add-note-container .add-note-card .text-edit-options .icon-bootstrap.small:hover {
                     background-color: rgb(0, 0, 0, 0.06);
+                }
+
+.add-task-collapse .checkbox-wrapper-15{
+    margin: 10px 0px;
+}
+
+.add-task-collapse .task-dateTime {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+
+}
+    .add-task-collapse .task-dateTime #deadLine-day,
+    .add-task-collapse .task-dateTime #deadLine-hour {
+        border: 2px solid #bebebe;
+        padding: 5px 8px;
+        border-radius: 20px;
+        outline-color: var(--color-contrast);
+        cursor: pointer;
+        transition: .2s;
+    }
+
+    .add-task-collapse .task-dateTime #deadLine-day:hover,
+    .add-task-collapse .task-dateTime #deadLine-hour:hover {
+        border-color: var(--color-contrast);
+    }
+
+    .add-task-collapse .task-dateTime #deadLine-day {
+        width: 55%;
+    }
+
+    .add-task-collapse .task-dateTime #deadLine-hour {
+        width: 40%;
+    }
+
+.add-note-container .task-dateTime {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.inp-cbx:checked + label + .task-dateTime {
+    max-height: 100px;
+}
+
+/* Interface add Task */
+.add-task-container {
+    z-index: 1040;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 500.96px;
+}
+    .add-task-container .add-task-card {
+        padding: 10px 30px;
+        background-color: white;
+        border-radius: 35px;
+        color: black;
+    }
+
+    .add-task-container .add-task-card .titulo-card {
+        margin-inline: -30px;
+        padding: 15px 30px;
+        border-bottom: 1px solid #bebebe;
+    }
+        .add-task-container .add-task-card .titulo-card h3 {
+            font-size: 20px;
+            margin: 0;
+        }
+
+        .add-task-container .add-task-card .task-dateTime {
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+        }
+            .add-task-container .add-task-card .task-dateTime #deadLine-day {
+                border: 2px solid #bebebe;
+                padding: 10px;
+                width: 90%;
+                margin-bottom: 20px;
+                border-radius: 20px;
+                outline-color: var(--color-contrast);
+                cursor: pointer;
+            }
+
+            .add-task-container .add-task-card .task-dateTime #deadLine-hour {
+                border: 2px solid #bebebe;
+                padding: 10px;
+                width: 60%;
+                margin-bottom: 20px;
+                border-radius: 20px;
+                outline-color: var(--color-contrast);
+                cursor: pointer;
+            }
+
+
+        .add-task-container .add-task-card .add-task-options {
+            display: flex;
+            justify-content: right;
+        }
+            .add-task-container .add-task-card .add-task-options button {
+                background-color: transparent;
+                border: none;
+                padding: 0;
+                margin-top: 10px;
+                font-weight: 600;
+                padding: 10px;
+                border-radius: 20px;
+                color: var(--color-contrast);
+            }
+
+                .add-task-container .add-task-card .add-task-options button:hover {
+                    background-color: rgb(0, 0, 0, 0.06);
+                }
+
+                .add-task-container .add-task-card .add-task-options button:first-of-type {
+                    color: rgb(215, 50, 50);
+                }
+
+                .add-task-container .add-task-card .add-task-options button:last-of-type {
+                    border-radius: 50%;
                 }

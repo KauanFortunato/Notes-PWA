@@ -1,0 +1,75 @@
+﻿@using Notes.Data
+@inject NoteService NoteService
+
+@code {
+    private async Task AtualizarTitulo()
+    {
+        var element = await NoteService.GetElement(".card-title.on-edit");
+        NotaSelecionada.Title = element;
+    }
+
+    private async Task AtualizarConteudo()
+    {
+        var element = await NoteService.GetElement(".card-content .on-edit");
+        NotaSelecionada.Content = element;
+    }
+}
+
+
+<div class="note-card on-edit">
+    <h2 class="card-title on-edit" contenteditable="true" @onblur="() => AtualizarTitulo()">
+        @NotaSelecionada.Title
+    </h2>
+    <div class="card-content">
+        <p class="on-edit" contenteditable="true" @onblur="() => AtualizarConteudo()">
+            @NotaSelecionada.Content
+        </p>
+    </div>
+
+    <div class="text-edit-options">
+        <button class="navbar-toggler" type="button">
+            <span class="bi bi-type-bold icon-bootstrap small"></span>
+        </button>
+        <button class="navbar-toggler" type="button">
+            <span class="bi bi-type-italic icon-bootstrap small"></span>
+        </button>
+        <button class="navbar-toggler" type="button">
+            <span class="bi bi-type-strikethrough icon-bootstrap small"></span>
+        </button>
+        <button class="navbar-toggler" type="button">
+            <span class="bi bi-list-ul icon-bootstrap small"></span>
+        </button>
+        <button class="navbar-toggler" type="button">
+            <span class="bi bi-list-ol icon-bootstrap small"></span>
+        </button>
+        <button class="navbar-toggler" type="button">
+            <span class="bi bi-check-square icon-bootstrap small"></span>
+        </button>
+    </div>
+
+    <div class="edit-note-options">
+        <div class="cancel-edit">
+            <p @onclick="HandleCancel">Cancelar</p>
+        </div>
+
+        <div class="confirm-edit">
+            <button disabled="@(string.IsNullOrEmpty(NotaSelecionada.Content))" @onclick="HandleSave">OK</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public Note NotaSelecionada { get; set; } = new Note();
+    [Parameter] public EventCallback OnSave { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+
+    private async Task HandleSave()
+    {
+        await OnSave.InvokeAsync();
+    }
+
+    private async Task HandleCancel()
+    {
+        await OnCancel.InvokeAsync();
+    }
+}

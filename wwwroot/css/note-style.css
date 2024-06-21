@@ -42,6 +42,7 @@
         .all-notes-section .all-notes {
             display: grid;
             gap: 40px;
+            margin-bottom: 25px;
             grid-template-columns: 35% 35%;
             align-items: start;
             max-width: 1474.2px;
