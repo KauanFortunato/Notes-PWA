@@ -1,4 +1,6 @@
 ﻿@using Notes.Data
+@inject NoteService NoteService
+
 
 <div class="note-card">
     <div class="note-tools-box">
@@ -18,12 +20,31 @@
         </div>
     </div>
 
-    @* @if (Note.Task.DeadLine != null)
+    @if (Note.Task.Done != null)
     {
         <div class="task-card">
-            <input type="checkbox"/>
+            <div class="checkbox-wrapper-15">
+                <input class="inp-cbx" id="cbx-15 @Note.Id" type="checkbox" style="display: none;" checked="@Note.Task.Done" @onchange="ToggleTaskDone" />
+
+                <label class="cbx" for="cbx-15 @Note.Id">
+                    <span>
+                        <svg width="12px" height="9px" viewbox="0 0 12 9">
+                            <polyline points="1 5 4 8 11 1"></polyline>
+                        </svg>
+                    </span>
+
+                    @if(Note.Task.DeadLine == null)
+                    {
+                        <span>Estou trabalhando</span>
+                    }
+                    else
+                    {
+                        <span>@($"{Note.Task.DeadLine:dd} de {Note.Task.DeadLine:MMMM}")</span>
+                    }
+                </label>
+            </div>
         </div>
-    } *@
+    }
 
     <div class="card-note-content" @onclick="() => OnEdit.InvokeAsync(Note)">
         <h2 class="card-title">
@@ -45,4 +66,18 @@
     [Parameter] public EventCallback<Note> OnTask { get; set; }
 
     [Parameter] public EventCallback<int> OnDelete { get; set; }
+
+    [Parameter] public EventCallback OnUpdate { get; set; }
+
+    private async Task ToggleTaskDone(ChangeEventArgs e)
+    {
+        Note.Task.Done = (bool)e.Value;
+        await UpdateNote();
+    }
+
+    private async Task UpdateNote()
+    {
+        await NoteService.UpdateNoteAsync(Note);
+        await OnUpdate.InvokeAsync();
+    }
 }

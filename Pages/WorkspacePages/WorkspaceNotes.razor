@@ -54,7 +54,8 @@
                                 Note="note"
                                 OnEdit="MostrarInterfaceDeEdicao"
                                 OnTask="MostrarInterfaceTask"
-                                OnDelete="ExcluirNota" />
+                                OnDelete="ExcluirNota"
+                                OnUpdate="AtualizarNotasAsync" />
 
                             @if (mostrarTaskInterface && note.Id == notaSelecionada.Id)
                             {
@@ -79,20 +80,71 @@
                         <div class="note-on-edit" @onclick="SalvarEdicao"></div>
                         <NoteEdit NotaSelecionada="notaSelecionada"
                                   OnSave="SalvarEdicao"
-                                  OnCancel="EsconderInterfaceDeEdicao" />
+                        OnCancel="EsconderInterfaceDeEdicao" />
                     }
                     else
                     {
-                        <NoteCard Note="note"
-                                  OnEdit="MostrarInterfaceDeEdicao"
-                                  OnTask="MostrarInterfaceTask"
-                                  OnDelete="ExcluirNota" />
+                        if (selecionarNotas)
+                        {
+                            <div class="select-card-box">
+                                <div class="checkbox-wrapper-46 checkbox-note-card">
+                                    <input class="inp-cbx" id="cbx-46 note-@note.Id" type="checkbox" checked="@note.IsSelected" @onchange="@(e => SelecionarNota(note, ((ChangeEventArgs)e).Value))" />
+                                    <label class="cbx" for="cbx-46 note-@note.Id">
+                                        <span>
+                                            <svg width="12px" height="10px" viewbox="0 0 12 10">
+                                                <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                            </svg>
+                                        </span>
+                                    </label>
+                                </div>
+
+                                <label for="cbx-46 note-@note.Id" class="note-card">
+                                    <div class="card-note-content">
+                                        <h2 class="card-title">
+                                            <span>@note.Title</span>
+                                        </h2>
+                                        <div class="card-content">
+                                            <p>
+                                                @note.Content
+                                            </p>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        }
+                        else
+                        {
+                            <NoteCard Note="note"
+                                      OnEdit="MostrarInterfaceDeEdicao"
+                                      OnTask="MostrarInterfaceTask"
+                                      OnDelete="ExcluirNota" />
+
+                            @if (mostrarTaskInterface && note.Id == notaSelecionada.Id)
+                            {
+                                <div class="note-on-edit"></div>
+
+                                <NoteAddTask Note="notaSelecionada"
+                                             OnSave="SalvarEdicao" />
+                            }
+                        }
                     }
                 }
             </div>
         }
     </div>
 </section>
+
+@* <div class="tools-select-container">
+    <div class="tools-select-container">
+        <button class="navbar-toggler" type="button">
+            <span class="bi bi-trash3 icon-bootstrap"></span>
+        </button>
+
+        <button class="navbar-toggler" type="button">
+            <span class="bi bi-x icon-bootstrap"></span>
+        </button>
+    </div>
+</div *@
 
 @if (mostrarAddInterface)
 {
@@ -166,7 +218,14 @@
 }
 
 <div id="create-select-buttons">
-    <button class="navbar-toggler" type="button">
+    @if (selecionarNotas)
+    {
+        <button class="navbar-toggler" type="button" @onclick="ApagarSelecionadas">
+            <span class="bi bi-trash3 icon-bootstrap"></span>
+        </button>
+    }
+    
+    <button class="navbar-toggler" type="button" @onclick="ToggleSelecionarNotas">
         <span class="bi bi-check-square icon-bootstrap-select"></span>
     </button>
 
@@ -175,7 +234,9 @@
     </button>
 </div>
 
-
+<div>
+    <p>Tarefas pendentes: @totalDeTarefas</p>
+</div>
 
 @* <input @bind="novoWorkspaceTitulo" placeholder="Título da nota..." />
 <button @onclick="AdicionarWorkspace" type="button" class="btn btn-primary">Adicionar Workspace</button>
@@ -189,20 +250,23 @@
     private string novaNotaTitulo;
     private string novaNotaConteudo;
     private string novoWorkspaceTitulo;
+    private int totalDeTarefas;
 
     private string tipoDeAgrupamento;
 
     private bool mostrarEditInterface = false;
     private bool mostrarTaskInterface = false;
     private bool mostrarAddInterface = false;
+    private bool selecionarNotas = false;
 
     private Note notaSelecionada = null;
     private DateTime? deadLine = null;
 
     private List<IGrouping<DateTime, Note>> notasAgrupadasData = new();
     private List<Note> notasAgrupadasTitulo = new();
+    private List<Note> notasSelecionadas = new();
 
-    private List<Note> notas = new List<Note>();
+    private List<Note> notes = new List<Note>();
     private List<Workspace> workspaces = new List<Workspace>();
     #endregion
 
@@ -260,26 +324,33 @@
 
     private async Task AtualizarNotasAsync()
     {
-        notas = await NoteService.GetAllNotesAsync();
+        notes = await NoteService.GetAllNotesAsync();
         await AgruparNotas();
     }
 
     private async Task AgruparNotas()
     {
         tipoDeAgrupamento = await NoteService.GetLocalStorageItem("orderType");
-        Console.WriteLine("Tipo de agrupamento local:" + tipoDeAgrupamento);
 
         if (tipoDeAgrupamento == "data")
         {
-            notasAgrupadasData = notas.Where(note => note.WorkspaceId == WorkpaceIdPage)
+            notasAgrupadasData = notes.Where(note => note.WorkspaceId == WorkpaceIdPage)
                                       .OrderByDescending(note => note.CreateDateDateTime())
                                       .GroupBy(note => note.CreateDateDateTime().Date)
                                       .ToList();
+
+            totalDeTarefas = notasAgrupadasData
+                            .SelectMany(grupo => grupo)
+                            .Count(nota => nota.Task.Done == false);
         }
         else
         {
-            notasAgrupadasTitulo = notas.Where(note => note.WorkspaceId == WorkpaceIdPage)
-                                        .OrderBy(note => note.Title).ToList();
+            notasAgrupadasTitulo = notes.Where(note => note.WorkspaceId == WorkpaceIdPage)
+                                        .OrderBy(note => note.Title)
+                                        .ToList();
+
+            totalDeTarefas = notasAgrupadasTitulo
+                            .Count(nota => nota.Task.Done == false);
         }
 
     }
@@ -305,6 +376,43 @@
     {
         var element = await NoteService.GetElement(".note-content.content");
         novaNotaConteudo = element;
+    }
+
+    private async Task ToggleSelecionarNotas()
+    {
+        if (selecionarNotas)
+        {
+            selecionarNotas = false;
+            notasSelecionadas.Clear();
+        }
+        else
+        {
+            selecionarNotas = true;
+        }
+    }
+
+    private void SelecionarNota(Note note, object value)
+    {
+        bool isSelected = (bool)value;
+        if (isSelected)
+        {
+            notasSelecionadas.Add(note);
+        }
+        else
+        {
+            notasSelecionadas.Remove(note);
+        }
+    }
+
+    private async Task ApagarSelecionadas()
+    {
+        foreach (var note in notasSelecionadas)
+        {
+            await NoteService.DeleteNoteAsync(note.Id);
+        }
+        notasSelecionadas.Clear();
+        await ToggleSelecionarNotas();
+        await AtualizarNotasAsync();
     }
 
     private void ResetarDeadLine()

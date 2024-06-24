@@ -17,9 +17,11 @@
                     </button>
                 </div>
 
-                <h1 class="tool-bar-title">
-                    <span class="tool-bar-tile-text">Workspace</span>
-                </h1>
+                <div class="tool-bar-title">
+                    <div class="workspace-info">
+                        <span class="tool-bar-tile-text">Workspace</span>
+                    </div>
+                </div>
 
                 <input id="more-button" name="more-button" type="checkbox" />
                 <div class="toolbar-item-right">
@@ -68,7 +70,7 @@
         <div class="container-fluid">
             <div class="offcanvas offcanvas-start side-bar-bootstrap" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Workspaces</h5>
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Áreas de Trabalho</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
 
@@ -77,8 +79,15 @@
                         <li class="nav-item">
                             @foreach (var workspace in workspaces)
                             {
-                                <a class="nav-link active" aria-current="page" href="/workspace/@workspace.Id">@workspace.Name</a>
-                                <button @onclick="() => MostrarInterfaceDeEdicao(workspace)" type="button" class="btn btn-outline-warning button-edit">Editar</button>
+                                <div class="workspace-info-container">
+                                    <div class="workspace-info">
+                                        <a class="nav-link active" aria-current="page" href="/workspace/@workspace.Id">@workspace.Name</a>
+                                        <button class="btn-more-options" type="button">
+                                            <span class="bi bi-three-dots-vertical icon-bootstrap small"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                    
                             }
                         </li>
                     </ul>

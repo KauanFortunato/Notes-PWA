@@ -55,7 +55,7 @@
                 content: "";
                 width: 100%;
                 height: 100%;
-                background: #506EEC;
+                background: var(--color-contrast);
                 display: block;
                 transform: scale(0);
                 opacity: 1;
@@ -84,8 +84,8 @@
     }
 
 .checkbox-wrapper-15 .inp-cbx:checked + .cbx span:first-child {
-    border-color: #3c53c7;
-    background: #3c53c7;
+    border-color: var(--color-contrast);
+    background: var(--color-contrast);
     animation: check-15 0.6s ease;
 }
 
@@ -187,7 +187,7 @@
             background-color: rgb(0, 0, 0, 0.06);
         }
 
-/* Interface de Adicionar */
+/* Adicionar Nota */
 
 .add-note-container {
     z-index: 1040;
@@ -199,30 +199,44 @@
     max-width: 515.96px;
 }
     .add-note-container .add-note-card {
-        padding: 30px;
+        padding: 10px 30px;
         background-color: white;
         border-radius: 35px;
         color: black;
     }
-        .add-note-container .add-note-card .text-edit-options {
+        .add-note-container .add-note-card .titulo-card {
+            margin-bottom: 10px;
             margin-inline: -30px;
-            padding-inline: 12px;
-            display: flex;
-            border-top: 4px solid #bebebe;
-            border-bottom: 4px solid #bebebe;
+            padding: 15px 30px;
+            border-bottom: 1px solid #bebebe;
         }
-            .add-note-container .add-note-card .text-edit-options button{
-                margin: 0;
-                margin-inline: 10px;
-            }
 
-            .add-note-container .add-note-card .text-edit-options .icon-bootstrap.small {
-                color: black;
-                font-size: 1.3rem;
+            .add-note-container .add-note-card .titulo-card h3 {
+                font-size: 20px;
+                margin: 0;
             }
-                .add-note-container .add-note-card .text-edit-options .icon-bootstrap.small:hover {
-                    background-color: rgb(0, 0, 0, 0.06);
+        .add-note-container .add-note-card .edit-note-options {
+            margin: 0;
+        }
+            .add-note-container .add-note-card .text-edit-options {
+                margin-inline: -30px;
+                padding-inline: 12px;
+                display: flex;
+                border-top: 4px solid #bebebe;
+                border-bottom: 4px solid #bebebe;
+            }
+                .add-note-container .add-note-card .text-edit-options button{
+                    margin: 0;
+                    margin-inline: 10px;
                 }
+
+                .add-note-container .add-note-card .text-edit-options .icon-bootstrap.small {
+                    color: black;
+                    font-size: 1.3rem;
+                }
+                    .add-note-container .add-note-card .text-edit-options .icon-bootstrap.small:hover {
+                        background-color: rgb(0, 0, 0, 0.06);
+                    }
 
 .add-task-collapse .checkbox-wrapper-15{
     margin: 10px 0px;

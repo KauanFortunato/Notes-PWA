@@ -1,0 +1,47 @@
+﻿@using Notes.Data
+@inject NoteService NoteService
+
+<div class="select-card-box">
+    <div class="checkbox-wrapper-46 checkbox-note-card">
+        <input class="inp-cbx" id="cbx-46 note-@Note.Id" type="checkbox" checked="@Note.IsSelected" @onchange="ToggleSelect" />
+        <label class="cbx" for="cbx-46 note-@Note.Id">
+            <span>
+                <svg width="12px" height="10px" viewbox="0 0 12 10">
+                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                </svg>
+            </span>
+        </label>
+    </div>
+
+    <label for="cbx-46 note-@Note.Id" class="note-card">
+        <div class="card-note-content">
+            <h2 class="card-title">
+                <span>@Note.Title</span>
+            </h2>
+            <div class="card-content">
+                <p>
+                    @Note.Content
+                </p>
+            </div>
+        </div>
+    </label>
+</div>
+
+
+@code {
+    [Parameter] public Note Note { get; set; } = new Note();
+
+
+    private async Task ToggleSelect(ChangeEventArgs e)
+    {
+        Note.IsSelected = (bool)e.Value;
+        await UpdateNote();
+    }
+
+    private async Task UpdateNote()
+    {
+        await NoteService.UpdateNoteAsync(Note);
+    }
+}
+
+

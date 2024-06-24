@@ -4,6 +4,14 @@
     {
         private DateTime today;
         private string createDate;
+        private bool isSelected = false;
+
+        public bool IsSelected
+        {
+            get { return isSelected; }
+            set { isSelected = value; }
+        }
+
         public Note()
         {
             today = DateTime.Today;

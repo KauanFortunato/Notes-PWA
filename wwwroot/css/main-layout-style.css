@@ -80,7 +80,6 @@ body {
             border-radius: 25px;
             font-size: 19px;
             color: rgb(196, 196, 196);
-
         }
 
 
@@ -196,7 +195,6 @@ body {
 #ordenar-collapse:checked ~ .menu-collapse-box {
     height: 75px;
     font-size: initial;
-    /*margin: 5px 0;*/
     border-top: 2px solid black;
     border-bottom: 2px solid black;
 }
@@ -218,3 +216,36 @@ body {
     flex-direction: column;
     align-items: flex-start;
 }
+
+
+.navbar-nav .workspace-info-container {
+    width: 70%;
+}
+    .navbar-nav .workspace-info-container .workspace-info {
+        display: flex;
+        color: white;
+        padding-left: 10px;
+        background-color: white;
+        border-radius: 15px;
+        margin: 10px;
+        justify-content: space-between;
+    }
+        .navbar-nav .workspace-info-container .workspace-info .nav-link.active {
+            color: black;
+            font-size: 1.3rem;
+            font-style: italic;
+            font-weight: 600;
+        }
+
+        .workspace-info-container .workspace-info .btn-more-options {
+            background-color: transparent;
+            border: none;
+            padding: 0;
+            margin-inline: 2px;
+        }
+            .workspace-info-container .workspace-info .btn-more-options span {
+                color: black;
+            }
+                .workspace-info-container .workspace-info .btn-more-options span:hover {
+                    background-color: rgb(0, 0, 0, 0.1);
+                }
