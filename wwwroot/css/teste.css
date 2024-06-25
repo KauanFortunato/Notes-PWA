@@ -1,0 +1,38 @@
+﻿.ql-toolbar.ql-snow {
+    border: none;
+    width: 100%;
+}
+
+.ql-toolbar.ql-snow .ql-formats {
+    margin: 0;
+}
+
+.ql-toolbar.ql-snow .ql-picker-label {
+    border: none;
+}
+
+.ql-toolbar.ql-snow .color-button {
+    margin-inline: 5px;
+}
+
+img, svg {
+    vertical-align: top;
+}
+
+.ql-snow.ql-toolbar button svg, .ql-snow .ql-toolbar button svg {
+    width: 20px;
+    height: 20px;
+}
+
+.ql-container.ql-snow {
+    border: none;
+}
+
+.ql-editor {
+    font-size: 17px;
+    padding: 0;
+    padding-bottom: 10px;
+}
+.ql-editor.ql-blank::before {
+    left: 0;
+}

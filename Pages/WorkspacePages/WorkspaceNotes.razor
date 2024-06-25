@@ -6,7 +6,8 @@
 @inject NavigationManager NavigationManager
 @inject HttpClient HttClient
 @inject NoteService NoteService
-@inject Pages.Services.AppData AppData
+@inject AppData AppData
+@inject QuillService QuillService
 
 <PageTitle>Notes</PageTitle>
 
@@ -134,18 +135,6 @@
     </div>
 </section>
 
-@* <div class="tools-select-container">
-    <div class="tools-select-container">
-        <button class="navbar-toggler" type="button">
-            <span class="bi bi-trash3 icon-bootstrap"></span>
-        </button>
-
-        <button class="navbar-toggler" type="button">
-            <span class="bi bi-x icon-bootstrap"></span>
-        </button>
-    </div>
-</div *@
-
 @if (mostrarAddInterface)
 {
     <div class="note-on-edit" @onclick="EsconderInterfaceAdicionar"></div>
@@ -154,34 +143,28 @@
             <div class="titulo-card">
                 <h3>Adicionando nota</h3>
             </div>
-            <h2 class="note-title" contenteditable="true" @onblur="() => AtualizarTituloNovaNota()">
+
+            <h2 class="note-title" contenteditable="true" @onfocus="() => AtualizarTituloNovaNota()">
+                Título
             </h2>
 
-            <div class="note-content">
-                <p class="note-content content" contenteditable="true" @onblur="() => AtualizarConteudoNovaNota()">
-                    
-                </p>
-            </div>
+            <div @ref="@divEditorElement" @on="() => QuillCreate()" /> @*Fazer com que quando o mostrar a interface de adicionar ser mostrado o editor de texto*@
 
-            <div class="text-edit-options">
-                <button class="navbar-toggler" type="button">
-                    <span class="bi bi-type-bold icon-bootstrap small"></span>
-                </button>
-                <button class="navbar-toggler" type="button">
-                    <span class="bi bi-type-italic icon-bootstrap small"></span>
-                </button>
-                <button class="navbar-toggler" type="button">
-                    <span class="bi bi-type-strikethrough icon-bootstrap small"></span>
-                </button>
-                <button class="navbar-toggler" type="button">
-                    <span class="bi bi-list-ul icon-bootstrap small"></span>
-                </button>
-                <button class="navbar-toggler" type="button">
-                    <span class="bi bi-list-ol icon-bootstrap small"></span>
-                </button>
-                <button class="navbar-toggler" type="button">
-                    <span class="bi bi-check-square icon-bootstrap small"></span>
-                </button>
+            <div id="toolbar">
+                <div class="text-edit-options">
+                    <button class="ql-bold"></button>
+                    <button class="ql-italic"></button>
+                    <button class="ql-underline"></button>
+                    <button class="ql-strike"></button>
+
+                    <div class="color-button"><select class="ql-color"></select></div>
+                    <div class="color-button"><select class="ql-background"></select></div>
+
+                    <button class="ql-list" value="ordered"></button>
+                    <button class="ql-list" value="bullet"></button>
+                    <button class="ql-indent" value="-1"></button>
+                    <button class="ql-indent" value="+1"></button>
+                </div>
             </div>
 
             <div class="add-task-collapse">
@@ -210,7 +193,8 @@
                 </div>
 
                 <div class="confirm-edit">
-                    <button disabled="@(string.IsNullOrEmpty(novaNotaConteudo))" @onclick="AdicionarNota">OK</button>
+                    @* <button disabled="@(string.IsNullOrEmpty(novaNotaConteudo))" @onclick="AdicionarNota">OK</button> *@
+                    <button @onclick="AdicionarNota">OK</button>
                 </div>
             </div>
         </div>
@@ -245,6 +229,11 @@
 @code {
     [Parameter]
     public int WorkpaceIdPage { get; set; }
+
+    #region Variaveis Quill Editor
+    private ElementReference divEditorElement;
+    private bool EditorEnabled = false;
+    #endregion
 
     #region Variáveis
     private string novaNotaTitulo;
@@ -296,7 +285,7 @@
 
         var note = new Note { 
                 Title = novaNotaTitulo, 
-                Content = novaNotaConteudo, 
+                Content = await QuillService.GetEditorContent(divEditorElement),
                 WorkspaceId = WorkpaceIdPage,
 
                 Task = new TaskNote {
@@ -358,11 +347,13 @@
     private async Task MostrarInterfaceAdicionar()
     {
         mostrarAddInterface = true;
+        EditorEnabled = true;
     }
 
     private async Task EsconderInterfaceAdicionar()
     {
         mostrarAddInterface = false;
+        EditorEnabled = false;
         ResetarDeadLine();
     }
 
@@ -374,8 +365,9 @@
 
     private async Task AtualizarConteudoNovaNota()
     {
-        var element = await NoteService.GetElement(".note-content.content");
+        var element = await QuillService.GetText(divEditorElement);
         novaNotaConteudo = element;
+        Console.WriteLine("Nova nota conteudo: " + novaNotaConteudo);
     }
 
     private async Task ToggleSelecionarNotas()
@@ -496,18 +488,26 @@
     #endregion
 
     #region Workspace
-        private async Task AtualizarWorkspacesAsync()
-        {
-            workspaces = await NoteService.GetAllWorkspaces();
-        }
+    private async Task AtualizarWorkspacesAsync()
+    {
+        workspaces = await NoteService.GetAllWorkspaces();
+    }
 
-        private async Task AdicionarWorkspace()
-        {
-            var workspace = new Workspace { Name = novoWorkspaceTitulo };
-            await NoteService.AddWorkspace(workspace);
-            workspaces = await NoteService.GetAllWorkspaces();
-            novoWorkspaceTitulo = string.Empty;
-        }
+    private async Task AdicionarWorkspace()
+    {
+        var workspace = new Workspace { Name = novoWorkspaceTitulo };
+        await NoteService.AddWorkspace(workspace);
+        workspaces = await NoteService.GetAllWorkspaces();
+        novoWorkspaceTitulo = string.Empty;
+    }
+    #endregion
+
+    #region Quill
+    public async Task QuillCreate()
+    {
+        await QuillService.CreateQuill(divEditorElement);
+        Console.WriteLine("sadasdasd das Quill foi criado");
+    }
     #endregion
 
     public void Dispose()

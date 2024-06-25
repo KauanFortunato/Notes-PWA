@@ -219,15 +219,15 @@
             margin: 0;
         }
             .add-note-container .add-note-card .text-edit-options {
-                margin-inline: -30px;
-                padding-inline: 12px;
+                margin-inline: -37px;
+                padding-inline: 19px;
                 display: flex;
                 border-top: 4px solid #bebebe;
                 border-bottom: 4px solid #bebebe;
             }
                 .add-note-container .add-note-card .text-edit-options button{
                     margin: 0;
-                    margin-inline: 10px;
+                    margin-inline: 5px;
                 }
 
                 .add-note-container .add-note-card .text-edit-options .icon-bootstrap.small {

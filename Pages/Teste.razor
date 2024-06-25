@@ -1,0 +1,130 @@
+﻿@page "/test"
+@inject Pages.Services.QuillService QuillService
+
+<div class="add-note-container">
+    <div class="add-note-card">
+        <div class="titulo-card">
+            <h3>Adicionando nota</h3>
+        </div>
+
+        <h2 class="note-title" contenteditable="true" >
+            Título
+        </h2>
+
+        <div @ref="@divEditorElement" />
+
+        <div id="toolbar">
+            <div class="text-edit-options">
+                <button class="ql-bold"></button>
+                <button class="ql-italic"></button>
+                <button class="ql-underline"></button>
+                <button class="ql-strike"></button>
+
+                <div class="color-button"><select class="ql-color"></select></div>
+                <div class="color-button"><select class="ql-background"></select></div>
+
+                <button class="ql-list" value="ordered"></button>
+                <button class="ql-list" value="bullet"></button>
+                <button class="ql-indent" value="-1"></button>
+                <button class="ql-indent" value="+1"></button>
+            </div>
+        </div>
+
+        <div class="add-task-collapse">
+            <div class="checkbox-wrapper-15">
+                <input class="inp-cbx" id="cbx-15" type="checkbox" style="display: none;"/>
+
+                <label class="cbx" for="cbx-15">
+                    <span>
+                        <svg width="12px" height="9px" viewbox="0 0 12 9">
+                            <polyline points="1 5 4 8 11 1"></polyline>
+                        </svg>
+                    </span>
+                    <span>Adicionar uma tarefa</span>
+                </label>
+
+                <div class="task-dateTime">
+                    <input type="date" id="deadLine-day" placeholder="Data" >
+                    <input type="time" id="deadLine-hour" placeholder="Horas" >
+                </div>
+            </div>
+        </div>
+
+        <div class="edit-note-options">
+            <div class="cancel-edit">
+                <p>Cancelar</p>
+            </div>
+
+            <div class="confirm-edit">
+                <button>OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+<button class="btn btn-primary" @onclick="GetText">Texto</button>
+<button class="btn btn-primary" @onclick="GetHTML">HTML</button>
+<button class="btn btn-primary" @onclick="GetEditorContent">Conteúdo</button>
+<button class="btn btn-danger" @onclick="SaveContent">Salvar</button>
+<button class="btn btn-success" @onclick="LoadContent">Carregar</button>
+<button class="btn btn-info" @onclick="DisableQuillEditor">Desabilitar</button>
+<br />
+
+<div>
+    @EditorContent
+</div>
+
+<div>
+    @((MarkupString)@EditorHTMLContent)
+</div>
+
+@code {
+    private string strSavedContent = "";
+    private ElementReference divEditorElement;
+    private string EditorContent;
+    private string EditorHTMLContent;
+    private bool EditorEnabled = true;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await QuillService.CreateQuill(divEditorElement);
+        }
+    }
+
+    async Task GetText()
+    {
+        EditorHTMLContent = "";
+        EditorContent = await QuillService.GetText(divEditorElement);
+    }
+
+    async Task GetHTML()
+    {
+        EditorContent = "";
+        EditorHTMLContent = await QuillService.GetHTML(divEditorElement);
+    }
+
+    async Task GetEditorContent()
+    {
+        EditorHTMLContent = "";
+        EditorContent = await QuillService.GetEditorContent(divEditorElement);
+    }
+
+    async Task SaveContent()
+    {
+        strSavedContent = await QuillService.SaveContent(divEditorElement);
+    }
+
+    async Task LoadContent()
+    {
+        var QuillDelta = await QuillService.LoadContent(divEditorElement, strSavedContent);
+    }
+
+    async Task DisableQuillEditor()
+    {
+        EditorEnabled = false;
+        await QuillService.DisableQuillEditor(divEditorElement);
+    }
+}
