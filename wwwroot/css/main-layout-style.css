@@ -82,6 +82,65 @@ body {
             color: rgb(196, 196, 196);
         }
 
+.toolbar-items .toolbar-item-right {
+    display: flex;
+}
+    .toolbar-items .toolbar-item-right .visu-tg-box {
+        display: flex;
+        position: relative;
+        background-color: white;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+        .toolbar-items .toolbar-item-right .visu-tg-box .icon-bootstrap {
+            z-index: 3;
+        }
+
+        .toolbar-items .toolbar-item-right .visu-tg-box .icon-list {
+            color: white;
+        }
+
+        .toolbar-items .toolbar-item-right .visu-tg-box .icon-bootstrap:hover {
+            background-color: transparent;
+        }
+
+        .toolbar-items .toolbar-item-right .visu-tg-box .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--color-background);
+            -webkit-transition: .4s;
+            transition: .4s;
+            width: 50%;
+            height: 100%;
+            border-radius: 0 4.4px 4.4px 0;
+            z-index: 2;
+        }
+
+
+
+        .toolbar-items .toolbar-item-right .visu-tg-box span {
+            color: black;
+        }
+
+    .toolbar-items .toolbar-item-right .visu-tg-box input {
+        display: none;
+    }
+        .toolbar-items .toolbar-item-right .visu-tg-box input:checked ~ .slider {
+            transform: translateX(32.8px);
+            border-radius: 4.4px 0 0 4.4px;
+        }
+
+        .toolbar-items .toolbar-item-right .visu-tg-box input:checked ~ .icon-grid {
+            color: white;
+        }
+
+        .toolbar-items .toolbar-item-right .visu-tg-box input:checked ~ .icon-list {
+            color: black;
+        }
 
 #create-select-buttons {
     color: white;

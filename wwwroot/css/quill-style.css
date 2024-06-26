@@ -36,3 +36,11 @@ img, svg {
 .ql-editor.ql-blank::before {
     left: 0;
 }
+.ql-container.ql-snow .ql-editor.ql-blank ~ #toolbar {
+    background-color: red;
+}
+
+.note-card.on-edit #toolbar .text-edit-options {
+    margin-top: 0px;
+    margin-inline: -28px;
+}

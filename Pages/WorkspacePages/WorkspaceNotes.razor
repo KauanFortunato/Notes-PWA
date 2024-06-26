@@ -13,9 +13,9 @@
 
 <section class="all-notes-section">
     <div class="all-notes-box">
-        @if (tipoDeAgrupamento == "data")
+        @if (groupingType == "data")
         {
-            @foreach (var grupo in notasAgrupadasData)
+            @foreach (var grupo in notesGroupedDate)
             {
                 <h1 class="date-create">
                     <span>
@@ -41,55 +41,79 @@
                 <div class="all-notes">
                     @foreach (var note in grupo)
                     {
-                        @if (mostrarEditInterface && note.Id == notaSelecionada.Id)
+                        @if (showEditInterface && note.Id == selectedNote.Id)
                         {
-                            <div class="note-on-edit" @onclick="SalvarEdicao"></div>
+                            <div class="note-on-edit" @onclick="SaveEdit"></div>
                             <NoteEdit
-                                NotaSelecionada="notaSelecionada"
-                                OnSave="SalvarEdicao"
-                                OnCancel="EsconderInterfaceDeEdicao"/>
+                                NotaSelecionada="selectedNote"
+                                OnSave="SaveEdit"
+                                OnCancel="HideEditInterface"/>
                         }
                         else
                         {
-                            <NoteCard 
-                                Note="note"
-                                OnEdit="MostrarInterfaceDeEdicao"
-                                OnTask="MostrarInterfaceTask"
-                                OnDelete="ExcluirNota"
-                                OnUpdate="AtualizarNotasAsync" />
-
-                            @if (mostrarTaskInterface && note.Id == notaSelecionada.Id)
+                            if (selectNotes)
                             {
-                                <div class="note-on-edit"></div>
+                                <div class="select-card-box">
+                                    <div class="checkbox-wrapper-46 checkbox-note-card">
+                                        <input class="inp-cbx" id="cbx-46 note-@note.Id" type="checkbox" checked="@note.IsSelected" @onchange="@(e => SelectNote(note, ((ChangeEventArgs)e).Value))" />
+                                        <label class="cbx" for="cbx-46 note-@note.Id">
+                                            <span>
+                                                <svg width="12px" height="10px" viewbox="0 0 12 10">
+                                                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                                </svg>
+                                            </span>
+                                        </label>
+                                    </div>
 
-                                <NoteAddTask
-                                    Note="notaSelecionada"
-                                    OnSave="SalvarEdicao"/>
+                                    <label for="cbx-46 note-@note.Id" class="note-card">
+                                        <div class="card-note-content">
+                                            <h2 class="card-title">
+                                                <span>@note.Title</span>
+                                            </h2>
+                                        </div>
+                                    </label>
+                                </div>
+                            }
+                            else
+                            {
+                                <NoteCard Note="note"
+                                          OnEdit="ShowEditInterface"
+                                          OnTask="ShowTaskInterface"
+                                          OnDelete="DeleteNote"
+                                          OnUpdate="UpdateNote" />
+
+                                @if (showTaskInterface && note.Id == selectedNote.Id)
+                                {
+                                    <div class="note-on-edit"></div>
+
+                                    <NoteAddTask Note="selectedNote"
+                                                 OnSave="SaveEdit" />
+                                }
                             }
                         }
                     }
                 </div>
             }
         }
-        else
+        else @*Agrupamento por título*@
         {
             <div class="all-notes">
-                @foreach (var note in notasAgrupadasTitulo)
+                @foreach (var note in notesGroupedTitle)
                 {
-                    @if (mostrarEditInterface && note.Id == notaSelecionada.Id)
+                    @if (showEditInterface && note.Id == selectedNote.Id)
                     {
-                        <div class="note-on-edit" @onclick="SalvarEdicao"></div>
-                        <NoteEdit NotaSelecionada="notaSelecionada"
-                                  OnSave="SalvarEdicao"
-                        OnCancel="EsconderInterfaceDeEdicao" />
+                        <div class="note-on-edit" @onclick="SaveEdit"></div>
+                        <NoteEdit NotaSelecionada="selectedNote"
+                                  OnSave="SaveEdit"
+                        OnCancel="HideEditInterface" />
                     }
                     else
                     {
-                        if (selecionarNotas)
+                        if (selectNotes)
                         {
                             <div class="select-card-box">
                                 <div class="checkbox-wrapper-46 checkbox-note-card">
-                                    <input class="inp-cbx" id="cbx-46 note-@note.Id" type="checkbox" checked="@note.IsSelected" @onchange="@(e => SelecionarNota(note, ((ChangeEventArgs)e).Value))" />
+                                    <input class="inp-cbx" id="cbx-46 note-@note.Id" type="checkbox" checked="@note.IsSelected" @onchange="@(e => SelectNote(note, ((ChangeEventArgs)e).Value))" />
                                     <label class="cbx" for="cbx-46 note-@note.Id">
                                         <span>
                                             <svg width="12px" height="10px" viewbox="0 0 12 10">
@@ -104,11 +128,6 @@
                                         <h2 class="card-title">
                                             <span>@note.Title</span>
                                         </h2>
-                                        <div class="card-content">
-                                            <p>
-                                                @note.Content
-                                            </p>
-                                        </div>
                                     </div>
                                 </label>
                             </div>
@@ -116,16 +135,17 @@
                         else
                         {
                             <NoteCard Note="note"
-                                      OnEdit="MostrarInterfaceDeEdicao"
-                                      OnTask="MostrarInterfaceTask"
-                                      OnDelete="ExcluirNota" />
+                                      OnEdit="ShowEditInterface"
+                                      OnTask="ShowTaskInterface"
+                                      OnDelete="DeleteNote"
+                                      OnUpdate="UpdateNote" />
 
-                            @if (mostrarTaskInterface && note.Id == notaSelecionada.Id)
+                            @if (showTaskInterface && note.Id == selectedNote.Id)
                             {
                                 <div class="note-on-edit"></div>
 
-                                <NoteAddTask Note="notaSelecionada"
-                                             OnSave="SalvarEdicao" />
+                                <NoteAddTask Note="selectedNote"
+                                             OnSave="SaveEdit" />
                             }
                         }
                     }
@@ -135,20 +155,20 @@
     </div>
 </section>
 
-@if (mostrarAddInterface)
+@if (showAddInterface)
 {
-    <div class="note-on-edit" @onclick="EsconderInterfaceAdicionar"></div>
+    <div class="note-on-edit" @onclick="HideAddInterface"></div>
     <div class="add-note-container">
         <div class="add-note-card">
             <div class="titulo-card">
                 <h3>Adicionando nota</h3>
             </div>
 
-            <h2 class="note-title" contenteditable="true" @onfocus="() => AtualizarTituloNovaNota()">
+            <h2 class="note-title" contenteditable="true" @onfocus="() => UpdateTitleNewNote()">
                 Título
             </h2>
 
-            <div @ref="@divEditorElement" @on="() => QuillCreate()" /> @*Fazer com que quando o mostrar a interface de adicionar ser mostrado o editor de texto*@
+            <div @ref="@divEditorElement" id="divEditorElement"/>
 
             <div id="toolbar">
                 <div class="text-edit-options">
@@ -169,7 +189,7 @@
 
             <div class="add-task-collapse">
                 <div class="checkbox-wrapper-15">
-                    <input class="inp-cbx" id="cbx-15" type="checkbox" style="display: none;" @onchange="ResetarDeadLine" />
+                    <input class="inp-cbx" id="cbx-15" type="checkbox" style="display: none;" @onchange="ResetDeadline" />
 
                     <label class="cbx" for="cbx-15">
                         <span>
@@ -188,13 +208,12 @@
             </div>
 
             <div class="edit-note-options">
-                <div class="cancel-edit" @onclick="EsconderInterfaceAdicionar">
+                <div class="cancel-edit" @onclick="HideAddInterface">
                     <p>Cancelar</p>
                 </div>
 
                 <div class="confirm-edit">
-                    @* <button disabled="@(string.IsNullOrEmpty(novaNotaConteudo))" @onclick="AdicionarNota">OK</button> *@
-                    <button @onclick="AdicionarNota">OK</button>
+                    <button disabled="@noteContentEmpty" @onclick="AddNote">OK</button>
                 </div>
             </div>
         </div>
@@ -202,24 +221,24 @@
 }
 
 <div id="create-select-buttons">
-    @if (selecionarNotas)
+    @if (selectNotes)
     {
-        <button class="navbar-toggler" type="button" @onclick="ApagarSelecionadas">
+        <button class="navbar-toggler" type="button" @onclick="DeleteSelected">
             <span class="bi bi-trash3 icon-bootstrap"></span>
         </button>
     }
     
-    <button class="navbar-toggler" type="button" @onclick="ToggleSelecionarNotas">
+    <button class="navbar-toggler" type="button" @onclick="ToggleSelectNote">
         <span class="bi bi-check-square icon-bootstrap-select"></span>
     </button>
 
-    <button class="navbar-toggler" type="button" @onclick="MostrarInterfaceAdicionar">
+    <button class="navbar-toggler" type="button" @onclick="ShowAddInterface">
         <span class="bi bi-plus-square icon-bootstrap-add"></span>
     </button>
 </div>
 
 <div>
-    <p>Tarefas pendentes: @totalDeTarefas</p>
+    <p>Tarefas pendentes: @totalTasks</p>
 </div>
 
 @* <input @bind="novoWorkspaceTitulo" placeholder="Título da nota..." />
@@ -230,61 +249,72 @@
     [Parameter]
     public int WorkpaceIdPage { get; set; }
 
-    #region Variaveis Quill Editor
-    private ElementReference divEditorElement;
-    private bool EditorEnabled = false;
-    #endregion
-
     #region Variáveis
-    private string novaNotaTitulo;
-    private string novaNotaConteudo;
-    private string novoWorkspaceTitulo;
-    private int totalDeTarefas;
+    private string newNoteTitle;
+    private string newNoteContent;
+    private string newWorkspaceTitle;
+    private int totalTasks;
 
-    private string tipoDeAgrupamento;
+    private string groupingType;
 
-    private bool mostrarEditInterface = false;
-    private bool mostrarTaskInterface = false;
-    private bool mostrarAddInterface = false;
-    private bool selecionarNotas = false;
-
-    private Note notaSelecionada = null;
+    private Note selectedNote = null;
     private DateTime? deadLine = null;
 
-    private List<IGrouping<DateTime, Note>> notasAgrupadasData = new();
-    private List<Note> notasAgrupadasTitulo = new();
-    private List<Note> notasSelecionadas = new();
+    private List<IGrouping<DateTime, Note>> notesGroupedDate = new();
+    private List<Note> notesGroupedTitle = new();
+    private List<Note> notesSelected = new();
 
     private List<Note> notes = new List<Note>();
     private List<Workspace> workspaces = new List<Workspace>();
     #endregion
 
+    #region Variáveis de Controle
+    private bool showEditInterface = false;
+    private bool showTaskInterface = false;
+    private bool showAddInterface = false;
+    private bool selectNotes = false;
+    private bool noteContentEmpty = false;
+    #endregion
+
+    #region Variáveis Quill Editor
+    private ElementReference divEditorElement;
+    private bool EditorEnabled = false;
+    #endregion
+
     protected override async Task OnInitializedAsync()
     {
-        await AtualizarNotasAsync();
+        await UpdateNote();
         await AtualizarWorkspacesAsync();
-        AppData.OnChange += AppDataAlterado;
+        AppData.OnChange += AppDataChanged;
     }
 
     protected override async Task OnParametersSetAsync()
     {
-        await AtualizarNotasAsync();
+        await UpdateNote();
         await AtualizarWorkspacesAsync();
     }
 
-    #region Notas CRUD
-    private async void AppDataAlterado()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await AtualizarNotasAsync();
+        if (showAddInterface == true)
+        {
+            await QuillCreate();
+        }
+    }
+
+    #region Notas CRUD
+    private async void AppDataChanged()
+    {
+        await UpdateNote();
         StateHasChanged();
     }
 
-    private async Task AdicionarNota()
+    private async Task AddNote()
     {
-        await EsconderInterfaceAdicionar();
+        await HideAddInterface();
 
         var note = new Note { 
-                Title = novaNotaTitulo, 
+                Title = newNoteTitle, 
                 Content = await QuillService.GetEditorContent(divEditorElement),
                 WorkspaceId = WorkpaceIdPage,
 
@@ -299,192 +329,161 @@
         }
 
         await NoteService.AddNoteAsync(note);
-        await AtualizarNotasAsync();
-        novaNotaTitulo = string.Empty;
-        novaNotaConteudo = string.Empty;
-        ResetarDeadLine();
+        await UpdateNote();
+        newNoteTitle = string.Empty;
+        newNoteContent = string.Empty;
+        ResetDeadline();
     }
 
-    private async Task ExcluirNota(int id)
+    private async Task DeleteNote(int id)
     {
         await NoteService.DeleteNoteAsync(id);
-        await AtualizarNotasAsync();
+        await UpdateNote();
     }
 
-    private async Task AtualizarNotasAsync()
+    private async Task UpdateNote()
     {
         notes = await NoteService.GetAllNotesAsync();
-        await AgruparNotas();
+        await GroupNotes();
     }
 
-    private async Task AgruparNotas()
+    private async Task GroupNotes()
     {
-        tipoDeAgrupamento = await NoteService.GetLocalStorageItem("orderType");
+        groupingType = await NoteService.GetLocalStorageItem("orderType");
 
-        if (tipoDeAgrupamento == "data")
+        if (groupingType == "data")
         {
-            notasAgrupadasData = notes.Where(note => note.WorkspaceId == WorkpaceIdPage)
+            notesGroupedDate = notes.Where(note => note.WorkspaceId == WorkpaceIdPage)
                                       .OrderByDescending(note => note.CreateDateDateTime())
                                       .GroupBy(note => note.CreateDateDateTime().Date)
                                       .ToList();
 
-            totalDeTarefas = notasAgrupadasData
+            totalTasks = notesGroupedDate
                             .SelectMany(grupo => grupo)
                             .Count(nota => nota.Task.Done == false);
         }
         else
         {
-            notasAgrupadasTitulo = notes.Where(note => note.WorkspaceId == WorkpaceIdPage)
+            notesGroupedTitle = notes.Where(note => note.WorkspaceId == WorkpaceIdPage)
                                         .OrderBy(note => note.Title)
                                         .ToList();
 
-            totalDeTarefas = notasAgrupadasTitulo
+            totalTasks = notesGroupedTitle
                             .Count(nota => nota.Task.Done == false);
         }
 
     }
 
-    private async Task MostrarInterfaceAdicionar()
+    private async Task ShowAddInterface()
     {
-        mostrarAddInterface = true;
+        showAddInterface = true;
         EditorEnabled = true;
     }
 
-    private async Task EsconderInterfaceAdicionar()
+    private async Task HideAddInterface()
     {
-        mostrarAddInterface = false;
+        showAddInterface = false;
         EditorEnabled = false;
-        ResetarDeadLine();
+        ResetDeadline();
     }
 
-    private async Task AtualizarTituloNovaNota()
+    private async Task UpdateTitleNewNote()
     {
         var element = await NoteService.GetElement(".note-title");
-        novaNotaTitulo = element;
+        newNoteTitle = element;
     }
 
-    private async Task AtualizarConteudoNovaNota()
+    private async Task NoteContentEmpty()
     {
-        var element = await QuillService.GetText(divEditorElement);
-        novaNotaConteudo = element;
-        Console.WriteLine("Nova nota conteudo: " + novaNotaConteudo);
+        noteContentEmpty = await QuillService.NoteEmpty();
     }
 
-    private async Task ToggleSelecionarNotas()
+    private async Task ToggleSelectNote()
     {
-        if (selecionarNotas)
+        if (selectNotes)
         {
-            selecionarNotas = false;
-            notasSelecionadas.Clear();
+            selectNotes = false;
+            notesSelected.Clear();
         }
         else
         {
-            selecionarNotas = true;
+            selectNotes = true;
         }
     }
 
-    private void SelecionarNota(Note note, object value)
+    private void SelectNote(Note note, object value)
     {
         bool isSelected = (bool)value;
         if (isSelected)
         {
-            notasSelecionadas.Add(note);
+            notesSelected.Add(note);
         }
         else
         {
-            notasSelecionadas.Remove(note);
+            notesSelected.Remove(note);
         }
     }
 
-    private async Task ApagarSelecionadas()
+    private async Task DeleteSelected()
     {
-        foreach (var note in notasSelecionadas)
+        foreach (var note in notesSelected)
         {
             await NoteService.DeleteNoteAsync(note.Id);
         }
-        notasSelecionadas.Clear();
-        await ToggleSelecionarNotas();
-        await AtualizarNotasAsync();
+        notesSelected.Clear();
+        await ToggleSelectNote();
+        await UpdateNote();
     }
 
-    private void ResetarDeadLine()
+    private void ResetDeadline()
     {
         deadLine = null;
     }
     #endregion
 
     #region Edição
-    private async Task SalvarEdicao()
+    private async Task SaveEdit()
     {
-        await NoteService.UpdateNoteAsync(notaSelecionada);
+        await NoteService.UpdateNoteAsync(selectedNote);
 
-        await AtualizarNotasAsync();
-        await EsconderInterfaceDeEdicao();
-        await EsconderInterfaceTask();
+        await UpdateNote();
+        await HideEditInterface();
+        await HideTaskInterface();
     }
 
-    private void MostrarInterfaceDeEdicao(Note note)
+    private void ShowEditInterface(Note note)
     {
-        notaSelecionada = note;
-        mostrarEditInterface = true;
+        selectedNote = note;
+        showEditInterface = true;
     }
 
-    private async Task EsconderInterfaceDeEdicao()
+    private async Task HideEditInterface()
     {
-        mostrarEditInterface = false;
-        notaSelecionada = null;
+        showEditInterface = false;
+        selectedNote = null;
 
-        await AtualizarNotasAsync();
+        await UpdateNote();
     }
 
-    private async Task MostrarInterfaceTask(Note note)
+    private async Task ShowTaskInterface(Note note)
     {
-        notaSelecionada = note;
-        if (notaSelecionada.Task.Done == null)
+        selectedNote = note;
+        if (selectedNote.Task.Done == null)
         {
-            notaSelecionada.Task.Done = false;
-            await NoteService.UpdateNoteAsync(notaSelecionada);
+            selectedNote.Task.Done = false;
+            await NoteService.UpdateNoteAsync(selectedNote);
         }
-        mostrarTaskInterface = true;
+        showTaskInterface = true;
     }
 
-    private async Task EsconderInterfaceTask()
+    private async Task HideTaskInterface()
     {
-        mostrarTaskInterface = false;
-        notaSelecionada = null;
+        showTaskInterface = false;
+        selectedNote = null;
 
-        await AtualizarNotasAsync();
+        await UpdateNote();
     }
 
-    private async Task ConcluirTask()
-    {
-        notaSelecionada.Task.Done = true;
-        await SalvarEdicao();
-    }
-
-    private async Task ReabrirTask()
-    {
-        notaSelecionada.Task.Done = false;
-        await NoteService.UpdateNoteAsync(notaSelecionada);
-    }
-
-    private async Task RemoverTask()
-    {
-        notaSelecionada.Task = new TaskNote();
-        await SalvarEdicao();
-    }
-
-    private async Task AtualizarTitulo()
-    {
-        var element = await NoteService.GetElement(".card-title.on-edit");
-        notaSelecionada.Title = element;
-    }
-
-    private async Task AtualizarConteudo()
-    {
-        var element = await NoteService.GetElement(".card-content .on-edit");
-        notaSelecionada.Content = element;
-    }
     #endregion
 
     #region Workspace
@@ -495,10 +494,10 @@
 
     private async Task AdicionarWorkspace()
     {
-        var workspace = new Workspace { Name = novoWorkspaceTitulo };
+        var workspace = new Workspace { Name = newWorkspaceTitle };
         await NoteService.AddWorkspace(workspace);
         workspaces = await NoteService.GetAllWorkspaces();
-        novoWorkspaceTitulo = string.Empty;
+        newWorkspaceTitle = string.Empty;
     }
     #endregion
 
@@ -506,12 +505,11 @@
     public async Task QuillCreate()
     {
         await QuillService.CreateQuill(divEditorElement);
-        Console.WriteLine("sadasdasd das Quill foi criado");
     }
     #endregion
 
     public void Dispose()
     {
-        AppData.OnChange -= AppDataAlterado;
+        AppData.OnChange -= AppDataChanged;
     }
 }

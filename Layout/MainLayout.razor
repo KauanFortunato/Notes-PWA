@@ -1,7 +1,8 @@
 ﻿@inherits LayoutComponentBase
 @using Notes.Data
 @inject NoteService NoteService
-@inject Pages.Services.AppData AppData
+@inject AppData AppData
+@inject FunctionsUseful FunctionsUseful
 
 <header>
     <div class="top-bar-box">
@@ -25,9 +26,15 @@
 
                 <input id="more-button" name="more-button" type="checkbox" />
                 <div class="toolbar-item-right">
-                    <button class="navbar-toggler" type="button">
+                    @* <button class="navbar-toggler" type="button" @onclick='() => FunctionsUseful.SetClassItem("all-notes", "all-notes-grid")'>
                         <span class="bi bi-grid-fill icon-bootstrap"></span>
-                    </button>
+                    </button> *@
+                    <label class="visu-tg-box">
+                        <input type="checkbox" checked="@visualizationType" @onchange="ToggleVisualization">
+                        <span class="bi bi-list-ul icon-bootstrap icon-list"></span>
+                        <span class="bi bi-grid-fill icon-bootstrap icon-grid"></span>
+                        <span class="slider"></span>
+                    </label>
 
                     <label for="more-button">
                         <span class="bi bi-three-dots-vertical icon-bootstrap"></span>
@@ -87,7 +94,6 @@
                                         </button>
                                     </div>
                                 </div>
-                                    
                             }
                         </li>
                     </ul>
@@ -104,6 +110,7 @@
     private List<Workspace> workspaces = new List<Workspace>();
     private Workspace workspaceSelecionado = null;
     private bool mostrarEditInterface = false;
+    private bool visualizationType = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -133,5 +140,19 @@
     private async Task AtualizarWorkspacesAsync()
     {
         workspaces = await NoteService.GetAllWorkspaces();
+    }
+
+    private async Task ToggleVisualization(ChangeEventArgs e)
+    {
+        if (!visualizationType)
+        {
+            await FunctionsUseful.SetClassItem("all-notes", "all-notes-grid");
+        }
+        else
+        {
+            await FunctionsUseful.RemoveClassItem("all-notes", "all-notes-grid");
+        }
+
+        visualizationType = (bool)e.Value;
     }
 }

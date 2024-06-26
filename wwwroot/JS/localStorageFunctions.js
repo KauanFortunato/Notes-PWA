@@ -20,3 +20,6 @@ window.localStorageFunctions = {
 if (!localStorage.getItem("orderType")) {
     localStorageFunctions.setItem("orderType", "data");
 }
+if (!localStorage.getItem("visualization")) {
+    localStorageFunctions.setItem("visualization", "grid")
+}

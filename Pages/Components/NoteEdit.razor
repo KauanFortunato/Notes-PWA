@@ -1,50 +1,44 @@
 ﻿@using Notes.Data
 @inject NoteService NoteService
+@inject QuillService QuillService
 
 @code {
-    private async Task AtualizarTitulo()
+    private async Task UpdateTitle()
     {
         var element = await NoteService.GetElement(".card-title.on-edit");
         NotaSelecionada.Title = element;
     }
 
-    private async Task AtualizarConteudo()
+    private async Task UpdateContent()
     {
         var element = await NoteService.GetElement(".card-content .on-edit");
         NotaSelecionada.Content = element;
     }
 }
 
-
 <div class="note-card on-edit">
-    <h2 class="card-title on-edit" contenteditable="true" @onblur="() => AtualizarTitulo()">
+    <h2 class="card-title on-edit" contenteditable="true" @onblur="() => UpdateTitle()">
         @NotaSelecionada.Title
     </h2>
     <div class="card-content">
-        <p class="on-edit" contenteditable="true" @onblur="() => AtualizarConteudo()">
-            @NotaSelecionada.Content
-        </p>
+        <div @ref="@divEditorElement" id="divEditorElement" />
     </div>
 
-    <div class="text-edit-options">
-        <button class="navbar-toggler" type="button">
-            <span class="bi bi-type-bold icon-bootstrap small"></span>
-        </button>
-        <button class="navbar-toggler" type="button">
-            <span class="bi bi-type-italic icon-bootstrap small"></span>
-        </button>
-        <button class="navbar-toggler" type="button">
-            <span class="bi bi-type-strikethrough icon-bootstrap small"></span>
-        </button>
-        <button class="navbar-toggler" type="button">
-            <span class="bi bi-list-ul icon-bootstrap small"></span>
-        </button>
-        <button class="navbar-toggler" type="button">
-            <span class="bi bi-list-ol icon-bootstrap small"></span>
-        </button>
-        <button class="navbar-toggler" type="button">
-            <span class="bi bi-check-square icon-bootstrap small"></span>
-        </button>
+    <div id="toolbar">
+        <div class="text-edit-options">
+            <button class="ql-bold"></button>
+            <button class="ql-italic"></button>
+            <button class="ql-underline"></button>
+            <button class="ql-strike"></button>
+
+            <div class="color-button"><select class="ql-color"></select></div>
+            <div class="color-button"><select class="ql-background"></select></div>
+
+            <button class="ql-list" value="ordered"></button>
+            <button class="ql-list" value="bullet"></button>
+            <button class="ql-indent" value="-1"></button>
+            <button class="ql-indent" value="+1"></button>
+        </div>
     </div>
 
     <div class="edit-note-options">
@@ -63,8 +57,25 @@
     [Parameter] public EventCallback OnSave { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
 
+    private ElementReference divEditorElement;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await QuillService.CreateQuill(divEditorElement);
+            await LoadContent();
+        }
+    }
+
+    async Task LoadContent()
+    {
+        await QuillService.LoadContent(divEditorElement, NotaSelecionada.Content);
+    }
+
     private async Task HandleSave()
     {
+        NotaSelecionada.Content = await QuillService.GetEditorContent(divEditorElement);
         await OnSave.InvokeAsync();
     }
 

@@ -14,15 +14,15 @@
         </div>
 
         <div class="add-task-options">
-            <button @onclick="RemoverTask">Remover Tarefa</button>
+            <button @onclick="DeleteTask">Remover Tarefa</button>
 
             @if (Note.Task.Done != false)
             {
-                <button @onclick="() => ReabrirTask() ">Retomar Tarefa</button>
+                <button @onclick="() => ResumeTask() ">Retomar Tarefa</button>
             }
             else
             {
-                <button @onclick="() => ConcluirTask() ">Concluir</button>
+                <button @onclick="() => DoneTask() ">Concluir</button>
             }
             <button @onclick="HandleSave">OK</button>
         </div>
@@ -38,19 +38,19 @@
         await OnSave.InvokeAsync();
     }
 
-    private async Task ConcluirTask()
+    private async Task DoneTask()
     {
         Note.Task.Done = true;
         await HandleSave();
     }
 
-    private async Task ReabrirTask()
+    private async Task ResumeTask()
     {
         Note.Task.Done = false;
         await NoteService.UpdateNoteAsync(Note);
     }
 
-    private async Task RemoverTask()
+    private async Task DeleteTask()
     {
         Note.Task = new TaskNote();
         await HandleSave();

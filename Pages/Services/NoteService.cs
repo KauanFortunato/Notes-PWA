@@ -63,7 +63,6 @@ namespace Notes.Pages.Services
         public async Task SetLocalStorageItem(string key, string value)
         {
             await _jsRuntime.InvokeVoidAsync("localStorageFunctions.setItem", key, value);
-
         }
 
         public async Task<string> GetLocalStorageItem(string key)

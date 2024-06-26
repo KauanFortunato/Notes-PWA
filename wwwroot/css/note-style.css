@@ -40,12 +40,14 @@
         font-size: 26px;
     }
         .all-notes-section .all-notes {
-            display: grid;
+            display: flex;
+            flex-wrap: wrap;
             gap: 40px;
             margin-bottom: 25px;
-            grid-template-columns: 35% 35%;
+            /*grid-template-columns: 35% 35%;*/
             align-items: start;
             max-width: 1474.2px;
+
         }
             .all-notes-section .all-notes .note-card {
                 background-color: white;
@@ -54,6 +56,8 @@
                 border-radius: 30px;
                 position: relative;
                 line-break: anywhere;
+                width: 35%;
+                transition: .3s;
             }
 
             .all-notes-section .all-notes .note-card .task-card {
@@ -73,8 +77,8 @@
                 }
 
                 .all-notes-section .all-notes .note-card .card-content {
-                
-                
+                    max-height: 150px;
+                    overflow: hidden;
                 }
                     .all-notes-section .all-notes .note-card .card-content p {
                         margin: 0;
@@ -111,6 +115,11 @@
     transform: scale(1);
 }
 
+
+.all-notes.all-notes-grid .note-card {
+    width: 25%;
+}
+
 /* Checkbox */
 
 .task-card .checkbox-wrapper-15 .cbx span:first-child {
@@ -121,7 +130,7 @@
     .task-card .checkbox-wrapper-15 .cbx span:first-child svg {
         width: 7px;
         height: auto;
-        top: 3px;
+        top: 3.3px;
         left: 2px;
     }
 

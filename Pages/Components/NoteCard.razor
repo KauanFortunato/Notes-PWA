@@ -44,14 +44,14 @@
                     }
                     else
                     {
-                        <span>@($"{Note.Task.DeadLine:dd} de {Note.Task.DeadLine:MMMM}")</span>
+                        <span>@($"{Note.Task.DeadLine:dd} de {Note.Task.DeadLine:MMMM} {Note.Task.DeadLine:yyyy}, {Note.Task.DeadLine:HH:mm}")</span>
                     }
                 </label>
             </div>
         </div>
     }
 
-    <div class="card-note-content">
+    <div class="card-note-content" @onclick="() => OnEdit.InvokeAsync(Note)">
         <h2 class="card-title">
             <span>@Note.Title</span>
         </h2>

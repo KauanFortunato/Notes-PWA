@@ -54,5 +54,10 @@ namespace Notes.Pages.Services
             await _jsRuntime.InvokeAsync<object>(
                 "QuillFunctions.disableQuillEditor", divEditorElement);
         }
+
+        public async Task<bool> NoteEmpty()
+        {
+            return await _jsRuntime.InvokeAsync<bool>("QuillFunctions.elementExist");
+        }
     }
 }

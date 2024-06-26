@@ -126,6 +126,15 @@
     z-index: 1040;
 }
 
+.all-notes-section .all-notes .note-card.on-edit .card-content {
+    max-height: 220px;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-contrast) white;
+}
+
+
+
 .note-card.on-edit .text-edit-options {
     display: flex;
     border-top: 4px solid #bebebe;
