@@ -13,9 +13,13 @@
                         <span class="bi bi-list icon-bootstrap"></span>
                     </button>
 
-                    <button class="navbar-toggler" type="button">
-                        <span class="bi bi-search icon-bootstrap lupa"></span>
-                    </button>
+                    <div class="search-container">
+                        <input id="searchbar" type="text" name="searchbar" placeholder=""
+                               @onkeyup="FunctionsUseful.Search" @onfocus="FunctionsUseful.RemoveDate" @onblur="FunctionsUseful.AddDate" />
+                        <label class="navbar-toggler" for="searchbar">
+                            <span class="bi bi-search icon-bootstrap lupa"></span>
+                        </label>
+                    </div>
                 </div>
 
                 <div class="tool-bar-title">

@@ -21,5 +21,19 @@ namespace Notes.Pages.Services
         {
             await _jsRuntime.InvokeVoidAsync("functionsUseful.removeClassItem", elementId, classAdd);
         }
+
+        public async Task Search()
+        {
+            await _jsRuntime.InvokeVoidAsync("search");
+        }
+
+        public async Task RemoveDate()
+        {
+            await _jsRuntime.InvokeVoidAsync("removeDate");
+        }
+        public async Task AddDate()
+        {
+            await _jsRuntime.InvokeVoidAsync("addDate");
+        }
     }
 }

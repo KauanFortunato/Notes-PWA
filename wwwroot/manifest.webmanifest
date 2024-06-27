@@ -1,22 +1,27 @@
 {
-  "name": "Notes",
-  "short_name": "Notes",
+  "name": "Note",
+  "short_name": "Note",
   "id": "./",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#03173d",
+  "background_color": "#222222",
+  "theme_color": "#222222",
+  "orientation": "portrait",
+  "dir": "auto",
+  "lang": "pt-PT",
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "images/icon-512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "purpose": "maskable",
+      "sizes": "48x48 72x72 96x96 128x128 144x144 152x152 192x192 256x256 384x384 512x512",
+      "src": "images/Maskable/icon512_maskable.png",
+      "type": "image/png"
     },
     {
-      "src": "images/icon-192.png",
-      "type": "image/png",
-      "sizes": "192x192"
+      "purpose": "any",
+      "sizes": "48x48 72x72 96x96 128x128 144x144 152x152 192x192 256x256 384x384 512x512",
+      "src": "images/Rounded/icon512_rounded.png",
+      "type": "image/png"
     }
   ]
 }

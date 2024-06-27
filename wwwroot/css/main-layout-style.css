@@ -3,11 +3,17 @@
     --color-contrast: #652CB3;
 }
 
+html, body {
+    height: 100%;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: 'Arial', sans-serif;
-    margin: 0;
     background-color: var(--color-background);
-    height: 100vh;
+    padding-top: env(safe-area-inset-top);
 }
 
 .icon-bootstrap {
@@ -44,7 +50,7 @@ body {
 }
 
 .top-bar-section {
-    padding: 0px 16px;
+    /*padding: 0px 16px;*/
     flex: 1 !important;
     display: inline-flex;
     align-items: center;
@@ -66,6 +72,44 @@ body {
         display: flex;
         align-items: center;
     }
+        .toolbar-items .toolbar-item-left .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            align-content: start;
+        }
+            .toolbar-items .toolbar-item-left .search-container label .icon-bootstrap {
+                z-index: 4;
+                position: sticky;
+                color: black;
+                cursor: pointer;
+            }
+
+                .toolbar-items .toolbar-item-left .search-container label .icon-bootstrap:hover {
+                    background-color: transparent;
+                }
+
+            .toolbar-items .toolbar-item-left .search-container #searchbar {
+                left: 10px;
+                position: absolute;
+                background-color: white;
+                width: 30.8px;
+                height: 30.8px;
+                border-radius: 50%;
+                border: none;
+                outline: none;
+                transition: .2s;
+                padding-inline: 15px;
+                z-index: 3;
+            }
+
+                .toolbar-items .toolbar-item-left .search-container #searchbar:focus,
+                .toolbar-items .toolbar-item-left .search-container:hover #searchbar {
+                    width: 20vw;
+                    border-radius: 15px;
+                    z-index: 3;
+                    padding-inline: 35px;
+                }
 
     .toolbar-items .tool-bar-title {
         margin: 0;
@@ -160,6 +204,14 @@ body {
         #create-select-buttons .icon-bootstrap-select {
             font-size: 2.2rem;
         }
+    #create-select-buttons button {
+        transition: transform .3s;
+    }
+
+    #create-select-buttons button:hover {
+        transform: scale(1.1);
+        color: var(--color-contrast);
+    }
 
 #more-button,
 #ordenar-collapse {
@@ -174,13 +226,12 @@ body {
     position: fixed;
     background-color: var(--color-background);
     box-shadow: 0px 0px 5px black;
-    right: 50px;
-    top: 50px;
-    border-radius: 15px;
+    right: 48px;
+    top: 60px;
+    border-radius: 15px 0px 15px 15px;
     justify-content: left;
     z-index: 1000;
-
-    transition: .1s;
+    transition: .3s cubic-bezier(0.66, -0.32, 0.82, 1.16);
     transform: scale(0);
     transform-origin: top right;
     visibility: hidden;
@@ -203,7 +254,7 @@ body {
             }
 
             .more-menu-box .more-menu .more-menu-item:first-of-type {
-                border-radius: 15px 15px 0px 0px;
+                border-radius: 15px 0px 0px 0px;
             }
 
             .more-menu-box .more-menu .more-menu-item:hover {
@@ -239,6 +290,9 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    border-top: 0px solid black;
+    border-bottom: 0px solid black;
+    color: #222222;
 }
     .menu-collapse-box .menu-collapse {
         text-align: left;
@@ -256,6 +310,7 @@ body {
     font-size: initial;
     border-top: 2px solid black;
     border-bottom: 2px solid black;
+    color: white;
 }
 
 #ordenar-collapse:checked ~ .menu-collapse-box .menu-collapse{

@@ -164,7 +164,7 @@
                 <h3>Adicionando nota</h3>
             </div>
 
-            <h2 class="note-title" contenteditable="true" @onfocus="() => UpdateTitleNewNote()">
+            <h2 class="note-title" contenteditable="true" @onblur="() => UpdateTitleNewNote()">
                 Título
             </h2>
 
@@ -213,7 +213,7 @@
                 </div>
 
                 <div class="confirm-edit">
-                    <button disabled="@noteContentEmpty" @onclick="AddNote">OK</button>
+                    <button id="salvarButton" @onclick="AddNote">OK</button>
                 </div>
             </div>
         </div>
@@ -273,7 +273,7 @@
     private bool showTaskInterface = false;
     private bool showAddInterface = false;
     private bool selectNotes = false;
-    private bool noteContentEmpty = false;
+    private bool render = false;
     #endregion
 
     #region Variáveis Quill Editor
@@ -296,9 +296,14 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (showAddInterface == true)
+        if (showAddInterface == true && !render)
         {
+            render = true;
             await QuillCreate();
+        }
+        if (firstRender || showAddInterface == false)
+        {
+            render = false;
         }
     }
 
@@ -393,10 +398,6 @@
         newNoteTitle = element;
     }
 
-    private async Task NoteContentEmpty()
-    {
-        noteContentEmpty = await QuillService.NoteEmpty();
-    }
 
     private async Task ToggleSelectNote()
     {

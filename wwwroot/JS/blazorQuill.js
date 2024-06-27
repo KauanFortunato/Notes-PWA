@@ -38,7 +38,6 @@
         disableQuillEditor: function (quillControl) {
             quillControl.__quill.enable(false);
         },
-
         elementExist: function () {
             try {
                 const divEditorElement = document.getElementById("divEditorElement");
@@ -64,4 +63,3 @@
         }
     };
 })();
-
