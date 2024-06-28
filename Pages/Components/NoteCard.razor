@@ -16,12 +16,12 @@
             </button>
 
             <button @onclick="() => OnDelete.InvokeAsync(Note.Id)" class="navbar-toggler" type="button">
-                <span class="bi bi-trash3 icon-bootstrap small"></span>
+                <span class="bi bi-trash3 icon-bootstrap small trash"></span>
             </button>
 
-            <button class="navbar-toggler" type="button">
+            @* <button class="navbar-toggler" type="button">
                 <span class="bi bi-three-dots-vertical icon-bootstrap small"></span>
-            </button>
+            </button> *@
         </div>
     </div>
 
@@ -51,7 +51,7 @@
         </div>
     }
 
-    <div class="card-note-content" @onclick="() => OnEdit.InvokeAsync(Note)">
+    <div class="card-note-content" @ondblclick="() => OnEdit.InvokeAsync(Note)">
         <h2 class="card-title">
             <span>@Note.Title</span>
         </h2>

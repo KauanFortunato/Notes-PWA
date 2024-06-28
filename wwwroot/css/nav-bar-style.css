@@ -1,0 +1,164 @@
+﻿.side-bar-fade {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(0, 0, 0, 0.3);
+    top: 0;
+    left: 0;
+}
+
+
+.side-bar-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: var(--color-side-bar);
+    margin-top: calc(-1 * var(--top-app-bar-height));
+    z-index: 1040;
+    position: relative;
+    transform: scaleX(0);
+    width: 0;
+    max-width: 320px;
+    transform-origin: left;
+    transition: .4s;
+}
+
+.side-bar-container.active {
+    width: 100%;
+    transform: scaleX(1);
+}
+
+    .side-bar-container .top-items {
+        display: flex;
+        align-items: start;
+        margin-bottom: 30px;
+        margin-top: 20px;
+        justify-content: space-between;
+        padding-left: 15px;
+        z-index: 1000;
+    }
+        .side-bar-container .top-items h2 {
+            font-size: 22px;
+            margin: 0;
+        }
+
+        .side-bar-container .top-items button {
+            background-color: transparent;
+            border: none;
+        }
+
+    .side-bar-container .add-button-box {
+        position: absolute;
+        bottom: 50px;
+        right: 15px;
+        z-index: 1000;
+    }
+        .side-bar-container .add-button-box button {
+            transition: .3s;
+        }
+
+        .side-bar-container .add-button-box button:hover {
+            transform: scale(1.1);
+        }
+
+        .side-bar-container .add-button-box .icon-bootstrap-add {
+            font-size: 2.5em;
+        }
+
+        .side-bar-container .add-button-box .icon-bootstrap-add:hover {
+            color: var(--color-contrast);
+        }
+
+    .side-bar-container .workspaces-container {
+        display: flex;
+        flex-direction: column;
+        padding-inline: 30px;
+        overflow: auto;
+        scrollbar-width: thin;
+        scrollbar-color: white transparent;
+    }
+
+        .side-bar-container .workspaces-container .workspace-info-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: var(--color-light);
+            padding: 10px;
+            border: var(--color-contrast) solid 0px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            transition: .3s;
+            width: 85%;
+        }
+            .side-bar-container .workspaces-container .workspace-info-container:hover {
+                border-radius: 15px;
+            }
+
+            .side-bar-container .workspaces-container .workspace-info-container a {
+                color: black;
+                width: 60%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                text-decoration: none;
+            }
+
+            .side-bar-container .workspaces-container .workspace-info-container button {
+                background-color: transparent;
+                border: none;
+            }
+
+
+.workspace-tools-box {
+    position: absolute;
+    right: 2px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    flex-wrap: wrap;
+    z-index: 1030;
+    transform: scale(0);
+    transform-origin: top right;
+    transition: .3s;
+}
+
+    .workspace-tools-box .workspace-tools {
+        background-color: var(--color-background);
+        padding: 5px;
+        border-radius: 15px;
+    }
+
+    .workspace-tools-box .workspace-tools button {
+        margin: 0;
+    }
+        .workspace-tools-box .workspace-tools button {
+            color: white;
+        }
+
+.workspace-info-container:hover .workspace-tools-box {
+    transform: scale(1);
+}
+
+.workspace-on-edit {
+    z-index: 1010;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(0, 0, 0, 0.5);
+    top: 0;
+    left: 0;
+}
+
+.workspace-info-container.on-edit {
+    z-index: 1040;
+}
+
+    .workspace-info-container.on-edit button {
+        font-weight: 600;
+        color: var(--color-contrast);
+        padding: 5px;
+        border-radius: 50%;
+    }
+        .workspace-info-container.on-edit button:hover {
+            background-color: #bebebe;
+        }

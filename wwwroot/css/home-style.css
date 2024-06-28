@@ -1,0 +1,27 @@
+﻿.container-card {
+    display: flex;
+    align-items: start;
+    margin-top: 30px;
+    margin-left: 30px;
+}
+    .container-card  .item-container {
+        display: flex;
+        align-items: start;
+        width: 400px;
+        align-items: center;
+    }
+        .container-card .item-container .card-new-note {
+            background-color: white;
+            border-radius: 15px;
+            padding: 15px;
+            color: black;
+        }
+            .container-card .item-container .card-new-note h3 {
+                font-size: 20px;
+                margin: 0;
+                font-style: italic;
+                font-weight: 600;
+            }
+    .container-card .item-container .add-box button .icon-bootstrap-add {
+        font-size: 2.5rem;
+    }

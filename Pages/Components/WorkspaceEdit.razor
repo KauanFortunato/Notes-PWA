@@ -1,0 +1,21 @@
+﻿@using Notes.Data
+@inject NoteService NoteService
+
+<div class="workspace-info-container on-edit">
+    <a class="workspace-name on-edit" contenteditable="true" @onblur="() => UpdateName()">
+        @WorkSpaceSelecionado.Name
+    </a>
+    <button @onclick="() => OnSave.InvokeAsync()">OK</button>
+</div>
+
+@code {
+    [Parameter] public Workspace WorkSpaceSelecionado { get; set; } = new Workspace();
+    [Parameter] public EventCallback OnSave { get; set; }
+
+
+    private async Task UpdateName()
+    {
+        var element = await NoteService.GetElement(".workspace-name.on-edit");
+        WorkSpaceSelecionado.Name = element;
+    }
+}

@@ -1,0 +1,86 @@
+﻿@media (max-width: 1500px) {
+    .all-notes-section .all-notes .note-card {
+        width: 40%;
+    }
+}
+
+@media (max-width: 700px) {
+    .toolbar-items .toolbar-item-left .search-container #searchbar:focus,
+    .toolbar-items .toolbar-item-left .search-container:hover #searchbar {
+        width: 60vw;
+    }
+
+    .toolbar-items {
+        justify-content: space-between;
+    }
+    .toolbar-items .tool-bar-title {
+        display: none;
+    }
+
+    .all-notes-box {
+        margin: 0;
+        padding-inline: 30px;
+    }
+
+    .all-notes-section .all-notes .note-card {
+        width: 100%;
+    }
+
+    .toolbar-items .toolbar-item-right .visu-tg-box {
+        display: none;
+    }
+
+    #more-button:checked ~ .more-menu-box {
+        right: 0;
+        border-radius: 15px 0 0 15px;
+    }
+
+    .side-bar-container {
+        position: absolute;
+    }
+
+    body.mobile-device .all-notes-section {
+        height: 70vh;
+    }
+
+    body.mobile-device .buttons-desktop {
+        display: none;
+    }
+
+    body.mobile-device #create-select-buttons {
+        bottom: 0;
+        right: 0;
+        width: 100%;
+    }
+        body.mobile-device #create-select-buttons .buttons-mobile {
+            display: flex;
+            width: 100%;
+            background-color: black;
+            justify-content: right;
+        }
+
+        body.mobile-device #create-select-buttons .item-buttons {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-inline: 15px;
+            padding: 7px;
+        }
+
+        body.mobile-device #create-select-buttons .item-buttons p {
+            margin: 0;
+            font-size: 13px;
+        }
+
+            body.mobile-device #create-select-buttons .buttons-mobile .item-buttons button {
+                margin: 0;
+            }
+
+                body.mobile-device #create-select-buttons .buttons-mobile .item-buttons button span{
+                    font-size: 1.5rem;
+                }
+}
+
+.buttons-mobile {
+    display: none;
+}

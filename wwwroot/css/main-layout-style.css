@@ -1,6 +1,13 @@
 ﻿:root {
     --color-background: #222;
     --color-contrast: #652CB3;
+    --color-light: white;
+    --color-side-bar: #101010;
+    --color-danger: #ff5c5c;
+}
+
+:root {
+    --top-app-bar-height: 64px;
 }
 
 html, body {
@@ -16,6 +23,10 @@ body {
     padding-top: env(safe-area-inset-top);
 }
 
+.main-content {
+    display: flex;
+}
+
 .icon-bootstrap {
     color: white;
     font-size: 1.4rem;
@@ -23,6 +34,10 @@ body {
     display: flex;
     align-content: center;
     transition: .2s;
+}
+
+span.trash {
+    color: var(--color-danger);
 }
 
 .icon-bootstrap:hover {
@@ -56,6 +71,7 @@ body {
     align-items: center;
     justify-content: flex-end;
     z-index: 1;
+    height: var(--top-app-bar-height);
 }
 
 .toolbar-items {
@@ -98,7 +114,7 @@ body {
                 border-radius: 50%;
                 border: none;
                 outline: none;
-                transition: .2s;
+                transition: .3s;
                 padding-inline: 15px;
                 z-index: 3;
             }
@@ -283,7 +299,7 @@ body {
     padding: 0 10px;
     height: 0px;
     width: 100%;
-    transition: .1s;
+    transition: .2s;
     font-size: 0px;
     transform-style: revert-layer;
     border-bottom: 0px solid black;
@@ -330,36 +346,3 @@ body {
     flex-direction: column;
     align-items: flex-start;
 }
-
-
-.navbar-nav .workspace-info-container {
-    width: 70%;
-}
-    .navbar-nav .workspace-info-container .workspace-info {
-        display: flex;
-        color: white;
-        padding-left: 10px;
-        background-color: white;
-        border-radius: 15px;
-        margin: 10px;
-        justify-content: space-between;
-    }
-        .navbar-nav .workspace-info-container .workspace-info .nav-link.active {
-            color: black;
-            font-size: 1.3rem;
-            font-style: italic;
-            font-weight: 600;
-        }
-
-        .workspace-info-container .workspace-info .btn-more-options {
-            background-color: transparent;
-            border: none;
-            padding: 0;
-            margin-inline: 2px;
-        }
-            .workspace-info-container .workspace-info .btn-more-options span {
-                color: black;
-            }
-                .workspace-info-container .workspace-info .btn-more-options span:hover {
-                    background-color: rgb(0, 0, 0, 0.1);
-                }

@@ -22,6 +22,11 @@ namespace Notes.Pages.Services
             await _jsRuntime.InvokeVoidAsync("functionsUseful.removeClassItem", elementId, classAdd);
         }
 
+        public async Task DetectDevice()
+        {
+            await _jsRuntime.InvokeVoidAsync("functionsUseful.aplicarEstilos");
+        }
+
         public async Task Search()
         {
             await _jsRuntime.InvokeVoidAsync("search");

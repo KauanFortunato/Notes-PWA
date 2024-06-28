@@ -1,5 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @using Notes.Data
+@using Notes.Pages.Components
+
 @inject NoteService NoteService
 @inject AppData AppData
 @inject FunctionsUseful FunctionsUseful
@@ -9,7 +11,7 @@
         <section class="top-bar-section">
             <nav class="toolbar-items">
                 <div class="toolbar-item-left">                    
-                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" onclick="functionsUseful.sidebarActive()">
                         <span class="bi bi-list icon-bootstrap"></span>
                     </button>
 
@@ -76,74 +78,88 @@
             </nav>
         </section>
     </div>
+</header>
+<div class="main-content">
+    <nav id="side-bar-container" class="side-bar-container">
+        <div class="side-bar-fade" onclick="functionsUseful.sidebarClose()"></div>
+        <div class="top-items">
+            <h2>
+                <span>Áreas de Trabalho</span>
+            </h2>
+            <button id="close-side-bar" onclick="functionsUseful.sidebarClose()">
+                <span class="bi bi-x-lg icon-bootstrap"></span>
+            </button>
+        </div>
 
-    <nav class="navbar">
-        <div class="container-fluid">
-            <div class="offcanvas offcanvas-start side-bar-bootstrap" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Áreas de Trabalho</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
+        <div class="workspaces-container">
+            @foreach (var workspace in workspaces)
+            {
+                if (showEditInterface && workspace.Id == workspaceSelecionado.Id)
+                {
+                    <div class="workspace-on-edit" @onclick="HideEditInterface"></div>
+                    <WorkspaceEdit
+                        WorkSpaceSelecionado="workspaceSelecionado"
+                        OnSave="SaveEditWorkspace"/>
+                }
+                else
+                {
+                    <div class="workspace-info-container">
+                        <a class="nav-link active" aria-current="page" href="/workspace/@workspace.Id">@workspace.Name</a>
+                        <div class="workspace-tools-box">
+                            <div class="workspace-tools">
+                                <button class="navbar-toggler" type="button" @onclick="() => ShowEditInterface(workspace)">
+                                    <span class="bi bi-pencil icon-bootstrap small"></span>
+                                </button>
 
-                <div class="offcanvas-body">
-                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                        <li class="nav-item">
-                            @foreach (var workspace in workspaces)
-                            {
-                                <div class="workspace-info-container">
-                                    <div class="workspace-info">
-                                        <a class="nav-link active" aria-current="page" href="/workspace/@workspace.Id">@workspace.Name</a>
-                                        <button class="btn-more-options" type="button">
-                                            <span class="bi bi-three-dots-vertical icon-bootstrap small"></span>
-                                        </button>
-                                    </div>
-                                </div>
-                            }
-                        </li>
-                    </ul>
-                </div>
-            </div>
+                                <button class="navbar-toggler" type="button" @onclick="() => DeleteWorkspace(workspace.Id)">
+                                    <span class="bi bi-trash3 icon-bootstrap small trash"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="add-button-box">
+            <button class="navbar-toggler" type="button" @onclick="AddWorkspace">
+                <span class="bi bi-plus-square icon-bootstrap-add"></span>
+            </button>
         </div>
     </nav>
-</header>
 
-@Body
-
+    @Body
+</div>
 @code
 {
     private List<Workspace> workspaces = new List<Workspace>();
-    private Workspace workspaceSelecionado = null;
-    private bool mostrarEditInterface = false;
+    private Workspace? workspaceSelecionado = null;
     private bool visualizationType = false;
+    private bool showEditInterface = false;
 
     protected override async Task OnInitializedAsync()
     {
         await AtualizarWorkspacesAsync();
     }
 
-    private async Task SalvarEdicao()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await NoteService.UpdateWorkspace(workspaceSelecionado);
-        workspaces = await NoteService.GetAllWorkspaces();
-        EsconderInterfaceDeEdicao();
-    }
-
-    private void MostrarInterfaceDeEdicao(Workspace workspace)
-    {
-        workspaceSelecionado = workspace;
-        mostrarEditInterface = true;
-    }
-
-    private async Task EsconderInterfaceDeEdicao()
-    {
-        mostrarEditInterface = false;
-        workspaceSelecionado = null;
-        workspaces = await NoteService.GetAllWorkspaces();
+        if (firstRender)
+        {
+            await FunctionsUseful.DetectDevice();
+        }
     }
 
     private async Task AtualizarWorkspacesAsync()
     {
         workspaces = await NoteService.GetAllWorkspaces();
+    }
+
+    private async Task AddWorkspace()
+    {
+        Workspace newWorkspace = new Workspace();
+        await NoteService.AddWorkspace(newWorkspace);
+        await AtualizarWorkspacesAsync();
     }
 
     private async Task ToggleVisualization(ChangeEventArgs e)
@@ -158,5 +174,30 @@
         }
 
         visualizationType = (bool)e.Value;
+    }
+
+    private async Task DeleteWorkspace(int id)
+    {
+        await NoteService.DeleteWorkspace(id);
+        await AtualizarWorkspacesAsync();
+    }
+
+    private async Task ShowEditInterface(Workspace workspace)
+    {
+        workspaceSelecionado = workspace;
+        showEditInterface = true;
+    }
+
+    private async Task HideEditInterface()
+    {
+        workspaceSelecionado = null;
+        showEditInterface = false;
+        await AtualizarWorkspacesAsync();
+    }
+
+    private async Task SaveEditWorkspace()
+    {
+        await NoteService.UpdateWorkspace(workspaceSelecionado);
+        await HideEditInterface();
     }
 }

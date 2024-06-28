@@ -47,7 +47,7 @@
         </div>
 
         <div class="confirm-edit">
-            <button disabled="@(string.IsNullOrEmpty(NotaSelecionada.Content))" @onclick="HandleSave">OK</button>
+            <button id="salvarButton" disabled @onclick="HandleSave">OK</button>
         </div>
     </div>
 </div>
@@ -65,6 +65,7 @@
         {
             await QuillService.CreateQuill(divEditorElement);
             await LoadContent();
+            await QuillService.StartObservation();
         }
     }
 

@@ -141,6 +141,7 @@
         return new Promise(async (resolve, reject) => {
             let lastId = await indexedDBFunctions.getLastId('lastIdWks');
             workspace.id = ++lastId;
+            workspace.name = "Workspace" + workspace.id;
 
             const transaction = indexedDBFunctions.db.transaction(['workspaces'], 'readwrite');
             const store = transaction.objectStore('workspaces');

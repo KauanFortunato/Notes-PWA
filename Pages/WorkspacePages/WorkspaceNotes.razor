@@ -8,6 +8,8 @@
 @inject NoteService NoteService
 @inject AppData AppData
 @inject QuillService QuillService
+@inject FunctionsUseful FunctionsUseful
+
 
 <PageTitle>Notes</PageTitle>
 
@@ -213,7 +215,7 @@
                 </div>
 
                 <div class="confirm-edit">
-                    <button id="salvarButton" @onclick="AddNote">OK</button>
+                    <button disabled id="salvarButton" @onclick="AddNote">OK</button>
                 </div>
             </div>
         </div>
@@ -221,25 +223,50 @@
 }
 
 <div id="create-select-buttons">
-    @if (selectNotes)
-    {
-        <button class="navbar-toggler" type="button" @onclick="DeleteSelected">
-            <span class="bi bi-trash3 icon-bootstrap"></span>
+    <div class="buttons-desktop">
+        @if (selectNotes)
+        {
+            <button class="navbar-toggler" type="button" @onclick="DeleteSelected">
+                <span class="bi bi-trash3 icon-bootstrap"></span>
+            </button>
+        }
+
+        <button class="navbar-toggler" type="button" @onclick="ToggleSelectNote">
+            <span class="bi bi-check-square icon-bootstrap-select"></span>
         </button>
-    }
-    
-    <button class="navbar-toggler" type="button" @onclick="ToggleSelectNote">
-        <span class="bi bi-check-square icon-bootstrap-select"></span>
-    </button>
 
-    <button class="navbar-toggler" type="button" @onclick="ShowAddInterface">
-        <span class="bi bi-plus-square icon-bootstrap-add"></span>
-    </button>
+        <button class="navbar-toggler" type="button" @onclick="ShowAddInterface">
+            <span class="bi bi-plus-square icon-bootstrap-add"></span>
+        </button>
+    </div>
+
+    <div class="buttons-mobile">
+        @if (selectNotes)
+        {
+            <button class="navbar-toggler" type="button" @onclick="DeleteSelected">
+                <span class="bi bi-trash3 icon-bootstrap"></span>
+            </button>
+        }
+
+        <div class="item-buttons">
+            <button class="navbar-toggler" type="button" @onclick="ToggleSelectNote">
+                <span class="bi bi-check-square icon-bootstrap-select"></span>
+            </button>
+            <p>Selecionar</p>
+        </div>
+            
+        <div class="item-buttons">
+            <button class="navbar-toggler" type="button" @onclick="ShowAddInterface">
+                <span class="bi bi-plus-square icon-bootstrap-add"></span>
+                <p>Addicionar</p>
+            </button>
+        </div>
+    </div>
 </div>
-
+@* 
 <div>
     <p>Tarefas pendentes: @totalTasks</p>
-</div>
+</div> *@
 
 @* <input @bind="novoWorkspaceTitulo" placeholder="Título da nota..." />
 <button @onclick="AdicionarWorkspace" type="button" class="btn btn-primary">Adicionar Workspace</button>
@@ -300,6 +327,7 @@
         {
             render = true;
             await QuillCreate();
+            await QuillService.StartObservation();
         }
         if (firstRender || showAddInterface == false)
         {
@@ -507,6 +535,7 @@
     {
         await QuillService.CreateQuill(divEditorElement);
     }
+
     #endregion
 
     public void Dispose()

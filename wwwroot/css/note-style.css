@@ -30,11 +30,11 @@
 .all-notes-section {
     overflow: auto;
     padding-top: 31px;
-    /*margin-bottom: 40px;*/
     max-height: 85vh;
     overflow: auto;
     scrollbar-width: thin;
     scrollbar-color: white transparent;
+    width: 100%;
 }
     .all-notes-box {
         margin-left: 45px;
