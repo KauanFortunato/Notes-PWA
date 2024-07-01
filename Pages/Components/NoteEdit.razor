@@ -1,6 +1,7 @@
 ﻿@using Notes.Data
 @inject NoteService NoteService
 @inject QuillService QuillService
+@inject FunctionsUseful FunctionsUseful
 
 @code {
     private async Task UpdateTitle()
@@ -65,12 +66,13 @@
         {
             await QuillService.CreateQuill(divEditorElement);
             await LoadContent();
-            await QuillService.StartObservation();
         }
+
     }
 
     async Task LoadContent()
     {
+        await QuillService.StartObservation();
         await QuillService.LoadContent(divEditorElement, NotaSelecionada.Content);
     }
 
@@ -82,6 +84,7 @@
 
     private async Task HandleCancel()
     {
+        await QuillService.StopObservation();
         await OnCancel.InvokeAsync();
     }
 }

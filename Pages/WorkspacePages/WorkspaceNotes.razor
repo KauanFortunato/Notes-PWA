@@ -5,15 +5,17 @@
 
 @inject NavigationManager NavigationManager
 @inject HttpClient HttClient
+
 @inject NoteService NoteService
 @inject AppData AppData
 @inject QuillService QuillService
 @inject FunctionsUseful FunctionsUseful
+@inject PushNotification PushNotification
 
 
 <PageTitle>Notes</PageTitle>
 
-<section class="all-notes-section">
+<section id="all-notes-section" class="all-notes-section">
     <div class="all-notes-box">
         @if (groupingType == "data")
         {
@@ -263,14 +265,6 @@
         </div>
     </div>
 </div>
-@* 
-<div>
-    <p>Tarefas pendentes: @totalTasks</p>
-</div> *@
-
-@* <input @bind="novoWorkspaceTitulo" placeholder="Título da nota..." />
-<button @onclick="AdicionarWorkspace" type="button" class="btn btn-primary">Adicionar Workspace</button>
- *@
 
 @code {
     [Parameter]
@@ -310,15 +304,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await UpdateNote();
-        await AtualizarWorkspacesAsync();
         AppData.OnChange += AppDataChanged;
     }
 
     protected override async Task OnParametersSetAsync()
     {
         await UpdateNote();
-        await AtualizarWorkspacesAsync();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -378,6 +369,7 @@
     {
         notes = await NoteService.GetAllNotesAsync();
         await GroupNotes();
+        await CriarNotificacoes();
     }
 
     private async Task GroupNotes()
@@ -425,7 +417,6 @@
         var element = await NoteService.GetElement(".note-title");
         newNoteTitle = element;
     }
-
 
     private async Task ToggleSelectNote()
     {
@@ -515,21 +506,6 @@
 
     #endregion
 
-    #region Workspace
-    private async Task AtualizarWorkspacesAsync()
-    {
-        workspaces = await NoteService.GetAllWorkspaces();
-    }
-
-    private async Task AdicionarWorkspace()
-    {
-        var workspace = new Workspace { Name = newWorkspaceTitle };
-        await NoteService.AddWorkspace(workspace);
-        workspaces = await NoteService.GetAllWorkspaces();
-        newWorkspaceTitle = string.Empty;
-    }
-    #endregion
-
     #region Quill
     public async Task QuillCreate()
     {
@@ -537,6 +513,28 @@
     }
 
     #endregion
+
+    private async Task CriarNotificacoes()
+    {
+        foreach (var group in notesGroupedDate)
+        {
+            foreach (var note in group)
+            {
+                if (note.Task.Done == false && note.Task.DeadLine != null)
+                {
+                    DateTime today = DateTime.Now;
+                    DateTime deadlineNote = Convert.ToDateTime(note.Task.DeadLine);
+                    var diffSeconds = Convert.ToInt32((today - deadlineNote).TotalSeconds);
+
+                    // await PushNotification.ScheduleNotification(diffSeconds);
+
+                    Console.WriteLine("Data atual: " + today);
+                    Console.WriteLine("Data Nota: " + deadlineNote);
+                    Console.WriteLine("Diferença em segundos: " + diffSeconds);
+                }
+            }
+        }
+    }
 
     public void Dispose()
     {

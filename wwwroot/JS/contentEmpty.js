@@ -1,4 +1,5 @@
 window.detectEmptyClass = {
+    observer: null,
     checkClass: function () {
         var editor = document.querySelector('.ql-blank');
         var salvarButton = document.getElementById('salvarButton');
@@ -17,7 +18,7 @@ window.detectEmptyClass = {
             target = document.querySelector('.ql-editor');
         }
 
-        var observer = new MutationObserver(() => {
+        observer = new MutationObserver(() => {
             window.detectEmptyClass.checkClass();
         });
 
@@ -25,5 +26,12 @@ window.detectEmptyClass = {
         observer.observe(target, config);
 
         window.detectEmptyClass.checkClass();
+    },
+
+    stopObservation: function () {
+        if (this.observer) {
+            this.observer.disconnect();
+            this.observer = null;
+        }
     }
 };

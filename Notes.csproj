@@ -9,14 +9,17 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\JS\contentEmpty.js" />
+    <Content Remove="wwwroot\JS\pushNotification.js" />
   </ItemGroup>
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\JS\contentEmpty.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\JS\pushNotification.js" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="wwwroot\JS\contentEmpty.js" />
+    <None Include="wwwroot\JS\pushNotification.js" />
   </ItemGroup>
 
   <ItemGroup>

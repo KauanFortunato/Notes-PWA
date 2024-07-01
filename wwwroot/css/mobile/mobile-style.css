@@ -13,9 +13,10 @@
     .toolbar-items {
         justify-content: space-between;
     }
-    .toolbar-items .tool-bar-title {
-        display: none;
-    }
+
+        .toolbar-items .tool-bar-title {
+            display: none;
+        }
 
     .all-notes-box {
         margin: 0;
@@ -52,6 +53,7 @@
         right: 0;
         width: 100%;
     }
+
         body.mobile-device #create-select-buttons .buttons-mobile {
             display: flex;
             width: 100%;
@@ -67,20 +69,87 @@
             padding: 7px;
         }
 
-        body.mobile-device #create-select-buttons .item-buttons p {
-            margin: 0;
-            font-size: 13px;
-        }
-
-            body.mobile-device #create-select-buttons .buttons-mobile .item-buttons button {
+            body.mobile-device #create-select-buttons .item-buttons p {
                 margin: 0;
+                font-size: 13px;
             }
 
-                body.mobile-device #create-select-buttons .buttons-mobile .item-buttons button span{
-                    font-size: 1.5rem;
-                }
+        body.mobile-device #create-select-buttons .buttons-mobile .item-buttons button {
+            margin: 0;
+        }
+
+            body.mobile-device #create-select-buttons .buttons-mobile .item-buttons button span {
+                font-size: 1.5rem;
+            }
+    /* Note Card on edit mobile */
+    body.mobile-device .all-notes-section .all-notes .note-card.on-edit {
+        z-index: 1040;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        left: 0;
+        top: 0;
+        border-radius: 0;
+        padding: 0;
+        padding-top: 50px;
+    }
+
+    body.mobile-device .all-notes-section .all-notes .note-card.on-edit .card-content {
+        max-height: 80vh;
+        height: 100%;
+    }
+
+    body.mobile-device .note-card.on-edit .text-edit-options {
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    body.mobile-device .ql-toolbar.ql-snow {
+        padding: 0;
+    }
+
+    body.mobile-device .note-card.on-edit #toolbar .text-edit-options {
+        margin-inline: 0;
+    }
+
+    body.mobile-device .edit-note-options {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        justify-content: space-between;
+        border-bottom: 2px solid #bebebe;
+        background-color: white;
+    }
+
+    body.mobile-device .ql-snow .ql-color-picker, .ql-snow .ql-icon-picker {
+        width: 34px;
+        height: auto;
+    }
+
+    body.mobile-device .ql-snow.ql-toolbar button, .ql-snow .ql-toolbar button {
+        height: auto;
+        width: auto;
+    }
+
+    body.mobile-device .ql-snow.ql-toolbar button svg, .ql-snow .ql-toolbar button svg {
+        width: auto;
+        height: 26px;
+    }
 }
 
 .buttons-mobile {
+    display: none;
+}
+
+body.mobile-device .side-bar-fade {
+    display: block;
+}
+
+.side-bar-fade {
+    display: none;
+}
+
+.note-card.on-edit .all-notes-section {
     display: none;
 }

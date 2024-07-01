@@ -11,6 +11,7 @@ builder.Services.AddScoped<NoteService>();
 builder.Services.AddScoped<AppData>();
 builder.Services.AddScoped<QuillService>();
 builder.Services.AddScoped<FunctionsUseful>();
+builder.Services.AddScoped<PushNotification>();
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 

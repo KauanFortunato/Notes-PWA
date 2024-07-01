@@ -36,7 +36,7 @@
     <link rel="apple-touch-icon" sizes="256x256" href="images/Maskable/icon512_maskable.png">
     <link rel="apple-touch-icon" sizes="384x384" href="images/Maskable/icon512_maskable.png">
     <link rel="apple-touch-icon" sizes="512x512" href="images/Maskable/icon512_maskable.png">
-    
+
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
@@ -60,5 +60,53 @@
     <script src="JS/searchBar.js"></script>
     <script src="JS/functionsUseful.js"></script>
     <script src="JS/contentEmpty.js"></script>
+    <script src="JS/pushNotification.js"></script>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
+
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyDl8zfrBECEzlRJIvK6zcnyhiDBU0WXIcU",
+            authDomain: "notes-be916.firebaseapp.com",
+            projectId: "notes-be916",
+            storageBucket: "notes-be916.appspot.com",
+            messagingSenderId: "233184136697",
+            appId: "1:233184136697:web:9590d77aafe9028164c128",
+            measurementId: "G-4S73D9S4NW"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+
+        const messaging = firebase.messaging();
+
+        messaging.onBackgroundMessage((payload) => {
+            console.log('[firebase-messaging-sw.js] Received background message ', payload);
+            const notificationTitle = payload.notification.title;
+            const notificationOptions = {
+                body: payload.notification.body,
+                icon: payload.notification.icon
+            };
+
+            self.registration.showNotification(notificationTitle, notificationOptions);
+        });
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('/firebase-messaging-sw.js').then(function (registration) {
+                    console.log('Service Worker registration successful with scope: ', registration.scope);
+                }, function (err) {
+                    console.error('Service Worker registration failed: ', err);
+                });
+            });
+        }
+    </script>
 </body>
 </html>

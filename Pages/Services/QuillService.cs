@@ -59,5 +59,10 @@ namespace Notes.Pages.Services
         {
             await _jsRuntime.InvokeVoidAsync("detectEmptyClass.startObservation");
         }
+
+        public async Task StopObservation()
+        {
+            await _jsRuntime.InvokeVoidAsync("detectEmptyClass.stopObservation");
+        }
     }
 }
