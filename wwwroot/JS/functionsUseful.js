@@ -31,9 +31,9 @@ window.functionsUseful = {
         var body = document.body;
         if (functionsUseful.isMobileDevice()) {
             body.classList.add('mobile-device');
-            console.log("Is mobile");
+            //console.log("Is mobile");
         } else {
-            console.log("Not is mobile");
+            //console.log("Not is mobile");
             body.classList.remove('mobile-device');
         }
     }

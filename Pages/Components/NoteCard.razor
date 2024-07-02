@@ -3,7 +3,6 @@
 @inject NoteService NoteService
 @inject Pages.Services.QuillService QuillService
 
-
 <div class="note-card">
     <div class="note-tools-box">
         <div class="note-tools">
@@ -44,7 +43,13 @@
                     }
                     else
                     {
-                        <span>@($"{Note.Task.DeadLine:dd} de {Note.Task.DeadLine:MMMM} {Note.Task.DeadLine:yyyy}, {Note.Task.DeadLine:HH:mm}")</span>
+                        <span>
+                            @($"{Note.Task.DeadLine:dd} de {Note.Task.DeadLine:MMMM} {Note.Task.DeadLine:yyyy}, {Note.Task.DeadLine:HH:mm}")
+                            @if (DateTime.Now > Convert.ToDateTime(Note.Task.DeadLine) && Note.Task.Done == false)
+                            {
+                                <label>, <b style="color: red;"> Atrasado</b></label>
+                            }
+                        </span>
                     }
                 </label>
             </div>
@@ -84,6 +89,9 @@
         await LoadContent();
     }
 
+    /// <summary>
+    /// Carrega o conteudo da nota usando Quill
+    /// </summary>
     async Task LoadContent()
     {
         await QuillService.LoadContent(cardContent, Note.Content);

@@ -12,7 +12,6 @@
 @inject FunctionsUseful FunctionsUseful
 @inject PushNotification PushNotification
 
-
 <PageTitle>Notes</PageTitle>
 
 <section id="all-notes-section" class="all-notes-section">
@@ -310,6 +309,7 @@
     protected override async Task OnParametersSetAsync()
     {
         await UpdateNote();
+        await CriarNotificacoes();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -369,7 +369,6 @@
     {
         notes = await NoteService.GetAllNotesAsync();
         await GroupNotes();
-        await CriarNotificacoes();
     }
 
     private async Task GroupNotes()
@@ -466,7 +465,7 @@
     {
         await NoteService.UpdateNoteAsync(selectedNote);
 
-        await UpdateNote();
+        await CriarNotificacoes();
         await HideEditInterface();
         await HideTaskInterface();
     }
@@ -503,7 +502,6 @@
 
         await UpdateNote();
     }
-
     #endregion
 
     #region Quill
@@ -516,23 +514,51 @@
 
     private async Task CriarNotificacoes()
     {
-        foreach (var group in notesGroupedDate)
+        if (groupingType == "data")
         {
-            foreach (var note in group)
+            foreach (var group in notesGroupedDate)
             {
-                if (note.Task.Done == false && note.Task.DeadLine != null)
+                foreach (var note in group)
                 {
-                    DateTime today = DateTime.Now;
-                    DateTime deadlineNote = Convert.ToDateTime(note.Task.DeadLine);
-                    var diffSeconds = Convert.ToInt32((today - deadlineNote).TotalSeconds);
+                    if (note.Task.Done == false && note.Task.DeadLine != null && note.Task.Notification == false)
+                    {
+                        if (Convert.ToDateTime(note.Task.DeadLine) > DateTime.Now)
+                        {
+                            DateTime today = DateTime.Now;
+                            DateTime deadlineNote = Convert.ToDateTime(note.Task.DeadLine);
+                            var diffMilliSeconds = Convert.ToInt32((deadlineNote - today).TotalMilliseconds);
 
-                    // await PushNotification.ScheduleNotification(diffSeconds);
+                            string body = $"O prazo de sua tarefa terminou.";
 
-                    Console.WriteLine("Data atual: " + today);
-                    Console.WriteLine("Data Nota: " + deadlineNote);
-                    Console.WriteLine("Diferença em segundos: " + diffSeconds);
+                            await PushNotification.ScheduleNotification("Tarefa", body, note.Id, diffMilliSeconds);
+
+                            // Console.WriteLine("Data atual: " + today);
+                            // Console.WriteLine("Data Nota: " + deadlineNote);
+                            // Console.WriteLine("Diferença em minutos: " + diffMilliSeconds / 60000);
+                        }
+                    }
                 }
             }
+        }
+        else
+        {
+            foreach (var note in notesGroupedTitle)
+            {
+                if (note.Task.Done == false && note.Task.DeadLine != null && note.Task.Notification == false)
+                {
+                    if (Convert.ToDateTime(note.Task.DeadLine) > DateTime.Now)
+                    {
+                        DateTime today = DateTime.Now;
+                        DateTime deadlineNote = Convert.ToDateTime(note.Task.DeadLine);
+                        var diffMilliSeconds = Convert.ToInt32((deadlineNote - today).TotalMilliseconds);
+
+                        string body = $"O prazo de sua tarefa terminou.";
+
+                        await PushNotification.ScheduleNotification("Tarefa", body, note.Id, diffMilliSeconds);
+                    }
+                }
+            }
+            
         }
     }
 

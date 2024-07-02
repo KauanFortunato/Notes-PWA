@@ -105,6 +105,23 @@
         });
     },
 
+    getNote: function (id) {
+        return new Promise((resolve, reject) => {
+            const transaction = indexedDBFunctions.db.transaction(['notes'], 'readonly');
+            const store = transaction.objectStore('notes');
+
+            const request = store.get(id);
+
+            request.onsuccess = function (event) {
+                resolve(request.result);
+            };
+
+            request.onerror = function () {
+                reject('Erro ao ler nota');
+            };
+        });
+    },
+
     getAllNotes: function () {
         return new Promise((resolve, reject) => {
             const transaction = indexedDBFunctions.db.transaction(['notes'], 'readonly');

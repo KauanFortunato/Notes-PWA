@@ -16,7 +16,7 @@
                     </button>
 
                     <div class="search-container">
-                        <input id="searchbar" type="text" name="searchbar" placeholder=""
+                        <input id="searchbar" type="text" name="searchbar"
                                @onkeyup="FunctionsUseful.Search" @onfocus="FunctionsUseful.RemoveDate" @onblur="FunctionsUseful.AddDate" />
                         <label class="navbar-toggler" for="searchbar">
                             <span class="bi bi-search icon-bootstrap lupa"></span>
@@ -32,9 +32,6 @@
 
                 <input id="more-button" name="more-button" type="checkbox" />
                 <div class="toolbar-item-right">
-                    @* <button class="navbar-toggler" type="button" @onclick='() => FunctionsUseful.SetClassItem("all-notes", "all-notes-grid")'>
-                        <span class="bi bi-grid-fill icon-bootstrap"></span>
-                    </button> *@
                     <label class="visu-tg-box">
                         <input type="checkbox" checked="@visualizationType" @onchange="ToggleVisualization">
                         <span class="bi bi-list-ul icon-bootstrap icon-list"></span>
@@ -57,11 +54,11 @@
                             </label>
 
                             <div class="menu-collapse-box">
-                                <div class="menu-collapse" @onclick='() => AppData.MudarTipoDeAgrupamento("data")'>
+                                <div class="menu-collapse" @onclick='() => AppData.ChangeGroupType("data")'>
                                     <span class="bi bi-calendar-event icon-more-menu"></span>
                                     <span>Por data</span>
                                 </div>
-                                <div class="menu-collapse" @onclick='() => AppData.MudarTipoDeAgrupamento("titulo")'>
+                                <div class="menu-collapse" @onclick='() => AppData.ChangeGroupType("titulo")'>
                                     <span class="bi bi-fonts icon-more-menu"></span>
                                     <span>Por titulo</span>
                                 </div>
@@ -179,6 +176,16 @@
 
     private async Task DeleteWorkspace(int id)
     {
+        List<Note> notes = new List<Note>();
+        notes = await NoteService.GetAllNotesAsync();
+
+        foreach(var note in notes)
+        {
+            if (note.WorkspaceId == id)
+            {
+                await NoteService.DeleteNoteAsync(note.Id);
+            }
+        }
         await NoteService.DeleteWorkspace(id);
         await AtualizarWorkspacesAsync();
     }

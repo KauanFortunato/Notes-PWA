@@ -1,5 +1,6 @@
 ﻿@using Notes.Data
 @inject NoteService NoteService
+@inject QuillService QuillService
 
 <div class="select-card-box">
     <div class="checkbox-wrapper-46 checkbox-note-card">
@@ -18,11 +19,6 @@
             <h2 class="card-title">
                 <span>@Note.Title</span>
             </h2>
-            <div class="card-content">
-                <p>
-                    @Note.Content
-                </p>
-            </div>
         </div>
     </label>
 </div>
@@ -30,7 +26,6 @@
 
 @code {
     [Parameter] public Note Note { get; set; } = new Note();
-
 
     private async Task ToggleSelect(ChangeEventArgs e)
     {

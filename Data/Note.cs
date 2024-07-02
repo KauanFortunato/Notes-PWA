@@ -1,11 +1,13 @@
 ﻿namespace Notes.Data
 {
+    /// <summary>
+    /// Classe responsável por guardar as informações das notas 
+    /// </summary>
     public class Note
     {
         private DateTime today;
         private string createDate;
         private bool isSelected = false;
-
         public bool IsSelected
         {
             get { return isSelected; }
@@ -28,6 +30,11 @@
             get { return createDate; }
             set { createDate = value; }
         }
+
+        /// <summary>
+        /// Método que retorna o valor da variável createDateDatetime convertendo para DateTime
+        /// </summary>
+        /// <returns></returns>
         public DateTime CreateDateDateTime()
         {
             DateTime createDateDateTime = Convert.ToDateTime(createDate);

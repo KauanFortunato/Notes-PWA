@@ -26,7 +26,11 @@ namespace Notes.Pages.Services
             }
         }
 
-        public async Task MudarTipoDeAgrupamento(string tipo)
+        /// <summary>
+        /// Muda o tipo de agrupamento
+        /// </summary>
+        /// <param name="tipo">Tipo de agrupamento (data, titulo)</param>
+        public async Task ChangeGroupType(string tipo)
         {
             await _noteService.SetLocalStorageItem("orderType", tipo);
             TipoDeAgrupamento = tipo;

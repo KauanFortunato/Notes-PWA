@@ -84,6 +84,13 @@
                     max-height: 150px;
                     overflow: hidden;
                 }
+
+                .all-notes-section .all-notes .note-card .card-content:hover {
+                    overflow: auto;
+                    scrollbar-width: thin;
+                    scrollbar-color: var(--color-contrast) white;
+                }
+
                     .all-notes-section .all-notes .note-card .card-content p {
                         margin: 0;
                         font-size: 16px;

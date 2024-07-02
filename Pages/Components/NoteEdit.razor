@@ -9,12 +9,6 @@
         var element = await NoteService.GetElement(".card-title.on-edit");
         NotaSelecionada.Title = element;
     }
-
-    private async Task UpdateContent()
-    {
-        var element = await NoteService.GetElement(".card-content .on-edit");
-        NotaSelecionada.Content = element;
-    }
 }
 
 <div class="note-card on-edit">

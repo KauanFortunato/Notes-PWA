@@ -1,13 +1,6 @@
 ﻿@page "/"
 
 @inject PushNotification PushNotification
-
+@inject NoteService NoteService
 
 <PageTitle>Notes</PageTitle>
-
-<button @onclick="PushNotification.RequestNotificationPermission">Pedir permissão para notificações</button>
-<button @onclick="PushNotification.SendImmediateNotification">Enviar notificação imediata</button>
-
-@code {
-    
-}

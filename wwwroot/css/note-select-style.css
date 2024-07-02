@@ -66,15 +66,21 @@
 
 /* Select Notes */
 
+.all-notes.all-notes-grid .select-card-box {
+    width: 25%;
+}
+
 .select-card-box {
     display: flex;
     align-items: center;
+    width: 35%;
+    transition: .3s;
 }
     .select-card-box .checkbox-note-card {
         margin-right: 10px;
     }
 
-    .select-card-box .note-card {
+    .all-notes-section .all-notes .select-card-box .note-card {
         user-select: none;
         cursor: pointer;
         width: 100%;
@@ -82,4 +88,6 @@
 
 .tools-select-container {
     position: absolute;
+}
+
 }

@@ -3,6 +3,9 @@ using Microsoft.JSInterop;
 
 namespace Notes.Pages.Services
 {
+    /// <summary>
+    /// Métodos da API Notification JavaScript
+    /// </summary>
     public class PushNotification
     {
         private readonly IJSRuntime _jsRuntime;
@@ -17,15 +20,14 @@ namespace Notes.Pages.Services
             await _jsRuntime.InvokeVoidAsync("askPermission");
         }
 
-        public async Task SendImmediateNotification()
+        public async Task SendImmediateNotification(string title, string body)
         {
-            await _jsRuntime.InvokeVoidAsync("sendNotification", "Notificação Imediata", "Esta é uma notificação enviada imediatamente.");
+            await _jsRuntime.InvokeVoidAsync("sendNotification", title, body);
         }
 
-        public async Task ScheduleNotification(int seconds)
+        public async Task ScheduleNotification(string title, string body, int id, int milliseconds)
         {
-            await _jsRuntime.InvokeVoidAsync("scheduleNotification", "Notificação Agendada", "Esta é uma notificação agendada.", seconds);
+            await _jsRuntime.InvokeVoidAsync("scheduleNotification", title, body, id, milliseconds);
         }
-
     }
 }

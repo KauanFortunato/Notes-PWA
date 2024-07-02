@@ -5,6 +5,9 @@ using System.Threading.Tasks; // Tarefas Assíncronas
 
 namespace Notes.Pages.Services
 {
+    /// <summary>
+    /// Classe onde fica os métodos de Note, Workspace e LocalStorage
+    /// </summary>
     public class NoteService
     {
         private readonly IJSRuntime _jsRuntime;
@@ -24,6 +27,11 @@ namespace Notes.Pages.Services
         public async Task UpdateNoteAsync(Note note)
         {
             await _jsRuntime.InvokeVoidAsync("indexedDBFunctions.updateNote", note);
+        }
+
+        public async Task<Note> GetNoteAsync(int id)
+        {
+            return await _jsRuntime.InvokeAsync<Note>("indexedDBFunctions.getNote");
         }
 
         public async Task<List<Note>> GetAllNotesAsync()

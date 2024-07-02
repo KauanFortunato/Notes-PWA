@@ -1,6 +1,6 @@
 {
-  "name": "Note",
-  "short_name": "Note",
+  "name": "Notes",
+  "short_name": "Notes",
   "id": "./",
   "start_url": "./",
   "display": "standalone",

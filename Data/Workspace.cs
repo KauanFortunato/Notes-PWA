@@ -1,5 +1,8 @@
 ﻿namespace Notes.Data
 {
+    /// <summary>
+    /// Classe responsável por guardar as informações do workspace
+    /// </summary>
     public class Workspace
     {
         public int Id { get; set; }
