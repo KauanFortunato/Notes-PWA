@@ -38,6 +38,7 @@
 
     .side-bar-container {
         position: absolute;
+        height: calc(99vh - env(safe-area-inset-top));
     }
 
     body.mobile-device .all-notes-section {
@@ -57,8 +58,9 @@
         body.mobile-device #create-select-buttons .buttons-mobile {
             display: flex;
             width: 100%;
-            background-color: black;
+            background-color: var(--color-side-bar);
             justify-content: right;
+            backdrop-filter: blur(8px);
         }
 
         body.mobile-device #create-select-buttons .item-buttons {
@@ -137,6 +139,12 @@
         height: 26px;
     }
 }
+
+body.mobile-device .top-bar-box {
+    box-shadow: none;
+}
+
+
 
 .buttons-mobile {
     display: none;

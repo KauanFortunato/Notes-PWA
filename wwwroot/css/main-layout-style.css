@@ -2,8 +2,9 @@
     --color-background: #222;
     --color-contrast: #652CB3;
     --color-light: white;
-    --color-side-bar: #101010;
+    --color-side-bar: #000000;
     --color-danger: #ff5c5c;
+    --color-grey: #bebebe;
 }
 
 :root {

@@ -137,8 +137,6 @@
     scrollbar-color: var(--color-contrast) white;
 }
 
-
-
 .note-card.on-edit .text-edit-options {
     display: flex;
     border-top: 4px solid #bebebe;
@@ -238,6 +236,10 @@
                 display: flex;
                 border-top: 4px solid #bebebe;
                 border-bottom: 4px solid #bebebe;
+                flex-wrap: wrap;
+                justify-content: left;
+                align-items: center;
+
             }
                 .add-note-container .add-note-card .text-edit-options button{
                     margin: 0;

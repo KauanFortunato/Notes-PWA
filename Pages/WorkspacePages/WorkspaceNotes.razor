@@ -187,6 +187,13 @@
                     <button class="ql-list" value="bullet"></button>
                     <button class="ql-indent" value="-1"></button>
                     <button class="ql-indent" value="+1"></button>
+
+                    <button class="ql-link"></button>
+                    <button class="ql-image"></button>
+                    <button class="ql-video"></button>
+
+                    <button class="ql-blockquote"></button>
+                    <button class="ql-code-block"></button>
                 </div>
             </div>
 
@@ -272,7 +279,6 @@
     #region Variáveis
     private string newNoteTitle;
     private string newNoteContent;
-    private string newWorkspaceTitle;
     private int totalTasks;
 
     private string groupingType;
@@ -316,6 +322,7 @@
     {
         if (showAddInterface == true && !render)
         {
+            Console.WriteLine("ola");
             render = true;
             await QuillCreate();
             await QuillService.StartObservation();
@@ -324,6 +331,7 @@
         {
             render = false;
         }
+        // AppData.WorkspaceUsedId = WorkpaceIdPage;
     }
 
     #region Notas CRUD

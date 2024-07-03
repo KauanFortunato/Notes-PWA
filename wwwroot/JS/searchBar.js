@@ -6,12 +6,8 @@
 
     for (i = 0; i < elements.length; i++) {
         if (!elements[i].innerHTML.toLowerCase().includes(input)) {
-            //noteCard[i].style.transform = "scale(0)";
-            //noteCard[i].style.position = "absolute";
             noteCard[i].style.display = "none";
         } else {
-            //noteCard[i].style.transform = "scale(1)";
-            //noteCard[i].style.position = "relative";
             noteCard[i].style.display = "block";
         }
     }

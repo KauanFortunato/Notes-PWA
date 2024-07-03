@@ -3,6 +3,7 @@
 @using Notes.Pages.Components
 
 @inject NoteService NoteService
+@inject WorkspaceService WorkspaceService
 @inject AppData AppData
 @inject FunctionsUseful FunctionsUseful
 
@@ -10,7 +11,7 @@
     <div class="top-bar-box">
         <section class="top-bar-section">
             <nav class="toolbar-items">
-                <div class="toolbar-item-left">                    
+                <div class="toolbar-item-left">
                     <button class="navbar-toggler" onclick="functionsUseful.sidebarActive()">
                         <span class="bi bi-list icon-bootstrap"></span>
                     </button>
@@ -43,7 +44,7 @@
                         <span class="bi bi-three-dots-vertical icon-bootstrap"></span>
                     </label>
                 </div>
-                
+
                 <div class="more-menu-box">
                     <div class="more-menu">
                         <div class="menu-collapse-container">
@@ -134,6 +135,7 @@
     private Workspace? workspaceSelecionado = null;
     private bool visualizationType = false;
     private bool showEditInterface = false;
+    private Workspace workspaceUsed = new Workspace();
 
     protected override async Task OnInitializedAsync()
     {
@@ -146,17 +148,18 @@
         {
             await FunctionsUseful.DetectDevice();
         }
+        // workspaceUsed = await WorkspaceService.GetWorkspaceAsync(AppData.WorkspaceUsedId);
     }
 
     private async Task AtualizarWorkspacesAsync()
     {
-        workspaces = await NoteService.GetAllWorkspaces();
+        workspaces = await WorkspaceService.GetAllWorkspacesAsync();
     }
 
     private async Task AddWorkspace()
     {
         Workspace newWorkspace = new Workspace();
-        await NoteService.AddWorkspace(newWorkspace);
+        await WorkspaceService.AddWorkspaceAsync(newWorkspace);
         await AtualizarWorkspacesAsync();
     }
 
@@ -186,11 +189,11 @@
                 await NoteService.DeleteNoteAsync(note.Id);
             }
         }
-        await NoteService.DeleteWorkspace(id);
+        await WorkspaceService.DeleteWorkspaceAsync(id);
         await AtualizarWorkspacesAsync();
     }
 
-    private async Task ShowEditInterface(Workspace workspace)
+    private void ShowEditInterface(Workspace workspace)
     {
         workspaceSelecionado = workspace;
         showEditInterface = true;
@@ -205,7 +208,7 @@
 
     private async Task SaveEditWorkspace()
     {
-        await NoteService.UpdateWorkspace(workspaceSelecionado);
+        await WorkspaceService.UpdateWorkspaceAsync(workspaceSelecionado);
         await HideEditInterface();
     }
 }

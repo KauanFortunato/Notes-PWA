@@ -12,6 +12,8 @@ namespace Notes.Pages.Services
             _noteService = noteService;
         }
 
+        public int WorkspaceUsedId { get; set; }
+
         public string TipoDeAgrupamento
         {
             get

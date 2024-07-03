@@ -11,16 +11,22 @@
 .side-bar-container {
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    background-color: var(--color-side-bar);
-    margin-top: calc(-1 * var(--top-app-bar-height));
-    z-index: 1040;
     position: relative;
-    transform: scaleX(0);
+
     width: 0;
-    max-width: 320px;
-    transform-origin: left;
+    height: 100vh;
+    max-width: 250px;
+
+    background-color: var(--color-side-bar);
+    border-radius: 0 16px 16px 0;
+
+    margin-top: calc(-1 * var(--top-app-bar-height) );
+    margin-left: 0;
+
     transition: .4s;
+    transform: scaleX(0);
+    transform-origin: left;
+    z-index: 1040;
 }
 
 .side-bar-container.active {
@@ -31,8 +37,9 @@
     .side-bar-container .top-items {
         display: flex;
         align-items: start;
-        margin-bottom: 30px;
-        margin-top: 20px;
+        padding: 20px 0;
+        margin-bottom: 20px;
+        border-bottom: 1px solid var(--color-grey);
         justify-content: space-between;
         padding-left: 15px;
         z-index: 1000;
@@ -40,6 +47,10 @@
         .side-bar-container .top-items h2 {
             font-size: 22px;
             margin: 0;
+        }
+
+        .side-bar-container .top-items .icon-bootstrap:hover {
+            background-color: transparent;
         }
 
         .side-bar-container .top-items button {
@@ -72,8 +83,9 @@
     .side-bar-container .workspaces-container {
         display: flex;
         flex-direction: column;
-        padding-inline: 30px;
-        overflow: auto;
+        /*padding-inline: 30px;*/
+        overflow-x: clip;
+        overflow-y: auto;
         scrollbar-width: thin;
         scrollbar-color: white transparent;
     }
@@ -83,20 +95,25 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background-color: var(--color-light);
+            /*background-color: var(--color-light);*/
             padding: 10px;
             border: var(--color-contrast) solid 0px;
             border-radius: 10px;
             margin-bottom: 20px;
             transition: .3s;
-            width: 85%;
+            width: 100%;
+            margin-left: 10px;
+            background-attachment: fixed;
+            border-bottom: solid 5px var(--color-grey);
         }
             .side-bar-container .workspaces-container .workspace-info-container:hover {
-                border-radius: 15px;
+                background-color: #222222;
+                border-radius: 10px 0 0 10px;
+                margin-left: 20px;
             }
 
             .side-bar-container .workspaces-container .workspace-info-container a {
-                color: black;
+                color: white;
                 width: 60%;
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -111,7 +128,7 @@
 
 .workspace-tools-box {
     position: absolute;
-    right: 2px;
+    right: 18px;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
@@ -149,16 +166,23 @@
     left: 0;
 }
 
-.workspace-info-container.on-edit {
+.side-bar-container .workspaces-container .workspace-info-container.on-edit {
     z-index: 1040;
 }
+    .side-bar-container .workspaces-container .workspace-info-container.on-edit:hover {
+        margin-left: 0;
+    }
+    .side-bar-container .workspaces-container .workspace-info-container.on-edit:focus {
+        background-color: #222222;
+        border-radius: 10px 0 0 10px;
+    }
 
-    .workspace-info-container.on-edit button {
+    .side-bar-container .workspaces-container .workspace-info-container.on-edit button {
         font-weight: 600;
         color: var(--color-contrast);
         padding: 5px;
         border-radius: 50%;
     }
-        .workspace-info-container.on-edit button:hover {
+        .side-bar-container .workspaces-container .workspace-info-container.on-edit button:hover {
             background-color: #bebebe;
         }

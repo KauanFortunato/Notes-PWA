@@ -23,7 +23,6 @@
     </label>
 </div>
 
-
 @code {
     [Parameter] public Note Note { get; set; } = new Note();
 
@@ -38,5 +37,3 @@
         await NoteService.UpdateNoteAsync(Note);
     }
 }
-
-

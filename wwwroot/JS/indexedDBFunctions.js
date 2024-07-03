@@ -208,6 +208,23 @@
         });
     },
 
+    getWorkspace: function (id) {
+        return new Promise((resolve, reject) => {
+            const transaction = indexedDBFunctions.db.transaction(['workspaces'], 'readonly');
+            const store = transaction.objectStore('workspaces');
+
+            const request = store.get(id);
+
+            request.onsuccess = function (event) {
+                resolve(request.result);
+            };
+
+            request.onerror = function () {
+                reject('Erro ao ler nota');
+            };
+        });
+    },
+
     getAllWorkspaces: function () {
         return new Promise((resolve, reject) => {
             const transaction = indexedDBFunctions.db.transaction(['workspaces'], 'readonly');

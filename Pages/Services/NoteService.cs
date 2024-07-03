@@ -44,28 +44,6 @@ namespace Notes.Pages.Services
             await _jsRuntime.InvokeVoidAsync("indexedDBFunctions.deleteNote", id);
         }
 
-        // CRUD Workspaces
-
-        public async Task AddWorkspace(Workspace workspace)
-        {
-            await _jsRuntime.InvokeVoidAsync("indexedDBFunctions.addWorkspace", workspace);
-        }
-
-        public async Task UpdateWorkspace(Workspace workspace)
-        {
-            await _jsRuntime.InvokeVoidAsync("indexedDBFunctions.updateWorkspace", workspace);
-        }
-
-        public async Task DeleteWorkspace(int id)
-        {
-            await _jsRuntime.InvokeVoidAsync("indexedDBFunctions.deleteWorkspace", id);
-        }
-
-        public async Task<List<Workspace>> GetAllWorkspaces()
-        {
-            return await _jsRuntime.InvokeAsync<List<Workspace>>("indexedDBFunctions.getAllWorkspaces");
-        }
-
         // Local Storage
 
         public async Task SetLocalStorageItem(string key, string value)

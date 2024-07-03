@@ -8,6 +8,7 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped<NoteService>();
+builder.Services.AddScoped<WorkspaceService>();
 builder.Services.AddScoped<AppData>();
 builder.Services.AddScoped<QuillService>();
 builder.Services.AddScoped<FunctionsUseful>();
