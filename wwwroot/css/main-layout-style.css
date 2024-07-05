@@ -100,6 +100,7 @@ span.trash {
                 position: sticky;
                 color: black;
                 cursor: pointer;
+                border-right: 1px solid #bebebe;
             }
 
                 .toolbar-items .toolbar-item-left .search-container label .icon-bootstrap:hover {
@@ -110,14 +111,15 @@ span.trash {
                 left: 10px;
                 position: absolute;
                 background-color: white;
-                width: 30.8px;
+                width: 18vw;
                 height: 30.8px;
-                border-radius: 50%;
+                border-radius: 15px;
                 border: none;
                 outline: none;
                 transition: .3s;
-                padding-inline: 15px;
+                padding-inline: 40px;
                 z-index: 3;
+                user-select: none;
             }
 
                 .toolbar-items .toolbar-item-left .search-container #searchbar:focus,
@@ -145,6 +147,7 @@ span.trash {
 
 .toolbar-items .toolbar-item-right {
     display: flex;
+    gap: 20px;
 }
     .toolbar-items .toolbar-item-right .visu-tg-box {
         display: flex;
@@ -209,6 +212,7 @@ span.trash {
     position: fixed;
     right: 50px;
     bottom: 56px;
+    user-select: none;
 }
     #create-select-buttons .select-icon {
         display: flex;
