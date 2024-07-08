@@ -6,6 +6,7 @@ GIT: https://git-scm.com/downloads
 
 Visual Studio(Opcional): https://visualstudio.microsoft.com/downloads/
 
+---
 ## Passo a Passo para Instalação e Execução
 ### Usando Visual Studio
 1. Clone o repositório:
