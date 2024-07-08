@@ -16,9 +16,9 @@
                         <span class="bi bi-list icon-bootstrap"></span>
                     </button>
 
-                    <div class="search-container">
-                        <input id="searchbar" type="text" name="searchbar" placeholder="Insira o título da nota...."
-                               @onkeyup="FunctionsUseful.Search" @onfocus="FunctionsUseful.RemoveDate" @onblur="FunctionsUseful.AddDate" />
+                    <div class="search-container desktop">
+                        <input id="searchbar-desktop" type="text" name="searchbar-desktop" placeholder="Insira o título da nota...."
+                               @onkeyup='() => FunctionsUseful.Search("searchbar-desktop")' @onfocus="FunctionsUseful.RemoveDate" @onblur="FunctionsUseful.AddDate" />
                         <label class="navbar-toggler" for="searchbar">
                             <span class="bi bi-search icon-bootstrap lupa"></span>
                         </label>

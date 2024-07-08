@@ -5,17 +5,22 @@
 }
 
 @media (max-width: 700px) {
-    .toolbar-items .toolbar-item-left .search-container #searchbar:focus,
-    .toolbar-items .toolbar-item-left .search-container:hover #searchbar {
-        width: 60vw;
+    .tool-bar-mobile .search-container #searchbar-mobile {
+        height: 37.8px;
+        width: 40vw;
+        border-radius: 6px;
     }
+        .tool-bar-mobile .search-container #searchbar-mobile:focus,
+        .tool-bar-mobile .search-container:hover #searchbar-mobile {
+            width: 50vw;
+        }
 
     .toolbar-items {
         justify-content: space-between;
     }
 
         .toolbar-items .tool-bar-title {
-            display: none;
+            /*display: none;*/
         }
 
     .all-notes-box {
@@ -31,9 +36,17 @@
         display: none;
     }
 
+    .more-menu-box {
+        right: 0;
+        top: var(--top-app-bar-height);
+        transition: .3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+        transform: scale(1.2) translateX(180px);
+    }
+
     #more-button:checked ~ .more-menu-box {
         right: 0;
         border-radius: 15px 0 0 15px;
+        transform: scale(1.2) translateX(0px);
     }
 
     .side-bar-container {
@@ -55,19 +68,24 @@
         width: 100%;
     }
 
-        body.mobile-device #create-select-buttons .buttons-mobile {
+        body.mobile-device #create-select-buttons .tool-bar-mobile {
             display: flex;
             width: 100%;
-            background-color: var(--color-side-bar);
-            justify-content: right;
+            background-color: var(--color-tool-bar-mobile);
+            justify-content: space-between;
             backdrop-filter: blur(8px);
+            align-items: center;
         }
+            body.mobile-device #create-select-buttons .buttons-mobile {
+                display: flex;
+                justify-content: right;
+            }
 
         body.mobile-device #create-select-buttons .item-buttons {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            margin-inline: 15px;
+            margin-inline: 5px;
             padding: 7px;
         }
 
@@ -83,6 +101,35 @@
             body.mobile-device #create-select-buttons .buttons-mobile .item-buttons button span {
                 font-size: 1.5rem;
             }
+
+    /*Note card add on edit mobile*/
+    .add-note-container {
+        height: 100%;
+    }
+
+        .add-note-container .add-note-card {
+            height: 100%;
+            padding: 10px 10px;
+            border-radius: 0;
+        }
+            .add-note-container .add-note-card .card-content {
+                max-height: 40vh;
+                height: 100%;
+                overflow-y: auto;
+                overflow-x: hidden;
+                scrollbar-width: thin;
+                scrollbar-color: var(--color-contrast) white;
+            }
+
+            .add-note-container .add-note-card .titulo-card {
+                margin-bottom: 20px;
+                margin-inline: -10px;
+                padding: 10px 6px;
+                margin-top: 30px;
+                display: flex;
+                justify-content: center;
+            }
+
     /* Note Card on edit mobile */
     body.mobile-device .all-notes-section .all-notes .note-card.on-edit {
         z-index: 1040;
@@ -117,11 +164,12 @@
     body.mobile-device .edit-note-options {
         position: absolute;
         top: 0;
+        left: 0;
         width: 100%;
         margin: 0;
         justify-content: space-between;
-        border-bottom: 2px solid #bebebe;
-        background-color: white;
+        border-bottom: 1px solid var(--color-grey);
+        background-color: var(--color-card-task);
     }
 
     body.mobile-device .ql-snow .ql-color-picker, .ql-snow .ql-icon-picker {
@@ -144,14 +192,16 @@ body.mobile-device .top-bar-box {
     box-shadow: none;
 }
 
+body.mobile-device .search-container.desktop {
+    display: none;
+}
 
-
-.buttons-mobile {
+.tool-bar-mobile {
     display: none;
 }
 
 body.mobile-device .side-bar-fade {
-    display: block;
+    display: none;
 }
 
 .side-bar-fade {

@@ -171,7 +171,9 @@
                 Título
             </h2>
 
-            <div @ref="@divEditorElement" id="divEditorElement"/>
+            <div class="card-content">
+                <div @ref="@divEditorElement" id="divEditorElement" />
+            </div>
 
             <div id="toolbar">
                 <div class="text-edit-options">
@@ -248,26 +250,36 @@
         </button>
     </div>
 
-    <div class="buttons-mobile">
-        @if (selectNotes)
-        {
-            <button class="navbar-toggler" type="button" @onclick="DeleteSelected">
-                <span class="bi bi-trash3 icon-bootstrap"></span>
-            </button>
-        }
-
-        <div class="item-buttons">
-            <button class="navbar-toggler" type="button" @onclick="ToggleSelectNote">
-                <span class="bi bi-check-square icon-bootstrap-select"></span>
-            </button>
-            <p>Selecionar</p>
+    <div class="tool-bar-mobile">
+        <div class="search-container">
+            <input id="searchbar-mobile" type="text" name="searchbar-mobile" placeholder="Insira o título da nota...."
+                   @onkeyup='() => FunctionsUseful.Search("searchbar-mobile")' @onfocus="FunctionsUseful.RemoveDate" @onblur="FunctionsUseful.AddDate" />
+            <label class="navbar-toggler" for="searchbar">
+                <span class="bi bi-search icon-bootstrap lupa"></span>
+            </label>
         </div>
+
+        <div class="buttons-mobile">
+            @if (selectNotes)
+            {
+                <button class="navbar-toggler" type="button" @onclick="DeleteSelected">
+                    <span class="bi bi-trash3 icon-bootstrap"></span>
+                </button>
+            }
+
+            <div class="item-buttons">
+                <button class="navbar-toggler" type="button" @onclick="ToggleSelectNote">
+                    <span class="bi bi-check-square icon-bootstrap-select"></span>
+                </button>
+                <p>Selecionar</p>
+            </div>
             
-        <div class="item-buttons">
-            <button class="navbar-toggler" type="button" @onclick="ShowAddInterface">
-                <span class="bi bi-plus-square icon-bootstrap-add"></span>
-                <p>Addicionar</p>
-            </button>
+            <div class="item-buttons">
+                <button class="navbar-toggler" type="button" @onclick="ShowAddInterface">
+                    <span class="bi bi-plus-square icon-bootstrap-add"></span>
+                    <p>Addicionar</p>
+                </button>
+            </div>
         </div>
     </div>
 </div>

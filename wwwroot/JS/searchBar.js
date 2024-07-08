@@ -1,5 +1,5 @@
-﻿function search() {
-    let input = document.getElementById('searchbar').value;
+﻿function search(id) {
+    let input = document.getElementById(id).value;
     input = input.toLowerCase();
     let elements = document.getElementsByClassName('card-title');
     let noteCard = document.getElementsByClassName('note-card');

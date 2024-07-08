@@ -2,9 +2,15 @@
     --color-background: #222;
     --color-contrast: #652CB3;
     --color-light: white;
-    --color-side-bar: #000000;
+    --color-dark: black;
+    --color-side-bar: white;
     --color-danger: #ff5c5c;
     --color-grey: #bebebe;
+    --color-tool-bar-mobile: rgb(11, 11, 11);
+
+    --color-card-task: #eaeaea;
+    --color-text-primary: rgb(255, 255, 255);
+    --color-text-secondary: rgb(221, 221, 221);
 }
 
 :root {
@@ -89,13 +95,13 @@ span.trash {
         display: flex;
         align-items: center;
     }
-        .toolbar-items .toolbar-item-left .search-container {
+        .search-container {
             position: relative;
             display: flex;
             align-items: center;
             align-content: start;
         }
-            .toolbar-items .toolbar-item-left .search-container label .icon-bootstrap {
+            .search-container label .icon-bootstrap {
                 z-index: 4;
                 position: sticky;
                 color: black;
@@ -103,11 +109,11 @@ span.trash {
                 border-right: 1px solid #bebebe;
             }
 
-                .toolbar-items .toolbar-item-left .search-container label .icon-bootstrap:hover {
+                 .search-container label .icon-bootstrap:hover {
                     background-color: transparent;
                 }
 
-            .toolbar-items .toolbar-item-left .search-container #searchbar {
+            .search-container #searchbar-mobile, .search-container #searchbar-desktop {
                 left: 10px;
                 position: absolute;
                 background-color: white;
@@ -122,8 +128,8 @@ span.trash {
                 user-select: none;
             }
 
-                .toolbar-items .toolbar-item-left .search-container #searchbar:focus,
-                .toolbar-items .toolbar-item-left .search-container:hover #searchbar {
+                .search-container #searchbar-desktop:focus,
+                .search-container:hover #searchbar-desktop {
                     width: 20vw;
                     border-radius: 15px;
                     z-index: 3;

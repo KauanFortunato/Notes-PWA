@@ -46,9 +46,14 @@ namespace Notes.Pages.Services
         /// <summary>
         /// Função utilizada na barra de pesquisa
         /// </summary>
-        public async Task Search()
+        public async Task Search(string id)
         {
-            await _jsRuntime.InvokeVoidAsync("search");
+            await _jsRuntime.InvokeVoidAsync("search", id);
+        }
+
+        public async Task<bool> IsMobileDevice()
+        {
+            return await _jsRuntime.InvokeAsync<bool>("functionsUseful.isMobileDevice");
         }
 
         /// <summary>
