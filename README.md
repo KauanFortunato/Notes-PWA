@@ -20,7 +20,7 @@ Visual Studio(Opcional): https://visualstudio.microsoft.com/downloads/
 	- Pressione F5 ou clique em iniciar para rodar a aplicação.
 	- O navegador padrão deve abrir e carregar a aplicação web progressiva (PWA).
 
-### Usando Terminal para Clonar o Repositório
+### Usando GIT
 1. Clone o repositório:
 	- Abra o terminal e navegue até a pasta onde você quer clonar o repositório.
 	- Use o comando para clonar:
