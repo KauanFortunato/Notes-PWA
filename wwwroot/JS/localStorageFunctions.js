@@ -21,5 +21,8 @@ if (!localStorage.getItem("orderType")) {
     localStorageFunctions.setItem("orderType", "data");
 }
 if (!localStorage.getItem("visualization")) {
-    localStorageFunctions.setItem("visualization", "grid")
+    localStorageFunctions.setItem("visualization", "grid");
+}
+if (!localStorage.getItem("sideBar")) {
+    localStorageFunctions.setItem("sideBar", "true");
 }

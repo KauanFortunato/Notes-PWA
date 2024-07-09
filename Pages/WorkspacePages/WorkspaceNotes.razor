@@ -252,9 +252,9 @@
 
     <div class="tool-bar-mobile">
         <div class="search-container">
-            <input id="searchbar-mobile" type="text" name="searchbar-mobile" placeholder="Insira o título da nota...."
+            <input id="searchbar-mobile" type="text" name="searchbar-mobile" placeholder="Pesquisar notas"
                    @onkeyup='() => FunctionsUseful.Search("searchbar-mobile")' @onfocus="FunctionsUseful.RemoveDate" @onblur="FunctionsUseful.AddDate" />
-            <label class="navbar-toggler" for="searchbar">
+            <label class="navbar-toggler" for="searchbar-mobile">
                 <span class="bi bi-search icon-bootstrap lupa"></span>
             </label>
         </div>
@@ -271,18 +271,19 @@
                 <button class="navbar-toggler" type="button" @onclick="ToggleSelectNote">
                     <span class="bi bi-check-square icon-bootstrap-select"></span>
                 </button>
-                <p>Selecionar</p>
+                @* <p>Selecionar</p> *@
             </div>
             
             <div class="item-buttons">
                 <button class="navbar-toggler" type="button" @onclick="ShowAddInterface">
                     <span class="bi bi-plus-square icon-bootstrap-add"></span>
-                    <p>Addicionar</p>
+                    @* <p>Addicionar</p> *@
                 </button>
             </div>
         </div>
     </div>
 </div>
+
 
 @code {
     [Parameter]
@@ -334,7 +335,6 @@
     {
         if (showAddInterface == true && !render)
         {
-            Console.WriteLine("ola");
             render = true;
             await QuillCreate();
             await QuillService.StartObservation();

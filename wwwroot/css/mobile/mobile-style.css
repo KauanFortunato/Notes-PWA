@@ -7,8 +7,11 @@
 @media (max-width: 700px) {
     .tool-bar-mobile .search-container #searchbar-mobile {
         height: 37.8px;
-        width: 40vw;
+        width: 46vw;
         border-radius: 6px;
+        background-color: transparent;
+        color: white;
+        border: 1px solid var(--color-line-dark);
     }
         .tool-bar-mobile .search-container #searchbar-mobile:focus,
         .tool-bar-mobile .search-container:hover #searchbar-mobile {
@@ -52,6 +55,7 @@
     .side-bar-container {
         position: absolute;
         height: calc(99vh - env(safe-area-inset-top));
+        backdrop-filter: blur(140px);
     }
 
     body.mobile-device .all-notes-section {
@@ -71,7 +75,7 @@
         body.mobile-device #create-select-buttons .tool-bar-mobile {
             display: flex;
             width: 100%;
-            background-color: var(--color-tool-bar-mobile);
+            background-color: var(--color-side-bar);
             justify-content: space-between;
             backdrop-filter: blur(8px);
             align-items: center;
@@ -85,13 +89,15 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            margin-inline: 5px;
-            padding: 7px;
+            margin-inline: 15px;
+            padding: 4px;
         }
 
             body.mobile-device #create-select-buttons .item-buttons p {
                 margin: 0;
                 font-size: 13px;
+                color: var(--color-grey);
+                font-weight: 700;
             }
 
         body.mobile-device #create-select-buttons .buttons-mobile .item-buttons button {
@@ -99,7 +105,8 @@
         }
 
             body.mobile-device #create-select-buttons .buttons-mobile .item-buttons button span {
-                font-size: 1.5rem;
+                font-size: 2rem;
+                color: var(--color-grey);
             }
 
     /*Note card add on edit mobile*/

@@ -1,11 +1,24 @@
 ﻿@using Notes.Data
 @inject NoteService NoteService
 
-<div class="workspace-info-container on-edit">
-    <a class="workspace-name on-edit" contenteditable="true" @onblur="() => UpdateName()">
-        @WorkSpaceSelecionado.Name
-    </a>
-    <button @onclick="() => OnSave.InvokeAsync()">OK</button>
+<div class="workspace-info-container on-edit" style="background-color: @(WorkSpaceSelecionado.Color)40">
+    <div class="workspae-info-box">
+        <a class="workspace-name on-edit" contenteditable="true" @onblur="() => UpdateName()">
+            @WorkSpaceSelecionado.Name
+        </a>
+        <button @onclick="() => OnSave.InvokeAsync()" accesskey="enter">OK</button>
+    </div>
+
+    <div class="change-color-container">
+        <div class="colors-box">
+            <div class="workspace-color default" data-content="default" @onclick='() => ChangeColor("#5d5d5d")'></div>
+            <div class="workspace-color purple" data-content="purple" @onclick='() => ChangeColor("#8a5fc5")'></div>
+            <div class="workspace-color green" data-content="green" @onclick='() => ChangeColor("#64cd52")'></div>
+            <div class="workspace-color rosa" data-content="rosa" @onclick='() => ChangeColor("#f81285")'></div>
+            <div class="workspace-color red" data-content="red" @onclick='() => ChangeColor("#ff4b4b")'></div>
+            <div class="workspace-color blue" data-content="blue" @onclick='() => ChangeColor("#639fff")'></div>
+        </div>
+    </div>
 </div>
 
 @code {
@@ -17,5 +30,10 @@
     {
         var element = await NoteService.GetElement(".workspace-name.on-edit");
         WorkSpaceSelecionado.Name = element;
+    }
+
+    private void ChangeColor(string color)
+    {
+        WorkSpaceSelecionado.Color = color;
     }
 }

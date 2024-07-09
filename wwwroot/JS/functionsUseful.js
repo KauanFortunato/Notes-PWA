@@ -16,6 +16,7 @@ window.functionsUseful = {
     },
 
     sidebarActive: function () {
+        console.log("sidebar");
         functionsUseful.setClassItem("side-bar-container", "active");
     },
 
@@ -36,5 +37,9 @@ window.functionsUseful = {
             //console.log("Not is mobile");
             body.classList.remove('mobile-device');
         }
+    },
+
+    getDataContent: function (element) {
+        return element.getAttribute('data-content');
     }
 }

@@ -12,14 +12,14 @@
         <section class="top-bar-section">
             <nav class="toolbar-items">
                 <div class="toolbar-item-left">
-                    <button class="navbar-toggler" onclick="functionsUseful.sidebarActive()">
+                    <button class="navbar-toggler" @onclick="SidebarActive">
                         <span class="bi bi-list icon-bootstrap"></span>
                     </button>
 
                     <div class="search-container desktop">
-                        <input id="searchbar-desktop" type="text" name="searchbar-desktop" placeholder="Insira o título da nota...."
+                        <input id="searchbar-desktop" type="text" name="searchbar-desktop" placeholder="Pesquisar notas"
                                @onkeyup='() => FunctionsUseful.Search("searchbar-desktop")' @onfocus="FunctionsUseful.RemoveDate" @onblur="FunctionsUseful.AddDate" />
-                        <label class="navbar-toggler" for="searchbar">
+                        <label class="navbar-toggler" for="searchbar-desktop">
                             <span class="bi bi-search icon-bootstrap lupa"></span>
                         </label>
                     </div>
@@ -80,14 +80,29 @@
 
 <div class="main-content">
     <nav id="side-bar-container" class="side-bar-container">
-        <div class="side-bar-fade" onclick="functionsUseful.sidebarClose()"></div>
+        <div class="side-bar-fade" @onclick="SidebarClose"></div>
         <div class="top-items">
             <h2>
-                <span>Áreas de Trabalho</span>
+                <span>Workspaces</span>
             </h2>
-            <button id="close-side-bar" onclick="functionsUseful.sidebarClose()">
-                <span class="bi bi-x-lg icon-bootstrap"></span>
-            </button>
+            <div class="top-bar-tools">
+                <button class="add-workspace-button" type="button" @onclick="AddWorkspace" title="Adicionar Workspace">
+                    <span class="bi bi-plus"></span>
+                </button>
+
+                <button id="close-side-bar" @onclick="SidebarClose" title="Fechar barra lateral">
+                    <span class="bi bi-x-lg icon-bootstrap"></span>
+                </button>
+            </div>
+        </div>
+
+        <div class="search-container-workspaces">
+            <div class="search-box" @onkeyup='() => FunctionsUseful.SearchWorkspace("searchbar-workspaces")'>
+                <label class="search-icon-label" for="searchbar-workspaces">
+                    <span class="bi bi-binoculars"></span>
+                </label>
+                <input id="searchbar-workspaces" type="text" name="searchbar-workspaces" placeholder="Pesquisar workspace" />
+            </div>
         </div>
 
         <div class="workspaces-container">
@@ -102,7 +117,9 @@
                 }
                 else
                 {
-                    <div class="workspace-info-container">
+
+                    <div class="workspace-info-container" style="">
+                        <span class="bi bi-clipboard2 icon-workspace" id="workspace-@(workspace.Id)" style="background-color: @workspace.Color"></span>
                         <a class="nav-link active" aria-current="page" href="/workspace/@workspace.Id">@workspace.Name</a>
                         <div class="workspace-tools-box">
                             <div class="workspace-tools">
@@ -118,12 +135,6 @@
                     </div>
                 }
             }
-        </div>
-
-        <div class="add-button-box">
-            <button class="navbar-toggler" type="button" @onclick="AddWorkspace">
-                <span class="bi bi-plus-square icon-bootstrap-add"></span>
-            </button>
         </div>
     </nav>
 
@@ -147,6 +158,8 @@
         if (firstRender)
         {
             await FunctionsUseful.DetectDevice();
+            await SideBarIni();
+            await VisualizationIni();
         }
         // workspaceUsed = await WorkspaceService.GetWorkspaceAsync(AppData.WorkspaceUsedId);
     }
@@ -167,11 +180,11 @@
     {
         if (!visualizationType)
         {
-            await FunctionsUseful.SetClassItem("all-notes", "all-notes-grid");
+            await VisualizationGrid();
         }
         else
         {
-            await FunctionsUseful.RemoveClassItem("all-notes", "all-notes-grid");
+            await VisualizationList();
         }
 
         visualizationType = (bool)e.Value;
@@ -210,5 +223,60 @@
     {
         await WorkspaceService.UpdateWorkspaceAsync(workspaceSelecionado);
         await HideEditInterface();
+    }
+
+    private async Task SidebarClose()
+    {
+
+        await FunctionsUseful.SidebarClose();
+        await NoteService.SetLocalStorageItem("sideBar", "false");
+    }
+
+    private async Task SidebarActive()
+    {
+        await FunctionsUseful.SidebarActive();
+        await NoteService.SetLocalStorageItem("sideBar", "true");
+    }
+
+    private async Task SideBarIni()
+    {
+        var item = Convert.ToBoolean(await NoteService.GetLocalStorageItem("sideBar"));
+
+        if (item)
+        {
+            await SidebarActive();
+        }else
+        {
+            await SidebarClose();
+        }
+    }
+
+    private async Task VisualizationGrid()
+    {
+        await FunctionsUseful.SetClassItem("all-notes", "all-notes-grid");
+        await NoteService.SetLocalStorageItem("visualization", "true");
+    }
+
+    private async Task VisualizationList()
+    {
+        await FunctionsUseful.RemoveClassItem("all-notes", "all-notes-grid");
+        await NoteService.SetLocalStorageItem("visualization", "false");
+    }
+
+
+    private async Task VisualizationIni()
+    {
+        var item = Convert.ToBoolean(await NoteService.GetLocalStorageItem("visualization"));
+
+        if (item)
+        {
+            await VisualizationGrid();
+            visualizationType = item;
+        }
+        else
+        {
+            await VisualizationList();
+            visualizationType = item;
+        }
     }
 }

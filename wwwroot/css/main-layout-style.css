@@ -3,14 +3,14 @@
     --color-contrast: #652CB3;
     --color-light: white;
     --color-dark: black;
-    --color-side-bar: white;
+    --color-side-bar: rgb(26, 26, 26, 0.96);
     --color-danger: #ff5c5c;
     --color-grey: #bebebe;
     --color-tool-bar-mobile: rgb(11, 11, 11);
-
     --color-card-task: #eaeaea;
     --color-text-primary: rgb(255, 255, 255);
-    --color-text-secondary: rgb(221, 221, 221);
+    --color-text-secondary: rgb(120 120 120);
+    --color-line-dark: #353535;
 }
 
 :root {
@@ -25,7 +25,7 @@ html, body {
 }
 
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: Avenir, Avenir Next, Segoe UI, Helvetica, Arial, sans-serif;
     background-color: var(--color-background);
     padding-top: env(safe-area-inset-top);
 }
@@ -104,9 +104,9 @@ span.trash {
             .search-container label .icon-bootstrap {
                 z-index: 4;
                 position: sticky;
-                color: black;
+                color: var(--color-text-secondary);
                 cursor: pointer;
-                border-right: 1px solid #bebebe;
+                border-right: 1px solid var(--color-line-dark);
             }
 
                  .search-container label .icon-bootstrap:hover {
@@ -116,22 +116,23 @@ span.trash {
             .search-container #searchbar-mobile, .search-container #searchbar-desktop {
                 left: 10px;
                 position: absolute;
-                background-color: white;
+                background-color: transparent;
                 width: 18vw;
                 height: 30.8px;
-                border-radius: 15px;
+                border-radius: 12px;
                 border: none;
                 outline: none;
                 transition: .3s;
                 padding-inline: 40px;
                 z-index: 3;
                 user-select: none;
+                color: white;
+                border: 1px solid #353535;
             }
 
                 .search-container #searchbar-desktop:focus,
                 .search-container:hover #searchbar-desktop {
                     width: 20vw;
-                    border-radius: 15px;
                     z-index: 3;
                     padding-inline: 35px;
                 }
@@ -251,7 +252,8 @@ span.trash {
 
 .more-menu-box {
     position: fixed;
-    background-color: var(--color-background);
+    background-color: var(--color-side-bar);
+    backdrop-filter: blur(8px);
     box-shadow: 0px 0px 5px black;
     right: 48px;
     top: 60px;

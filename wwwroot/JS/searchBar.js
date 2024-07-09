@@ -13,6 +13,22 @@
     }
 }
 
+function searchWorkspace(id) {
+    let input = document.getElementById(id).value;
+    input = input.toLowerCase();
+    let elements = document.getElementsByClassName('nav-link');
+    let noteCard = document.getElementsByClassName('workspace-info-container');
+
+    for (i = 0; i < elements.length; i++) {
+        if (!elements[i].innerHTML.toLowerCase().includes(input)) {
+            noteCard[i].style.display = "none";
+        } else {
+            noteCard[i].style.display = "flex";
+        }
+    }
+}
+
+
 function removeDate() {
     let dateCreate = document.getElementsByClassName('date-create');
 

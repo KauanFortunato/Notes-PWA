@@ -51,6 +51,11 @@ namespace Notes.Pages.Services
             await _jsRuntime.InvokeVoidAsync("search", id);
         }
 
+        public async Task SearchWorkspace(string id)
+        {
+            await _jsRuntime.InvokeVoidAsync("searchWorkspace", id);
+        }
+
         public async Task<bool> IsMobileDevice()
         {
             return await _jsRuntime.InvokeAsync<bool>("functionsUseful.isMobileDevice");
@@ -71,6 +76,16 @@ namespace Notes.Pages.Services
         public async Task AddDate()
         {
             await _jsRuntime.InvokeVoidAsync("addDate");
+        }
+
+        public async Task SidebarActive()
+        {
+            await _jsRuntime.InvokeVoidAsync("functionsUseful.sidebarActive");
+        }
+
+        public async Task SidebarClose()
+        {
+            await _jsRuntime.InvokeVoidAsync("functionsUseful.sidebarClose");
         }
     }
 }
