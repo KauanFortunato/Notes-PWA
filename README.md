@@ -2,9 +2,9 @@
 ## Requisitos
 .NET SDK: https://dotnet.microsoft.com/en-us/download
 
-GIT: https://git-scm.com/downloads
+GIT(Caso não for usar o Visual Studio): https://git-scm.com/downloads
 
-Visual Studio(Opcional): https://visualstudio.microsoft.com/downloads/
+Visual Studio(Caso não for usar o GIT): https://visualstudio.microsoft.com/downloads/
 
 ---
 ## Passo a Passo para Instalação e Execução
