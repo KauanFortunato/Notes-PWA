@@ -272,13 +272,11 @@
                 <button class="navbar-toggler" type="button" @onclick="ToggleSelectNote">
                     <span class="bi bi-check-square icon-bootstrap-select"></span>
                 </button>
-                @* <p>Selecionar</p> *@
             </div>
             
             <div class="item-buttons">
                 <button class="navbar-toggler" type="button" @onclick="ShowAddInterface">
                     <span class="bi bi-plus-square icon-bootstrap-add"></span>
-                    @* <p>Addicionar</p> *@
                 </button>
             </div>
         </div>
@@ -366,6 +364,7 @@
                     DeadLine = deadLine
                 }
             };
+        Console.WriteLine(deadLine);
 
         if(note.Task.DeadLine != null)
         {
