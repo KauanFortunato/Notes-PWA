@@ -1,10 +1,8 @@
 # Notas PWA - Projeto de Aplicação Web Progressiva
 ## Requisitos
-.NET: https://dotnet.microsoft.com/en-us/download
+.NET SDK: https://dotnet.microsoft.com/en-us/download
 
 GIT: https://git-scm.com/downloads
-
-.NET SDK: https://dotnet.microsoft.com/en-us/download
 
 Visual Studio(Opcional): https://visualstudio.microsoft.com/downloads/
 
