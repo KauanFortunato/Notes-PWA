@@ -27,7 +27,7 @@
 
                 <div class="tool-bar-title">
                     <div class="workspace-info">
-                        <span class="tool-bar-tile-text">Workspace</span>
+                        <span class="tool-bar-title-text" id="header-title">Workspace</span>
                     </div>
                 </div>
 
@@ -118,9 +118,11 @@
                 else
                 {
 
-                    <div class="workspace-info-container" style="">
-                        <span class="bi bi-clipboard2 icon-workspace" id="workspace-@(workspace.Id)" style="background-color: @workspace.Color"></span>
+                    <div class="workspace-info-container" id="wk-ct-@(workspace.Id)">
+                        <span class="bi bi-clipboard2-fill icon-workspace" id="workspace-@(workspace.Id)" style="background-color: @workspace.Color"></span>
+
                         <a class="nav-link active" aria-current="page" href="/workspace/@workspace.Id">@workspace.Name</a>
+
                         <div class="workspace-tools-box">
                             <div class="workspace-tools">
                                 <button class="navbar-toggler" type="button" @onclick="() => ShowEditInterface(workspace)">
@@ -140,6 +142,7 @@
 
     @Body
 </div>
+
 @code
 {
     private List<Workspace> workspaces = new List<Workspace>();
@@ -262,7 +265,6 @@
         await FunctionsUseful.RemoveClassItem("all-notes", "all-notes-grid");
         await NoteService.SetLocalStorageItem("visualization", "false");
     }
-
 
     private async Task VisualizationIni()
     {

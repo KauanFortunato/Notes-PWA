@@ -15,6 +15,18 @@ window.functionsUseful = {
         }
     },
 
+    setClassItemById: function (elementId, classAdd) {
+        var element = document.getElementById(elementId);
+
+        element.classList.add(classAdd);
+    },
+
+    removeClassItemById: function (elementId, classAdd) {
+        var element = document.getElementById(elementId);
+
+        element.classList.remove(classAdd);
+    },
+
     sidebarActive: function () {
         console.log("sidebar");
         functionsUseful.setClassItem("side-bar-container", "active");
@@ -41,5 +53,13 @@ window.functionsUseful = {
 
     getDataContent: function (element) {
         return element.getAttribute('data-content');
+    },
+
+    redirectHref: function (href) {
+        location.href(href);
+    },
+    changeValueElement: function (elementId, value) {
+        const element = document.getElementById(elementId);
+        element.innerHTML = value;
     }
 }

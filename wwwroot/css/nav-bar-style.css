@@ -136,6 +136,10 @@
             width: 90%;
             margin-left: 15px;
         }
+            .side-bar-container .workspaces-container .workspace-info-container.active {
+                background-color: rgb(255, 255, 255, 0.1);
+            }
+
             .side-bar-container .workspaces-container .workspace-info-container:hover {
                 background-color: rgb(255, 255, 255, 0.1);
             }
@@ -216,7 +220,7 @@
 
         .side-bar-container .workspaces-container .workspace-info-container.on-edit .workspae-info-box button {
             font-weight: 600;
-            color: var(--color-contrast);
+            color: var(--color-contrast-light);
             padding: 5px;
             border-radius: 50%;
         }

@@ -7,6 +7,7 @@
 @inject HttpClient HttClient
 
 @inject NoteService NoteService
+@inject WorkspaceService WorkspaceService
 @inject AppData AppData
 @inject QuillService QuillService
 @inject FunctionsUseful FunctionsUseful
@@ -263,7 +264,7 @@
             @if (selectNotes)
             {
                 <button class="navbar-toggler" type="button" @onclick="DeleteSelected">
-                    <span class="bi bi-trash3 icon-bootstrap"></span>
+                    <span class="bi bi-trash3 icon-bootstrap trash"></span>
                 </button>
             }
 
@@ -284,7 +285,6 @@
     </div>
 </div>
 
-
 @code {
     [Parameter]
     public int WorkpaceIdPage { get; set; }
@@ -304,7 +304,6 @@
     private List<Note> notesSelected = new();
 
     private List<Note> notes = new List<Note>();
-    private List<Workspace> workspaces = new List<Workspace>();
     #endregion
 
     #region Variáveis de Controle
@@ -329,6 +328,7 @@
     {
         await UpdateNote();
         await CriarNotificacoes();
+        await UpdateTitleHeader();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -388,6 +388,7 @@
     private async Task UpdateNote()
     {
         notes = await NoteService.GetAllNotesAsync();
+        await SelectWorkspace();
         await GroupNotes();
     }
 
@@ -531,6 +532,23 @@
     }
 
     #endregion
+
+    private async Task SelectWorkspace()
+    {
+        var element = $"wk-ct-{WorkpaceIdPage}";
+        await FunctionsUseful.RemoveClassItem("workspace-info-container", "active");
+        await FunctionsUseful.SetClassItemById(element, "active");
+
+        Console.WriteLine("Ola");
+    }
+
+    private async Task UpdateTitleHeader()
+    {
+        var workspace = await WorkspaceService.GetWorkspaceAsync(WorkpaceIdPage);
+        var value = workspace.Name;
+
+        await FunctionsUseful.ChangeValueElement("header-title", value);
+    }
 
     private async Task CriarNotificacoes()
     {

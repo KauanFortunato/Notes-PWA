@@ -1,6 +1,7 @@
 ﻿:root {
     --color-background: #222;
     --color-contrast: #652CB3;
+    --color-contrast-light: #ba87ff;
     --color-light: white;
     --color-dark: black;
     --color-side-bar: rgb(26, 26, 26, 0.96);
@@ -127,7 +128,7 @@ span.trash {
                 z-index: 3;
                 user-select: none;
                 color: white;
-                border: 1px solid #353535;
+                border: 1px solid var(--color-line-dark);
             }
 
                 .search-container #searchbar-desktop:focus,
@@ -238,7 +239,7 @@ span.trash {
 
     #create-select-buttons button:hover {
         transform: scale(1.1);
-        color: var(--color-contrast);
+        color: var(--color-contrast-light);
     }
 
 #more-button,

@@ -35,6 +35,17 @@ namespace Notes.Pages.Services
             await _jsRuntime.InvokeVoidAsync("functionsUseful.removeClassItem", elementId, classAdd);
         }
 
+        public async Task SetClassItemById(string elementId, string classAdd)
+        {
+            await _jsRuntime.InvokeVoidAsync("functionsUseful.setClassItemById", elementId, classAdd);
+        }
+
+        public async Task RemoveClassItemById(string elementId, string classAdd)
+        {
+            await _jsRuntime.InvokeVoidAsync("functionsUseful.removeClassItemById", elementId, classAdd);
+        }
+
+
         /// <summary>
         /// Detecta o tipo de dispositivo em que está sendo utilizado
         /// </summary>
@@ -86,6 +97,11 @@ namespace Notes.Pages.Services
         public async Task SidebarClose()
         {
             await _jsRuntime.InvokeVoidAsync("functionsUseful.sidebarClose");
+        }
+
+        public async Task ChangeValueElement(string elementId, string value)
+        {
+            await _jsRuntime.InvokeVoidAsync("functionsUseful.changeValueElement", elementId, value);
         }
     }
 }
